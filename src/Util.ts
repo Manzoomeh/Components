@@ -1,10 +1,10 @@
 //export type AppImageData = string | ArrayBuffer;
 
-import ImageInfo from "./ImageInfo";
+import ImageElementInfo from "./ImageElementInfo";
 
 export default class Util {
-  static GetBase64Image(image: Blob): Promise<ImageInfo> {
-    return new Promise<ImageInfo>((resolve, reject) => {
+  static GetBase64Image(image: Blob): Promise<ImageElementInfo> {
+    return new Promise<ImageElementInfo>((resolve, reject) => {
       try {
         const reader = new FileReader();
 
@@ -13,7 +13,7 @@ export default class Util {
           () => {
             const imageElm = new Image();
             imageElm.onload = function() {
-              resolve(new ImageInfo(reader.result, imageElm.width,imageElm.height));
+              resolve(new ImageElementInfo(reader.result, imageElm.width,imageElm.height));
             }
             imageElm.src = (reader.result as any) as string;
           },

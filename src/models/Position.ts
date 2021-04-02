@@ -1,4 +1,4 @@
-export class Position {
+export default class Position {
   constructor(readonly X: number, readonly Y: number) {}
 
   GetDistance(from: Position): Position {

@@ -1,5 +1,5 @@
-import ImageInfo from "../../ImageInfo";
+import ImageElementInfo from "../../ImageElementInfo";
 
 export default interface ILogoOption {
-  ImageInfo: ImageInfo;
+  ImageInfo: ImageElementInfo;
 }

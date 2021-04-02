@@ -1,6 +1,6 @@
 import { f, logo, image } from "./test";
-import Watermark from "./components/Watermark";
-import { IOption } from "./components/IOptions";
+import Watermark from "./components/Watermark/Watermark";
+import { IOption } from "./components/Watermark/IOptions";
 import  Util  from "./Util";
 
 f("in the name of god");
