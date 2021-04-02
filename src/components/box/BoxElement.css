@@ -1,0 +1,11 @@
+.wm-rect-box {
+  fill-opacity: 0;
+  stroke-dasharray: 5, 5;
+  pointer-events: none;
+  cursor: move;
+}
+.wm-rect-box.wm-rect-select {
+  stroke: #1a6dff;
+  stroke-width: 3px;
+
+}

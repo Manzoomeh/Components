@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="dist/main.js" defer></script>
+    <style>
+      svg {
+        border: black solid 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="file" id="ctl-image-file" />
+    <button id="btn-add-image">load Image</button>
+    <br />
+
+    <input type="file" id="ctl-logo-file" />
+    <button id="btn-add-logo">Add Logo</button>
+    <br />
+    <svg id="main-svg" width="0" height="0"></svg>
+    <br />
+    <button id="btn-preview">Preview</button>
+    <button id="btn-download">Download</button>
+    <br />
+    <img id="img" />
+    <script>
+      function dragstart_handler(ev) {
+        // Add the target element's id to the data transfer object
+        ev.dataTransfer.setData("text/plain", ev.target.id);
+      }
+    
+      window.addEventListener('DOMContentLoaded', () => {
+        // Get the element by id
+        const element = document.getElementById("p1");
+        // Add the ondragstart event listener
+        element.addEventListener("dragstart", dragstart_handler);
+      });
+    </script>
+    
+    <p id="p1" draggable="true">This element is draggable.</p>
+  </body>
+</html>
