@@ -1,12 +1,10 @@
 import Watermark from "../Watermark/Watermark";
-import WatermarkContainerElement from "../../models/WatermarkContainerElement";
 import { WatermarkElementOption } from "../../models/WatermarkElementOption";
 import Position from "../../models/Position";
 import "./InteractiveElement.css";
+import WatermarkElement from "../../models/WatermarkElement";
 
-export default abstract class InteractiveElement<
-  T extends SVGElement
-> extends WatermarkContainerElement<T> {
+export default abstract class InteractiveElement extends WatermarkElement {
   private _borderElement: SVGRectElement;
   private _groupElement: SVGGElement;
   constructor(owner: Watermark, readonly Option: WatermarkElementOption) {
@@ -21,7 +19,6 @@ export default abstract class InteractiveElement<
     return this._groupElement;
   }
   private createGroupElement() {
-    //console.log(this.Option);
     this._groupElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "g"
@@ -49,7 +46,7 @@ export default abstract class InteractiveElement<
     });
     this.createBorder();
 
-    this.Element.addEventListener("move", (e) => {
+    contentElement.addEventListener("move", (e) => {
       e.preventDefault();
 
       var d = (e as CustomEvent).detail as Position;
@@ -72,9 +69,7 @@ export default abstract class InteractiveElement<
     element.setAttribute("x", this.Option.XPosition.toString());
     element.setAttribute("y", this.Option.YPosition.toString());
     element.setAttribute("visibility", "visible");
-
     element.setAttribute("draggable", "true");
-
     element.setAttribute("style", "fill-opacity: 0");
 
     this._borderElement = element;

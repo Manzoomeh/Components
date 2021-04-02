@@ -1,25 +1,29 @@
 import ImageElementInfo from "../../ImageElementInfo";
-import WatermarkContainerElement from "../../models/WatermarkContainerElement";
+import WatermarkElement from "../../models/WatermarkElement";
 import Watermark from "../Watermark/Watermark";
-export default class MainImageElement extends WatermarkContainerElement<SVGImageElement> {
+export default class MainImageElement extends WatermarkElement {
+  private _imageElement:SVGImageElement;
+  getSVGElement(): SVGElement {
+    return this._imageElement;
+  }
 
   constructor(owner: Watermark, readonly imageInfo: ImageElementInfo) {
     super(owner);
-    this.Element = document.createElementNS(
+    this._imageElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "image"
     );
-    this.Element.setAttribute("height", this.imageInfo.Height.toString());
-    this.Element.setAttribute("width", this.imageInfo.Width.toString());
-    this.Element.setAttributeNS(
+    this._imageElement.setAttribute("height", this.imageInfo.Height.toString());
+    this._imageElement.setAttribute("width", this.imageInfo.Width.toString());
+    this._imageElement.setAttributeNS(
       "http://www.w3.org/1999/xlink",
       "href",
       (this.imageInfo.Data as any) as string
     );
 
-    this.Element.setAttribute("x", "0");
-    this.Element.setAttribute("y", "0");
-    this.Element.setAttribute("visibility", "visible");
+    this._imageElement.setAttribute("x", "0");
+    this._imageElement.setAttribute("y", "0");
+    this._imageElement.setAttribute("visibility", "visible");
     this.Owner.Element.setAttribute("height", this.imageInfo.Height.toString());
     this.Owner.Element.setAttribute("width", this.imageInfo.Width.toString());
     this.Owner.addElement(this);

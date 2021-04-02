@@ -3,7 +3,7 @@ import ImageElementInfo from "../../ImageElementInfo";
 import { WatermarkElementOption } from "../../models/WatermarkElementOption";
 import InteractiveElement from "../Interactive/InterActiveElement";
 
-export default class LogoElement extends InteractiveElement<SVGImageElement> {
+export default class LogoElement extends InteractiveElement {
   constructor(owner: Watermark, readonly imageInfo: ImageElementInfo) {
     super(owner, LogoElement.ToOption(imageInfo));
     this.initElement()
@@ -25,7 +25,6 @@ export default class LogoElement extends InteractiveElement<SVGImageElement> {
     image.setAttribute("x", (this.Option.XPosition + 2).toString());
     image.setAttribute("y", (this.Option.YPosition + 2).toString());
     image.setAttribute("visibility", "visible");
-    this.Element=image;
     return image;
     
   }
