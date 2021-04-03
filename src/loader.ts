@@ -2,6 +2,7 @@ import { f, logo, image } from "./test";
 import Watermark from "./components/Watermark/Watermark";
 import { IOption } from "./components/Watermark/IOptions";
 import  Util  from "./Util";
+import TextElementInfo from "./TextElementInfo";
 
 f("in the name of god");
 
@@ -73,6 +74,15 @@ class Program {
       Program.watermark = new Watermark(option);
 
       Program.watermark.addImageElement(logo);
+
+      const textOption:TextElementInfo={
+        FontName:"Arial",
+        Text:"god",
+        Height:10,
+        Width:200
+      }
+
+      Program.watermark.addTextElement(textOption);
   }
 
 }

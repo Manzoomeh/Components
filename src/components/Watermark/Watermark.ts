@@ -4,6 +4,8 @@ import MainImageElement from "../MainImage/MainImageElement";
 import ImageElementInfo from "../../ImageElementInfo";
 import { DragDropHandler } from "../../DragDropHandler";
 import WatermarkElement from "../../models/WatermarkElement";
+import { TextElement } from "../Text/TextElement";
+import TextElementInfo from "../../TextElementInfo";
 
 export default class Watermark {
   static readonly DOMURL: any = window.URL || window.webkitURL || window;
@@ -47,7 +49,13 @@ export default class Watermark {
     this.Element.appendChild(element.getSVGElement());
   }
   addImageElement(imageInfo: ImageElementInfo) {
-    new LogoElement(this, imageInfo);
+   const logo = new LogoElement(this, imageInfo);
+   this.addElement(logo);
+  }
+
+  addTextElement(textInfo:TextElementInfo){
+    const text = new TextElement(this, textInfo);
+    this.addElement(text);
   }
 
   preview(img: HTMLImageElement) {

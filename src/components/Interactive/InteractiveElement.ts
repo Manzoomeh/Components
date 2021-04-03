@@ -4,9 +4,12 @@ import Position from "../../models/Position";
 import "./InteractiveElement.css";
 import WatermarkElement from "../../models/WatermarkElement";
 
-export default abstract class InteractiveElement extends WatermarkElement {
+export default abstract class InteractiveElement<
+  T extends SVGGraphicsElement
+> extends WatermarkElement {
   private _borderElement: SVGRectElement;
   private _groupElement: SVGGElement;
+  protected Content: T;
   constructor(owner: Watermark, readonly Option: WatermarkElementOption) {
     super(owner);
   }
@@ -14,6 +17,7 @@ export default abstract class InteractiveElement extends WatermarkElement {
   protected initElement(): void {
     this.createGroupElement();
   }
+  protected abstract getContentElement(): T;
 
   getSVGElement(): SVGElement {
     return this._groupElement;
@@ -34,19 +38,18 @@ export default abstract class InteractiveElement extends WatermarkElement {
     this._groupElement.setAttribute("x", "0");
     this._groupElement.setAttribute("y", "0");
     this._groupElement.setAttribute("visibility", "visible");
-    this.Owner.addElement(this);
 
-    const contentElement = this.getContentElement();
-    this._groupElement.appendChild(contentElement);
-    contentElement.addEventListener("inactive", (e) => this.Inactive());
-    contentElement.addEventListener("click", (e) => {
+    this.Content = this.getContentElement(); //this.getContentElement();
+    this._groupElement.appendChild(this.Content);
+    this.Content.addEventListener("inactive", (e) => this.Inactive());
+    this.Content.addEventListener("click", (e) => {
       e.stopPropagation();
       console.log("click in element");
       this.Owner.setActiveElement(this);
     });
     this.createBorder();
 
-    contentElement.addEventListener("move", (e) => {
+    this.Content.addEventListener("move", (e) => {
       e.preventDefault();
 
       var d = (e as CustomEvent).detail as Position;
@@ -76,9 +79,12 @@ export default abstract class InteractiveElement extends WatermarkElement {
     this._groupElement.appendChild(this._borderElement);
   }
 
-  protected abstract getContentElement(): SVGElement;
-
   Active() {
+    const box: SVGRect = this.Content.getBBox();
+    this._borderElement.setAttribute("height", box.height.toString());
+    this._borderElement.setAttribute("width",  box.width.toString());
+    this._borderElement.setAttribute("x", box.x.toString());
+    this._borderElement.setAttribute("y", box.y.toString());
     this._borderElement.setAttribute("class", "wm-rect-box wm-rect-select");
   }
 
