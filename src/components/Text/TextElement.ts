@@ -13,8 +13,9 @@ export class TextElement extends InteractiveElement<SVGTextElement> {
       "http://www.w3.org/2000/svg",
       "text"
     );
-    textElement.setAttribute("font-family", this.imageInfo.FontName);
-    textElement.setAttribute("font-size", "30");
+    textElement.setAttribute("font-family", this.imageInfo.FontFamily);
+    textElement.setAttribute("font-size", this.imageInfo.FontSize.toString());
+    textElement.setAttribute("fill", this.imageInfo.Color);
     textElement.setAttribute("dominant-baseline", "text-before-edge");
     textElement.setAttribute("x", this.Option.XPosition.toString());
     textElement.setAttribute("y", this.Option.YPosition.toString());

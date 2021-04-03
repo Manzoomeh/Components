@@ -1,45 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="dist/main.js" defer></script>
-    <style>
-      svg {
-        border: black solid 1px;
-      }
-    </style>
-  </head>
-  <body>
-    <input type="file" id="ctl-image-file" />
-    <button id="btn-add-image">load Image</button>
-    <br />
 
-    <input type="file" id="ctl-logo-file" />
-    <button id="btn-add-logo">Add Logo</button>
-    <br />
-    <svg id="main-svg" width="0" height="0"></svg>
-    <br />
-    <button id="btn-preview">Preview</button>
-    <button id="btn-download">Download</button>
-    <br />
-    <img id="img" />
-    <script>
-      function dragstart_handler(ev) {
-        // Add the target element's id to the data transfer object
-        ev.dataTransfer.setData("text/plain", ev.target.id);
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="basiscore.watermark.js" defer></script>
+  <script src="jquery.min.js"></script>
+  <style>
+    svg {
+      border: black solid 1px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <fieldset data-text-dlg>
+      <legend>Add Text</legend>
+      <form id="text-form">
+        <label>Content
+          <input type="text" name="Text" value="123" required />
+        </label>
+        <label>Font
+          <select name="FontFamily" required>
+            <option value="Courier" style="font-family:Courier">Courier</option>
+            <option value="Asset" style="font-family: asset;">Asset</option>
+            <option value="Arial" style="font-family: Arial">Arial</option>
+          </select>
+        </label>
+        <label>Font
+          <select name="FontSize" required>
+            <option value="30">30</option>
+            <option value="50">50</option>
+            <option value="70">70</option>
+            <option value="80">80</option>
+            <option value="100">100</option>
+          </select>
+        </label>
+        <label>Color<input type="color" name="Color" /></label>
+        <input type="submit" value="Apply" />
+      </form>
+  </div>
+  </fieldset>
+  <input type="file" id="ctl-image-file" />
+  <button id="btn-add-image">load Image</button>
+  <br />
+
+  <input type="file" id="ctl-logo-file" />
+  <button id="btn-add-logo">Add Logo</button>
+  <br />
+  <svg id="main-svg" width="0" height="0"></svg>
+  <br />
+  <button id="btn-demo">Demo</button>
+  <button id="btn-preview">Preview</button>
+  <button id="btn-download">Download</button>
+  <br />
+  <img id="img" />
+  <script>
+    var $watermark = null;
+    $(document).ready(_ => {
+
+
+      addLoadImageHandler();
+      addOutputHandler();
+
+      addLoadLogoHandler();
+      initAddTextDlg();
+      initDemo();
+
+
+    });
+
+    function initDemo() {
+      document.getElementById('btn-demo')
+        .addEventListener('click', e => {
+          createDemoWaterMark();
+          addDemoImage();
+          addDemoText();
+        });
+    }
+
+    function addLoadLogoHandler() {
+      document
+        .getElementById("btn-add-logo")
+        .addEventListener("click", async (_) => {
+          const files = document.getElementById("ctl-logo-file");
+          const file = files.files[0];
+          const base64data = await watermark.Util.GetBase64Image(file);
+          $watermark.addImageElement(base64data);
+        });
+    }
+
+    function addOutputHandler() {
+      //preview
+      document
+        .getElementById("btn-preview")
+        .addEventListener("click", async _ => {
+          const imageElement = document.getElementById("img");
+          $watermark.preview(imageElement);
+        });
+
+      //download
+      document
+        .getElementById("btn-download")
+        .addEventListener("click", async _ => {
+          await $watermark.exportImage();
+        });
+
+    }
+
+    function addLoadImageHandler() {
+      document.getElementById('btn-add-image')
+        .addEventListener('click', async (_) => {
+          const files = document.getElementById("ctl-image-file")
+          const file = files.files[0];
+          const base64data = await watermark.Util.GetBase64Image(file);
+          const option = {
+            SvgElement: document.getElementById("main-svg"),
+            ImageInfo: base64data,
+          };
+          $watermark = new watermark.Watermark(option);
+        });
+    }
+
+    function createDemoWaterMark() {
+      const option = {
+        SvgElement: document.getElementById("main-svg"),
+        ImageInfo: watermark.DemoData.ImageInfo,
+      };
+      $watermark = new watermark.Watermark(option);
+    }
+
+    function addDemoImage() {
+      $watermark.addImageElement(watermark.DemoData.LogoInfo);
+    }
+
+    function addDemoText() {
+      const textOption = {
+        FontFamily: "Arial",
+        Text: "god",
+        FontSize: 30,
+        Color: "red"
       }
-    
-      window.addEventListener('DOMContentLoaded', () => {
-        // Get the element by id
-        const element = document.getElementById("p1");
-        // Add the ondragstart event listener
-        element.addEventListener("dragstart", dragstart_handler);
-      });
-    </script>
-    
-    <p id="p1" draggable="true">This element is draggable.</p>
-  </body>
+      $watermark.addTextElement(textOption);
+    }
+
+    function initAddTextDlg() {
+      document.getElementById('text-form')
+        .addEventListener('submit', e => {
+          e.preventDefault();
+          const data = new FormData(e.target);
+          const textOption = Object.fromEntries(data.entries());
+          console.log(textOption)
+          $watermark.addTextElement(textOption);
+        });
+    }
+  </script>
+</body>
+
 </html>

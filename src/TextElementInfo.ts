@@ -1,7 +1,8 @@
 export default class TextElementInfo {
   constructor(
     readonly Text: string,
-    readonly FontName: string,
-    readonly Size: number
+    readonly FontFamily: string,
+    readonly FontSize: number,
+    readonly Color:string
   ) {}
 }

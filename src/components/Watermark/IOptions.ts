@@ -1,6 +1,6 @@
 import ImageElementInfo from "../../ImageElementInfo";
 
-export interface IOption{
+export default interface IOption{
     SvgElement:SVGElement;
     ImageInfo:ImageElementInfo;
 }

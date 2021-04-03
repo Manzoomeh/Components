@@ -1,5 +1,5 @@
 import LogoElement from "../logo/LogoElement";
-import { IOption } from "./IOptions";
+import IOption from "./IOptions";
 import MainImageElement from "../MainImage/MainImageElement";
 import ImageElementInfo from "../../ImageElementInfo";
 import { DragDropHandler } from "../../DragDropHandler";
@@ -49,11 +49,11 @@ export default class Watermark {
     this.Element.appendChild(element.getSVGElement());
   }
   addImageElement(imageInfo: ImageElementInfo) {
-   const logo = new LogoElement(this, imageInfo);
-   this.addElement(logo);
+    const logo = new LogoElement(this, imageInfo);
+    this.addElement(logo);
   }
 
-  addTextElement(textInfo:TextElementInfo){
+  addTextElement(textInfo: TextElementInfo) {
     const text = new TextElement(this, textInfo);
     this.addElement(text);
   }

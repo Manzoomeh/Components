@@ -1,12 +1,13 @@
 const path = require("path");
 module.exports = {
   mode: "development",
-  entry: {
-    main: "./src/loader.ts",
+  entry:  "./src/loader.ts",
+  output: {
+    filename:"basiscore.watermark.js",
+    library: 'watermark'
   },
   devServer: {
-    contentBase: "./wwwroot",
-    publicPath: "/dist",
+    static: path.resolve(__dirname, 'wwwroot')
   },
   // optimization: {
   //   splitChunks: {
