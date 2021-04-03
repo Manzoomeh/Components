@@ -4,8 +4,8 @@
   pointer-events: none;
   cursor: move;
 }
+.wm-rect-box:hover,
 .wm-rect-box.wm-rect-select {
   stroke: #1a6dff;
   stroke-width: 3px;
-
 }

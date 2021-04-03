@@ -78,8 +78,7 @@ class Program {
       const textOption:TextElementInfo={
         FontName:"Arial",
         Text:"god",
-        Height:10,
-        Width:200
+        Size:10
       }
 
       Program.watermark.addTextElement(textOption);

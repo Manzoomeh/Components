@@ -10,13 +10,7 @@ export default class Util {
 
         reader.addEventListener(
           "load",
-          () => {
-            const imageElm = new Image();
-            imageElm.onload = function() {
-              resolve(new ImageElementInfo(reader.result, imageElm.width,imageElm.height));
-            }
-            imageElm.src = (reader.result as any) as string;
-          },
+          () => resolve(new ImageElementInfo(reader.result)),
           false
         );
         reader.readAsDataURL(image);

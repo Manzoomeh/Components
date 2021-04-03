@@ -13,22 +13,17 @@ export default class LogoElement extends InteractiveElement<SVGImageElement> {
       "http://www.w3.org/2000/svg",
       "image"
     );
-    //image.setAttribute("height", this.imageInfo.Height.toString());
-    //image.setAttribute("width", this.imageInfo.Width.toString());
     image.setAttributeNS(
       "http://www.w3.org/1999/xlink",
       "href",
       (this.imageInfo.Data as any) as string
     );
-
-    image.setAttribute("x", (this.Option.XPosition + 2).toString());
-    image.setAttribute("y", (this.Option.YPosition + 2).toString());
     image.setAttribute("visibility", "visible");
     return image;
     
   }
 
   static ToOption(imageInfo: ImageElementInfo): WatermarkElementOption {
-    return new WatermarkElementOption(imageInfo.Width, imageInfo.Height, 0, 0);
+    return new WatermarkElementOption(0,0, 0, 0);
   }
 }

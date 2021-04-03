@@ -1,12 +1,7 @@
-import ElementInfo from "./ElementInfo";
-
-export default class TextElementInfo extends ElementInfo {
+export default class TextElementInfo {
   constructor(
     readonly Text: string,
     readonly FontName: string,
-    width: number,
-    height: number
-  ) {
-    super(width, height);
-  }
+    readonly Size: number
+  ) {}
 }

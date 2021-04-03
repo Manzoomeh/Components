@@ -3,7 +3,7 @@ import WatermarkElement from "../../models/WatermarkElement";
 import Watermark from "../Watermark/Watermark";
 export default class MainImageElement extends WatermarkElement {
   private _imageElement:SVGImageElement;
-  getSVGElement(): SVGElement {
+  getSVGElement(): SVGGraphicsElement {
     return this._imageElement;
   }
 
@@ -13,8 +13,6 @@ export default class MainImageElement extends WatermarkElement {
       "http://www.w3.org/2000/svg",
       "image"
     );
-    this._imageElement.setAttribute("height", this.imageInfo.Height.toString());
-    this._imageElement.setAttribute("width", this.imageInfo.Width.toString());
     this._imageElement.setAttributeNS(
       "http://www.w3.org/1999/xlink",
       "href",
@@ -24,8 +22,12 @@ export default class MainImageElement extends WatermarkElement {
     this._imageElement.setAttribute("x", "0");
     this._imageElement.setAttribute("y", "0");
     this._imageElement.setAttribute("visibility", "visible");
-    this.Owner.Element.setAttribute("height", this.imageInfo.Height.toString());
-    this.Owner.Element.setAttribute("width", this.imageInfo.Width.toString());
+
+    
     this.Owner.addElement(this);
+
+    const box=this._imageElement.getBBox();
+    this.Owner.Element.setAttribute("height",box.height.toString());
+    this.Owner.Element.setAttribute("width",box.width.toString());
   }
 }

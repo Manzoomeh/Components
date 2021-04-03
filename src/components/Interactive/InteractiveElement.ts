@@ -19,7 +19,7 @@ export default abstract class InteractiveElement<
   }
   protected abstract getContentElement(): T;
 
-  getSVGElement(): SVGElement {
+  getSVGElement(): SVGGraphicsElement {
     return this._groupElement;
   }
   private createGroupElement() {
@@ -27,19 +27,9 @@ export default abstract class InteractiveElement<
       "http://www.w3.org/2000/svg",
       "g"
     );
-    this._groupElement.setAttribute(
-      "height",
-      (this.Option.Height + 4).toString()
-    );
-    this._groupElement.setAttribute(
-      "width",
-      (this.Option.Width + 4).toString()
-    );
-    this._groupElement.setAttribute("x", "0");
-    this._groupElement.setAttribute("y", "0");
     this._groupElement.setAttribute("visibility", "visible");
 
-    this.Content = this.getContentElement(); //this.getContentElement();
+    this.Content = this.getContentElement();
     this._groupElement.appendChild(this.Content);
     this.Content.addEventListener("inactive", (e) => this.Inactive());
     this.Content.addEventListener("click", (e) => {
@@ -67,10 +57,6 @@ export default abstract class InteractiveElement<
       "rect"
     );
     element.setAttribute("class", "wm-rect-box");
-    element.setAttribute("height", (this.Option.Height + 4).toString());
-    element.setAttribute("width", (this.Option.Width + 4).toString());
-    element.setAttribute("x", this.Option.XPosition.toString());
-    element.setAttribute("y", this.Option.YPosition.toString());
     element.setAttribute("visibility", "visible");
     element.setAttribute("draggable", "true");
     element.setAttribute("style", "fill-opacity: 0");
@@ -82,7 +68,7 @@ export default abstract class InteractiveElement<
   Active() {
     const box: SVGRect = this.Content.getBBox();
     this._borderElement.setAttribute("height", box.height.toString());
-    this._borderElement.setAttribute("width",  box.width.toString());
+    this._borderElement.setAttribute("width", box.width.toString());
     this._borderElement.setAttribute("x", box.x.toString());
     this._borderElement.setAttribute("y", box.y.toString());
     this._borderElement.setAttribute("class", "wm-rect-box wm-rect-select");

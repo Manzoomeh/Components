@@ -70,8 +70,9 @@ export default class Watermark {
     var img = new Image();
 
     var canvas = document.createElement("canvas");
-    canvas.width = this.Image.imageInfo.Width;
-    canvas.height = this.Image.imageInfo.Height;
+    const box = this.Image.getSVGElement().getBBox();
+    canvas.width = box.width;
+    canvas.height = box.height;
     var ctx = canvas.getContext("2d");
     this.preview(img);
     return new Promise<void>((resolve, reject) => {
