@@ -63,6 +63,16 @@
           <option value="2">2</option>
         </select>
       </label>
+      <label>Opacity
+        <select name="Opacity" id="Opacity" required>
+          <option value="1">1</option>
+          <option value="0.3">0.3</option>
+          <option value="0.5">0.5</option>
+          <option value="0.7">0.7</option>
+          <option value="0.8">0.8</option>
+
+        </select>
+      </label>
       <input type="submit" value="Add" />
     </form>
     </div>
@@ -94,6 +104,15 @@
           <option value="2">2</option>
         </select>
       </label>
+      <label>Opacity
+        <select name="Opacity" id="Opacity" required>
+          <option value="1">1</option>
+          <option value="0.8">0.8</option>
+          <option value="0.7">0.7</option>
+          <option value="0.5">0.5</option>
+          <option value="0.3">0.3</option>
+        </select>
+      </label>
       <input type="submit" value="Apply" />
     </form>
     </div>
@@ -112,7 +131,7 @@
           <option value="Arial" style="font-family: Arial">Arial</option>
         </select>
       </label>
-      <label>Font
+      <label>Size
         <select name="FontSize" id="FontSize" required>
           <option value="30">30</option>
           <option value="50">50</option>
@@ -133,7 +152,15 @@
           <option value="315">315</option>
         </select>
       </label>
-
+      <label>Opacity
+        <select name="Opacity" id="Opacity" required>
+          <option value="1">1</option>
+          <option value="0.8">0.8</option>
+          <option value="0.7">0.7</option>
+          <option value="0.5">0.5</option>
+          <option value="0.3">0.3</option>
+        </select>
+      </label>
       <label>Color<input type="color" name="Color" id="Color" /></label>
       <input type="submit" value="Apply" />
     </form>
@@ -143,7 +170,8 @@
 
 
 
-  <svg id="main-svg" width="0" height="0"></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="main-svg" width="0"
+    height="0"></svg>
 
 
   <br />
@@ -159,6 +187,9 @@
     }
 
     $(document).ready(_ => {
+
+      $('#img').attr('src', watermark.DemoData.Data);
+
       updateNaveBar('start');
       $('fieldset').hide();
       initNavBar();
@@ -174,6 +205,7 @@
 
 
     function initNavBar() {
+
       $('#new').click(e => {
         if (confirm('Start new Project?')) {
           $('fieldset').hide();
@@ -198,7 +230,7 @@
         function addDemoText() {
           const textOption = {
             FontFamily: "Arial",
-            Text: "god",
+            Text: "Sample",
             FontSize: 30,
             Color: "#ff0000"
           }
@@ -216,13 +248,13 @@
       $("#download").click(async _ => await $watermark.exportImage());
 
       $('#logo').click(e => {
-        $activeElement=null;
+        $activeElement = null;
         $('fieldset').hide();
         $('[data-logo-add-dlg]').show();
       });
 
       $('#text').click(e => {
-        $activeElement=null;
+        $activeElement = null;
         $('fieldset').hide();
         $('[data-text-dlg]').show();
       });
@@ -248,8 +280,9 @@
           const files = $("#logoFile")[0];
           const file = files.files[0];
           const imageOption = await watermark.Util.GetBase64Image(file);
-          imageOption.Rotate = $("#logo-add-form #Rotate").val();
-          imageOption.Scale = $("#logo-add-form #Scale").val();
+          imageOption.Rotate = parseInt($("#logo-add-form #Rotate").val());
+          imageOption.Scale = parseFloat($("#logo-add-form #Scale").val());
+          imageOption.Opacity = parseFloat($("#logo-add-form #Opacity").val());
           $watermark.addImageElement(imageOption);
           $('fieldset').hide();
         });
@@ -260,8 +293,9 @@
         function updateFn() {
           if ($activeElement?.getElementInfo()?.Type == "LOGO") {
             const imageOption = {
-              Rotate: $("#logo-edit-form #Rotate").val(),
-              Scale: $("#logo-edit-form #Scale").val()
+              Rotate: parseInt($("#logo-edit-form #Rotate").val()),
+              Scale: parseFloat($("#logo-edit-form #Scale").val()),
+              Opacity: parseFloat($("#logo-edit-form #Opacity").val())
             }
             $activeElement.setElementInfo(imageOption);
           }
@@ -304,6 +338,7 @@
       form.find(':input').change(e => {
         const data = new FormData(form[0]);
         const textOption = Object.fromEntries(data.entries());
+        textOption.Rotate = parseInt(textOption.Rotate);
         if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
           $activeElement.setElementInfo(textOption);
         }
@@ -313,6 +348,8 @@
         e.preventDefault();
         const data = new FormData(e.target);
         const textOption = Object.fromEntries(data.entries());
+
+        textOption.Rotate = parseInt(textOption.Rotate);
         if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
           $activeElement.setElementInfo(textOption);
         } else {
@@ -327,7 +364,6 @@
       $('fieldset').hide();
       if (element) {
         const info = element.getElementInfo();
-        console.log(info)
         switch (info.Type) {
           case "TEXT": {
             $('#text-form #Text').val(info.Text);
@@ -347,6 +383,7 @@
         }
       }
     }
+
   </script>
 </body>
 

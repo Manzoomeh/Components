@@ -10,7 +10,22 @@ export default class Util {
 
         reader.addEventListener(
           "load",
-          () => resolve(new ImageElementInfo(reader.result)),
+          () => {
+            var imageElement = new Image();
+            imageElement.onload = () => {
+              resolve(
+                new ImageElementInfo(
+                  reader.result,
+                  0,
+                  1,
+                  imageElement.width,
+                  imageElement.height
+                )
+              );
+            };
+            imageElement.src = reader.result as string;
+          },
+
           false
         );
         reader.readAsDataURL(image);

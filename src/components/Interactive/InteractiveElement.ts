@@ -21,6 +21,9 @@ export default abstract class InteractiveElement<
   }
   protected abstract setInfo(info: TElementInfo);
   setElementInfo(info: ElementInfo) {
+    this.ElementInfo.Rotate = info.Rotate || 0;
+    this.ElementInfo.Scale = info.Scale || 1;
+    this.ElementInfo.Opacity = info.Opacity || 1;
     this.setInfo(info as TElementInfo);
   }
   getElementInfo(): ElementInfo {
@@ -43,17 +46,30 @@ export default abstract class InteractiveElement<
     if (this.ElementInfo.Rotate != 0) {
       value += `rotate(${this.ElementInfo.Rotate}) `;
     }
-    if (this.ElementInfo.Scale !== 1) {
+
+    if (this.ElementInfo.Scale != 1) {
       value += `scale(${this.ElementInfo.Scale}) `;
     }
 
-    this._groupElement.setAttribute("transform", value);
+    if (value !== "") {
+      this._groupElement.setAttribute("transform", value);
+    } else {
+      this._groupElement.removeAttribute("transform");
+    }
+
+    if (this.ElementInfo.Opacity != 1) {
+      this.Content.setAttribute("opacity", this.ElementInfo.Opacity.toString());
+    } else {
+      this.Content.removeAttribute("opacity");
+    }
+    this.updateBorder();
   }
   private createGroupElement() {
     this._groupElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "g"
     );
+    this._groupElement.setAttribute("class", "wm-group");
     this._groupElement.setAttribute("visibility", "visible");
     this.Content = this.getContentElement();
     this._groupElement.appendChild(this.Content);

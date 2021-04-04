@@ -31,8 +31,8 @@ export default class MainImageElement extends WatermarkElement {
 
     this.Owner.addElement(this);
 
-    const box = this._imageElement.getBBox();
-    this.Owner.Element.setAttribute("height", box.height.toString());
-    this.Owner.Element.setAttribute("width", box.width.toString());
+    //const box = this._imageElement.getBBox();
+    this.Owner.Element.setAttribute("height", this.ImageInfo.Height.toString());
+    this.Owner.Element.setAttribute("width", this.ImageInfo.Width.toString());
   }
 }

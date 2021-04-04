@@ -6,18 +6,20 @@ export default class TextElementInfo extends ElementInfo {
     public FontFamily: string,
     public FontSize: number,
     public Color: string,
-    Rotate: number = 0
+    Rotate: number = 0,
+    Opacity: number = 1
   ) {
-    super("TEXT", Rotate, 1);
+    super("TEXT", Rotate, 1, Opacity);
   }
 
-  static fromDummyObject(data: any | TextElementInfo): TextElementInfo {
+  static fromDummyObject(obj: any | TextElementInfo): TextElementInfo {
     return new TextElementInfo(
-      data.Text,
-      data.FontFamily,
-      data.FontSize,
-      data.Color,
-      data.Rotate || 0
+      obj.Text,
+      obj.FontFamily,
+      obj.FontSize,
+      obj.Color,
+      obj.Rotate || 0,
+      obj.Opacity || 1
     );
   }
 }

@@ -8,8 +8,7 @@ export default class LogoElement extends InteractiveElement<
   ImageElementInfo
 > {
   setInfo(info: ImageElementInfo) {
-    this.ElementInfo.Rotate = info.Rotate;
-    this.ElementInfo.Scale = info.Scale;
+    //this.ElementInfo.Scale = info.Scale || 1;
     this.updateTransform();
   }
   constructor(owner: Watermark, imageInfo: ImageElementInfo) {
@@ -28,7 +27,7 @@ export default class LogoElement extends InteractiveElement<
     );
     image.setAttributeNS(
       "http://www.w3.org/1999/xlink",
-      "href",
+      "xlink:href",
       (this.ElementInfo.Data as any) as string
     );
     image.setAttribute("visibility", "visible");

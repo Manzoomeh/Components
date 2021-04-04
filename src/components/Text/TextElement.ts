@@ -13,9 +13,7 @@ export class TextElement extends InteractiveElement<
     this.ElementInfo.FontFamily = info.FontFamily;
     this.ElementInfo.FontSize = info.FontSize;
     this.ElementInfo.Text = info.Text;
-    this.ElementInfo.Rotate = info.Rotate;
     this.updateElementFromElementInfo();
-    this.updateBorder();
   }
 
   constructor(owner: Watermark, textInfo: TextElementInfo) {
