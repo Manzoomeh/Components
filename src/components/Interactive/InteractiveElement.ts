@@ -12,10 +12,20 @@ export default abstract class InteractiveElement<
   private _borderElement: SVGRectElement;
   private _groupElement: SVGGElement;
   protected Content: TSVGElement;
-  constructor(owner: Watermark,readonly ElementInfo:TElementInfo,  readonly Option: WatermarkElementOption) {
+  constructor(
+    owner: Watermark,
+    readonly ElementInfo: TElementInfo,
+    readonly Option: WatermarkElementOption
+  ) {
     super(owner);
   }
-
+  protected abstract setInfo(info: TElementInfo);
+  setElementInfo(info: ElementInfo) {
+    this.setInfo(info as TElementInfo);
+  }
+  getElementInfo(): ElementInfo {
+    return this.ElementInfo;
+  }
   protected initElement(): void {
     this.createGroupElement();
   }
@@ -32,7 +42,7 @@ export default abstract class InteractiveElement<
     this._groupElement.setAttribute("visibility", "visible");
     this.Content = this.getContentElement();
     this._groupElement.appendChild(this.Content);
-    this.Content.addEventListener("inactive", (e) => this.Inactive());
+    this.Content.addEventListener("inactive", (e) => this.inActive());
     this.Content.addEventListener("click", (e) => {
       e.stopPropagation();
       this.Owner.setActiveElement(this);
@@ -63,16 +73,19 @@ export default abstract class InteractiveElement<
     this._groupElement.appendChild(this._borderElement);
   }
 
-  Active() {
+  protected updateBorder() {
     const box: SVGRect = this.Content.getBBox();
     this._borderElement.setAttribute("height", box.height.toString());
     this._borderElement.setAttribute("width", box.width.toString());
     this._borderElement.setAttribute("x", box.x.toString());
     this._borderElement.setAttribute("y", box.y.toString());
+  }
+  active() {
+    this.updateBorder();
     this._borderElement.setAttribute("class", "wm-rect-box wm-rect-select");
   }
 
-  Inactive() {
+  inActive() {
     this._borderElement.setAttribute("class", "wm-rect-box");
   }
 }

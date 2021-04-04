@@ -37,24 +37,41 @@ export default class Watermark {
   setActiveElement(ActiveElement?: WatermarkElement) {
     this.Elements.forEach((element) => {
       if (element == ActiveElement) {
-        element.Active();
+        element.active();
       } else {
-        element.Inactive();
+        element.inActive();
       }
     });
+
+    const handlers = this.eventHandlers["element-select"];
+    if (handlers) {
+      handlers.forEach((handler) => {
+        try {
+          handler(ActiveElement);
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    }
   }
 
   addElement(element: WatermarkElement) {
     this.Elements.push(element);
     this.Element.appendChild(element.getSVGElement());
   }
-  addImageElement(imageInfo: ImageElementInfo) {
-    const logo = new LogoElement(this, imageInfo);
+  addImageElement(imageInfo: any | ImageElementInfo) {
+    const logo = new LogoElement(
+      this,
+      ImageElementInfo.fromDummyObject(imageInfo)
+    );
     this.addElement(logo);
   }
 
-  addTextElement(textInfo: TextElementInfo) {
-    const text = new TextElement(this, textInfo);
+  addTextElement(textInfo: any | TextElementInfo) {
+    const text = new TextElement(
+      this,
+      TextElementInfo.fromDummyObject(textInfo)
+    );
     this.addElement(text);
   }
 
@@ -86,5 +103,16 @@ export default class Watermark {
         resolve();
       };
     });
+  }
+
+  eventHandlers: {
+    [key: string]: Array<(element: WatermarkElement) => void>;
+  } = {};
+  onElementSelect(callback: (element: WatermarkElement) => void) {
+    let relatedHandlers = this.eventHandlers["element-select"];
+    if (!relatedHandlers) {
+      this.eventHandlers["element-select"] = relatedHandlers = [];
+    }
+    relatedHandlers.push(callback);
   }
 }

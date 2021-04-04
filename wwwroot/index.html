@@ -8,154 +8,244 @@
   <title>Document</title>
   <script src="basiscore.watermark.js" defer></script>
   <script src="jquery.min.js"></script>
-  <style>
-    svg {
-      border: black solid 1px;
-    }
-  </style>
+
 </head>
 
 <body>
+  <nav>
+    <button id="new" data-status="start">New Project</button>
+    <button id="demo" data-status="start">Demo Project</button>
+    <button id="preview" data-status="in-project">Preview</button>
+    <button id="download" data-status="in-project">Download</button>
+    <button id="logo" data-status="in-project">Add Logo</button>
+    <button id="text" data-status="in-project">Add Text</button>
+    <button id="close" data-status="in-project">Close Project</button>
+
+  </nav>
   <div>
-    <fieldset data-text-dlg>
-      <legend>Add Text</legend>
-      <form id="text-form">
-        <label>Content
-          <input type="text" name="Text" value="123" required />
+    <fieldset data-image-dlg>
+      <legend>Select Image</legend>
+      <form id="image-form">
+        <label>Image File
+          <input type="file" id="imageFile" required />
         </label>
-        <label>Font
-          <select name="FontFamily" required>
-            <option value="Courier" style="font-family:Courier">Courier</option>
-            <option value="Asset" style="font-family: asset;">Asset</option>
-            <option value="Arial" style="font-family: Arial">Arial</option>
-          </select>
-        </label>
-        <label>Font
-          <select name="FontSize" required>
-            <option value="30">30</option>
-            <option value="50">50</option>
-            <option value="70">70</option>
-            <option value="80">80</option>
-            <option value="100">100</option>
-          </select>
-        </label>
-        <label>Color<input type="color" name="Color" /></label>
         <input type="submit" value="Apply" />
       </form>
   </div>
-  </fieldset>
-  <input type="file" id="ctl-image-file" />
-  <button id="btn-add-image">load Image</button>
-  <br />
 
-  <input type="file" id="ctl-logo-file" />
-  <button id="btn-add-logo">Add Logo</button>
-  <br />
+  </fieldset>
+  <fieldset data-logo-dlg>
+    <legend>Add/Edit Logo</legend>
+    <form id="logo-form">
+      <label>Image File
+        <input type="file" id="logoFile" required />
+      </label>
+      <input type="submit" value="Apply" />
+    </form>
+    </div>
+
+  </fieldset>
+  <fieldset data-text-dlg>
+    <legend>Add/Edit Text</legend>
+    <form id="text-form">
+      <label>Content
+        <input type="text" name="Text" id="Text" value="123" required />
+      </label>
+      <label>Font
+        <select name="FontFamily" id="FontFamily" required>
+          <option value="Courier" style="font-family:Courier">Courier</option>
+          <option value="Asset" style="font-family: asset;">Asset</option>
+          <option value="Arial" style="font-family: Arial">Arial</option>
+        </select>
+      </label>
+      <label>Font
+        <select name="FontSize" id="FontSize" required>
+          <option value="30">30</option>
+          <option value="50">50</option>
+          <option value="70">70</option>
+          <option value="80">80</option>
+          <option value="100">100</option>
+        </select>
+      </label>
+      <label>Color<input type="color" name="Color" id="Color" /></label>
+      <input type="submit" value="Apply" />
+    </form>
+    </div>
+
+  </fieldset>
+
+
+
   <svg id="main-svg" width="0" height="0"></svg>
-  <br />
-  <button id="btn-demo">Demo</button>
-  <button id="btn-preview">Preview</button>
-  <button id="btn-download">Download</button>
+
+
   <br />
   <img id="img" />
   <script>
+    var $status = null;
     var $watermark = null;
+    var $activeElement = null;
+    function updateNaveBar(status) {
+      $status = status;
+      $('nav button').attr('disabled', '')
+      $(`nav button[data-status=${$status}]`).removeAttr('disabled')
+    }
+
     $(document).ready(_ => {
+      updateNaveBar('start');
+      $('fieldset').hide();
+      initNavBar();
+
+      initImageForm();
+      initAddEditLogoForm();
+      initAddEditTextDlg();
 
 
-      addLoadImageHandler();
-      addOutputHandler();
-
-      addLoadLogoHandler();
-      initAddTextDlg();
-      initDemo();
 
 
     });
 
-    function initDemo() {
-      document.getElementById('btn-demo')
-        .addEventListener('click', e => {
-          createDemoWaterMark();
-          addDemoImage();
-          addDemoText();
-        });
+
+    function initNavBar() {
+      $('#new').click(e => {
+        if (confirm('Start new Project?')) {
+          $('fieldset').hide();
+          $('[data-image-dlg]').show();
+        }
+      });
+
+      $('#demo').click(e => {
+        createDemoWaterMark();
+        addDemoImage();
+        addDemoText();
+        updateNaveBar("in-project");
+
+        function createDemoWaterMark() {
+          initWatermark(watermark.DemoData.ImageInfo);
+        }
+
+        function addDemoImage() {
+          $watermark.addImageElement(watermark.DemoData.LogoInfo);
+        }
+
+        function addDemoText() {
+          const textOption = {
+            FontFamily: "Arial",
+            Text: "god",
+            FontSize: 30,
+            Color: "#ff0000"
+          }
+          $watermark.addTextElement(textOption);
+        }
+      });
+
+      //preview
+      $("#preview").click(async _ => {
+        const imageElement = document.getElementById("img");
+        $watermark.preview(imageElement);
+      });
+
+      //download
+      $("#download").click(async _ => await $watermark.exportImage());
+
+      $('#logo').click(e => {
+        $('fieldset').hide();
+        $('[data-logo-dlg]').show();
+      });
+
+      $('#text').click(e => {
+        $('fieldset').hide();
+        $('[data-text-dlg]').show();
+      });
+
+      $('#close').click(e => {
+        if (confirm('Close Current Project?')) {
+          $('fieldset').hide();
+          $('svg').removeAttr("width").removeAttr('height').empty();
+          $('img').attr('src', '');
+          $watermark = null;
+          $activeElement = null;
+          updateNaveBar('start');
+        }
+      });
     }
 
-    function addLoadLogoHandler() {
-      document
-        .getElementById("btn-add-logo")
-        .addEventListener("click", async (_) => {
-          const files = document.getElementById("ctl-logo-file");
+
+    function initAddEditLogoForm() {
+      $("#logo-form").submit(async e => {
+          e.preventDefault();
+          const files = $("#logoFile")[0];
           const file = files.files[0];
           const base64data = await watermark.Util.GetBase64Image(file);
           $watermark.addImageElement(base64data);
+          $('fieldset').hide();
         });
     }
 
-    function addOutputHandler() {
-      //preview
-      document
-        .getElementById("btn-preview")
-        .addEventListener("click", async _ => {
-          const imageElement = document.getElementById("img");
-          $watermark.preview(imageElement);
-        });
-
-      //download
-      document
-        .getElementById("btn-download")
-        .addEventListener("click", async _ => {
-          await $watermark.exportImage();
-        });
-
-    }
-
-    function addLoadImageHandler() {
-      document.getElementById('btn-add-image')
-        .addEventListener('click', async (_) => {
-          const files = document.getElementById("ctl-image-file")
-          const file = files.files[0];
-          const base64data = await watermark.Util.GetBase64Image(file);
-          const option = {
-            SvgElement: document.getElementById("main-svg"),
-            ImageInfo: base64data,
-          };
-          $watermark = new watermark.Watermark(option);
-        });
-    }
-
-    function createDemoWaterMark() {
+    function initWatermark(imageInfo) {
       const option = {
-        SvgElement: document.getElementById("main-svg"),
-        ImageInfo: watermark.DemoData.ImageInfo,
+        SvgElement: $("#main-svg")[0],
+        ImageInfo: imageInfo,
       };
       $watermark = new watermark.Watermark(option);
+      $watermark.onElementSelect(showElementInfo);
+      $activeElement = null;
     }
 
-    function addDemoImage() {
-      $watermark.addImageElement(watermark.DemoData.LogoInfo);
+    function initImageForm() {
+      $('#image-form').submit(async e => {
+          e.preventDefault();
+          const files = $("#imageFile")[0]
+          const file = files.files[0];
+          const base64data = await watermark.Util.GetBase64Image(file);
+          initWatermark(base64data);
+          updateNaveBar("in-project");
+          $('fieldset').hide();
+        });
     }
+    function initAddEditTextDlg() {
+      const form =$('#text-form');
+      //use of update real-time
+      form.find(':input').change(e=>{
+        const data = new FormData(form[0]);
+          const textOption = Object.fromEntries(data.entries());
+          if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
+            $activeElement.setElementInfo(textOption);
+          } 
+      });
 
-    function addDemoText() {
-      const textOption = {
-        FontFamily: "Arial",
-        Text: "god",
-        FontSize: 30,
-        Color: "red"
-      }
-      $watermark.addTextElement(textOption);
-    }
-
-    function initAddTextDlg() {
-      document.getElementById('text-form')
-        .addEventListener('submit', e => {
+      form.submit(e => {
           e.preventDefault();
           const data = new FormData(e.target);
           const textOption = Object.fromEntries(data.entries());
-          console.log(textOption)
-          $watermark.addTextElement(textOption);
+          if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
+            $activeElement.setElementInfo(textOption);
+          } else {
+            $watermark.addTextElement(textOption);
+            $('fieldset').hide();
+          }
         });
+    }
+
+    function showElementInfo(element) {
+      $activeElement = element;
+      $('fieldset').hide();
+      if (element) {
+        const info = element.getElementInfo();
+        switch (info.Type) {
+          case "TEXT": {
+            $('#text-form #Text').val(info.Text);
+            $('#text-form #FontFamily').val(info.FontFamily);
+            $('#text-form #FontSize').val(info.FontSize);
+            $('#text-form #Color').val(info.Color);
+            $('[data-text-dlg]').show();
+            break;
+          }
+          case "IMAGE": {
+            break;
+          }
+        }
+      }
     }
   </script>
 </body>
