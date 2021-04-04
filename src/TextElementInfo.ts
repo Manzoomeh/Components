@@ -5,9 +5,10 @@ export default class TextElementInfo extends ElementInfo {
     public Text: string,
     public FontFamily: string,
     public FontSize: number,
-    public Color: string
+    public Color: string,
+    Rotate: number = 0
   ) {
-    super("TEXT");
+    super("TEXT", Rotate);
   }
 
   static fromDummyObject(data: any | TextElementInfo): TextElementInfo {
@@ -15,7 +16,8 @@ export default class TextElementInfo extends ElementInfo {
       data.Text,
       data.FontFamily,
       data.FontSize,
-      data.Color
+      data.Color,
+      data.Rotate || 0
     );
   }
 }

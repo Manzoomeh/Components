@@ -34,6 +34,18 @@ export default abstract class InteractiveElement<
   getSVGElement(): SVGGraphicsElement {
     return this._groupElement;
   }
+
+  protected updateTransform() {
+    let value = "";
+    if (this.Option.XPosition != 0 || this.Option.YPosition != 0) {
+      value += `translate(${this.Option.XPosition} ${this.Option.YPosition}) `;
+    }
+    if (this.ElementInfo.Rotate != 0) {
+      value += `rotate(${this.ElementInfo.Rotate}) `;
+    }
+
+    this._groupElement.setAttribute("transform", value);
+  }
   private createGroupElement() {
     this._groupElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
@@ -53,10 +65,7 @@ export default abstract class InteractiveElement<
       var d = (e as CustomEvent).detail as Position;
       this.Option.XPosition += d.X;
       this.Option.YPosition += d.Y;
-      this._groupElement.setAttribute(
-        "transform",
-        `translate(${this.Option.XPosition} ${this.Option.YPosition})`
-      );
+      this.updateTransform();
     });
   }
   private createBorder() {

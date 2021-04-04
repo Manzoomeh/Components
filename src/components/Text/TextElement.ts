@@ -13,6 +13,7 @@ export class TextElement extends InteractiveElement<
     this.ElementInfo.FontFamily = info.FontFamily;
     this.ElementInfo.FontSize = info.FontSize;
     this.ElementInfo.Text = info.Text;
+    this.ElementInfo.Rotate = info.Rotate;
     this.updateElementFromElementInfo();
     this.updateBorder();
   }
@@ -31,6 +32,7 @@ export class TextElement extends InteractiveElement<
     );
     this.Content.setAttribute("fill", this.ElementInfo.Color);
     this.Content.textContent = this.ElementInfo.Text;
+    this.updateTransform();
   }
   protected getContentElement(): SVGTextElement {
     const textElement = document.createElementNS(
