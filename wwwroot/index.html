@@ -34,11 +34,65 @@
   </div>
 
   </fieldset>
-  <fieldset data-logo-dlg>
-    <legend>Add/Edit Logo</legend>
-    <form id="logo-form">
+  <fieldset data-logo-add-dlg>
+    <legend>Add Logo</legend>
+    <form id="logo-add-form">
       <label>Image File
         <input type="file" id="logoFile" required />
+      </label>
+      <label>Rotate
+        <select name="Rotate" id="Rotate" required>
+          <option value="0">0</option>
+          <option value="45">45</option>
+          <option value="90">90</option>
+          <option value="135">135</option>
+          <option value="180">180</option>
+          <option value="225">225</option>
+          <option value="270">270</option>
+          <option value="315">315</option>
+        </select>
+      </label>
+      <label>Size
+        <select name="Scale" id="Scale" required>
+          <option value="1">1</option>
+          <option value="0.5">0.5</option>
+          <option value="0.25">0.25</option>
+          <option value="1.5">1.5</option>
+          <option value="1.25">1.25</option>
+          <option value="1.75">1.75</option>
+          <option value="2">2</option>
+        </select>
+      </label>
+      <input type="submit" value="Add" />
+    </form>
+    </div>
+
+  </fieldset>
+  <fieldset data-logo-edit-dlg>
+    <legend>Edit Logo</legend>
+    <form id="logo-edit-form">
+      <label>Rotate
+        <select name="Rotate" id="Rotate" required>
+          <option value="0">0</option>
+          <option value="45">45</option>
+          <option value="90">90</option>
+          <option value="135">135</option>
+          <option value="180">180</option>
+          <option value="225">225</option>
+          <option value="270">270</option>
+          <option value="315">315</option>
+        </select>
+      </label>
+      <label>Size
+        <select name="Scale" id="Scale" required>
+          <option value="1">1</option>
+          <option value="0.5">0.5</option>
+          <option value="0.25">0.25</option>
+          <option value="1.5">1.5</option>
+          <option value="1.25">1.25</option>
+          <option value="1.75">1.75</option>
+          <option value="2">2</option>
+        </select>
       </label>
       <input type="submit" value="Apply" />
     </form>
@@ -77,9 +131,9 @@
           <option value="225">225</option>
           <option value="270">270</option>
           <option value="315">315</option>
-          
         </select>
       </label>
+
       <label>Color<input type="color" name="Color" id="Color" /></label>
       <input type="submit" value="Apply" />
     </form>
@@ -110,7 +164,7 @@
       initNavBar();
 
       initImageForm();
-      initAddEditLogoForm();
+      initLogoForms();
       initAddEditTextDlg();
 
 
@@ -162,11 +216,13 @@
       $("#download").click(async _ => await $watermark.exportImage());
 
       $('#logo').click(e => {
+        $activeElement=null;
         $('fieldset').hide();
-        $('[data-logo-dlg]').show();
+        $('[data-logo-add-dlg]').show();
       });
 
       $('#text').click(e => {
+        $activeElement=null;
         $('fieldset').hide();
         $('[data-text-dlg]').show();
       });
@@ -183,16 +239,42 @@
       });
     }
 
-
-    function initAddEditLogoForm() {
-      $("#logo-form").submit(async e => {
+    function initLogoForms() {
+      initAddLogoForm();
+      initEditLogoForm()
+      function initAddLogoForm() {
+        $("#logo-add-form").submit(async e => {
           e.preventDefault();
           const files = $("#logoFile")[0];
           const file = files.files[0];
-          const base64data = await watermark.Util.GetBase64Image(file);
-          $watermark.addImageElement(base64data);
+          const imageOption = await watermark.Util.GetBase64Image(file);
+          imageOption.Rotate = $("#logo-add-form #Rotate").val();
+          imageOption.Scale = $("#logo-add-form #Scale").val();
+          $watermark.addImageElement(imageOption);
           $('fieldset').hide();
         });
+      }
+      function initEditLogoForm() {
+        const form = $("#logo-edit-form");
+        //use of update real-time
+        function updateFn() {
+          if ($activeElement?.getElementInfo()?.Type == "LOGO") {
+            const imageOption = {
+              Rotate: $("#logo-edit-form #Rotate").val(),
+              Scale: $("#logo-edit-form #Scale").val()
+            }
+            $activeElement.setElementInfo(imageOption);
+          }
+        }
+        form.find(':input').change(e => {
+          updateFn();
+        });
+        form.submit(async e => {
+          e.preventDefault();
+          updateFn();
+          $('fieldset').hide();
+        });
+      }
     }
 
     function initWatermark(imageInfo) {
@@ -207,37 +289,37 @@
 
     function initImageForm() {
       $('#image-form').submit(async e => {
-          e.preventDefault();
-          const files = $("#imageFile")[0]
-          const file = files.files[0];
-          const base64data = await watermark.Util.GetBase64Image(file);
-          initWatermark(base64data);
-          updateNaveBar("in-project");
-          $('fieldset').hide();
-        });
+        e.preventDefault();
+        const files = $("#imageFile")[0]
+        const file = files.files[0];
+        const imageOption = await watermark.Util.GetBase64Image(file);
+        initWatermark(imageOption);
+        updateNaveBar("in-project");
+        $('fieldset').hide();
+      });
     }
     function initAddEditTextDlg() {
-      const form =$('#text-form');
+      const form = $('#text-form');
       //use of update real-time
-      form.find(':input').change(e=>{
+      form.find(':input').change(e => {
         const data = new FormData(form[0]);
-          const textOption = Object.fromEntries(data.entries());
-          if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
-            $activeElement.setElementInfo(textOption);
-          } 
+        const textOption = Object.fromEntries(data.entries());
+        if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
+          $activeElement.setElementInfo(textOption);
+        }
       });
 
       form.submit(e => {
-          e.preventDefault();
-          const data = new FormData(e.target);
-          const textOption = Object.fromEntries(data.entries());
-          if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
-            $activeElement.setElementInfo(textOption);
-          } else {
-            $watermark.addTextElement(textOption);
-            $('fieldset').hide();
-          }
-        });
+        e.preventDefault();
+        const data = new FormData(e.target);
+        const textOption = Object.fromEntries(data.entries());
+        if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
+          $activeElement.setElementInfo(textOption);
+        } else {
+          $watermark.addTextElement(textOption);
+          $('fieldset').hide();
+        }
+      });
     }
 
     function showElementInfo(element) {
@@ -245,16 +327,21 @@
       $('fieldset').hide();
       if (element) {
         const info = element.getElementInfo();
+        console.log(info)
         switch (info.Type) {
           case "TEXT": {
             $('#text-form #Text').val(info.Text);
             $('#text-form #FontFamily').val(info.FontFamily);
             $('#text-form #FontSize').val(info.FontSize);
             $('#text-form #Color').val(info.Color);
+            $('#text-form #Rotate').val(info.Rotate);
             $('[data-text-dlg]').show();
             break;
           }
-          case "IMAGE": {
+          case "LOGO": {
+            $('#logo-edit-form #Scale').val(info.Scale);
+            $('#logo-edit-form #Rotate').val(info.Rotate);
+            $('[data-logo-edit-dlg]').show();
             break;
           }
         }

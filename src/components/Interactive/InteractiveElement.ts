@@ -43,6 +43,9 @@ export default abstract class InteractiveElement<
     if (this.ElementInfo.Rotate != 0) {
       value += `rotate(${this.ElementInfo.Rotate}) `;
     }
+    if (this.ElementInfo.Scale !== 1) {
+      value += `scale(${this.ElementInfo.Scale}) `;
+    }
 
     this._groupElement.setAttribute("transform", value);
   }

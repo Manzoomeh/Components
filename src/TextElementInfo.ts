@@ -8,7 +8,7 @@ export default class TextElementInfo extends ElementInfo {
     public Color: string,
     Rotate: number = 0
   ) {
-    super("TEXT", Rotate);
+    super("TEXT", Rotate, 1);
   }
 
   static fromDummyObject(data: any | TextElementInfo): TextElementInfo {

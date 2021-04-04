@@ -8,12 +8,19 @@ export default class LogoElement extends InteractiveElement<
   ImageElementInfo
 > {
   setInfo(info: ImageElementInfo) {
-    throw new Error("Method not implemented.");
+    this.ElementInfo.Rotate = info.Rotate;
+    this.ElementInfo.Scale = info.Scale;
+    this.updateTransform();
   }
   constructor(owner: Watermark, imageInfo: ImageElementInfo) {
     super(owner, imageInfo, LogoElement.ToOption(imageInfo));
     this.initElement();
+    this.updateElementFromElementInfo();
   }
+  private updateElementFromElementInfo() {
+    this.updateTransform();
+  }
+
   protected getContentElement(): SVGImageElement {
     const image = document.createElementNS(
       "http://www.w3.org/2000/svg",
