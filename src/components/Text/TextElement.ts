@@ -3,9 +3,12 @@ import TextElementInfo from "../../TextElementInfo";
 import InteractiveElement from "../Interactive/InterActiveElement";
 import Watermark from "../Watermark/Watermark";
 
-export class TextElement extends InteractiveElement<SVGTextElement> {
-  constructor(owner: Watermark, readonly imageInfo: TextElementInfo) {
-    super(owner, TextElement.ToOption(imageInfo));
+export class TextElement extends InteractiveElement<
+  SVGTextElement,
+  TextElementInfo
+> {
+  constructor(owner: Watermark, textInfo: TextElementInfo) {
+    super(owner, textInfo, TextElement.ToOption(textInfo));
     this.initElement();
   }
   protected getContentElement(): SVGTextElement {
@@ -13,19 +16,18 @@ export class TextElement extends InteractiveElement<SVGTextElement> {
       "http://www.w3.org/2000/svg",
       "text"
     );
-    textElement.setAttribute("font-family", this.imageInfo.FontFamily);
-    textElement.setAttribute("font-size", this.imageInfo.FontSize.toString());
-    textElement.setAttribute("fill", this.imageInfo.Color);
+    textElement.setAttribute("font-family", this.ElementInfo.FontFamily);
+    textElement.setAttribute("font-size", this.ElementInfo.FontSize.toString());
+    textElement.setAttribute("fill", this.ElementInfo.Color);
     textElement.setAttribute("dominant-baseline", "text-before-edge");
     textElement.setAttribute("x", this.Option.XPosition.toString());
     textElement.setAttribute("y", this.Option.YPosition.toString());
     textElement.setAttribute("visibility", "visible");
-    textElement.textContent = this.imageInfo.Text;
-    console.log(textElement.clientHeight,textElement.clientWidth);
+    textElement.textContent = this.ElementInfo.Text;
     return textElement;
   }
 
   static ToOption(imageInfo: TextElementInfo): WatermarkElementOption {
-    return new WatermarkElementOption(0,0, 0, 0);
+    return new WatermarkElementOption(0, 0, 0, 0);
   }
 }

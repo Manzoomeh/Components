@@ -3,21 +3,23 @@ import { WatermarkElementOption } from "../../models/WatermarkElementOption";
 import Position from "../../models/Position";
 import "./InteractiveElement.css";
 import WatermarkElement from "../../models/WatermarkElement";
+import ElementInfo from "../../ElementInfo";
 
 export default abstract class InteractiveElement<
-  T extends SVGGraphicsElement
+  TSVGElement extends SVGGraphicsElement,
+  TElementInfo extends ElementInfo
 > extends WatermarkElement {
   private _borderElement: SVGRectElement;
   private _groupElement: SVGGElement;
-  protected Content: T;
-  constructor(owner: Watermark, readonly Option: WatermarkElementOption) {
+  protected Content: TSVGElement;
+  constructor(owner: Watermark,readonly ElementInfo:TElementInfo,  readonly Option: WatermarkElementOption) {
     super(owner);
   }
 
   protected initElement(): void {
     this.createGroupElement();
   }
-  protected abstract getContentElement(): T;
+  protected abstract getContentElement(): TSVGElement;
 
   getSVGElement(): SVGGraphicsElement {
     return this._groupElement;
@@ -28,20 +30,16 @@ export default abstract class InteractiveElement<
       "g"
     );
     this._groupElement.setAttribute("visibility", "visible");
-
     this.Content = this.getContentElement();
     this._groupElement.appendChild(this.Content);
     this.Content.addEventListener("inactive", (e) => this.Inactive());
     this.Content.addEventListener("click", (e) => {
       e.stopPropagation();
-      console.log("click in element");
       this.Owner.setActiveElement(this);
     });
     this.createBorder();
-
     this.Content.addEventListener("move", (e) => {
       e.preventDefault();
-
       var d = (e as CustomEvent).detail as Position;
       this.Option.XPosition += d.X;
       this.Option.YPosition += d.Y;
