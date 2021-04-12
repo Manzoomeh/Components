@@ -17,7 +17,7 @@ export class TextElement extends InteractiveElement<
   }
 
   constructor(owner: Watermark, textInfo: TextElementInfo) {
-    super(owner, textInfo, TextElement.ToOption(textInfo));
+    super(owner, textInfo);
     this.initElement();
     this.updateElementFromElementInfo();
   }
@@ -37,18 +37,11 @@ export class TextElement extends InteractiveElement<
       "http://www.w3.org/2000/svg",
       "text"
     );
-    //textElement.setAttribute("font-family", this.ElementInfo.FontFamily);
-    //textElement.setAttribute("font-size", this.ElementInfo.FontSize.toString());
     textElement.setAttribute("fill", this.ElementInfo.Color);
     textElement.setAttribute("dominant-baseline", "text-before-edge");
-    textElement.setAttribute("x", this.Option.XPosition.toString());
-    textElement.setAttribute("y", this.Option.YPosition.toString());
+    textElement.setAttribute("x", this.Position.X.toString());
+    textElement.setAttribute("y", this.Position.Y.toString());
     textElement.setAttribute("visibility", "visible");
-    //textElement.textContent = this.ElementInfo.Text;
     return textElement;
-  }
-
-  static ToOption(imageInfo: TextElementInfo): WatermarkElementOption {
-    return new WatermarkElementOption(0, 0, 0, 0);
   }
 }

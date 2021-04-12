@@ -25,8 +25,8 @@ export default class MainImageElement extends WatermarkElement {
       (this.ImageInfo.Data as any) as string
     );
 
-    this._imageElement.setAttribute("x", "0");
-    this._imageElement.setAttribute("y", "0");
+    this._imageElement.setAttribute("x", this.Position.X.toString());
+    this._imageElement.setAttribute("y", this.Position.Y.toString());
     this._imageElement.setAttribute("visibility", "visible");
 
     this.Owner.addElement(this);

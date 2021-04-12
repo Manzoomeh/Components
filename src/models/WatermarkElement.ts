@@ -1,8 +1,12 @@
 import Watermark from "../components/Watermark/Watermark";
 import ElementInfo from "../ElementInfo";
+import Position from "./Position";
 
 export default abstract class WatermarkElement {
-  constructor(readonly Owner: Watermark) {}
+  protected Position: Position;
+  constructor(readonly Owner: Watermark) {
+    this.Position = new Position(0, 0);
+  }
   abstract getSVGElement(): SVGGraphicsElement;
   active() {}
   inActive() {}

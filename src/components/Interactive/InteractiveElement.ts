@@ -12,11 +12,7 @@ export default abstract class InteractiveElement<
   private _borderElement: SVGRectElement;
   private _groupElement: SVGGElement;
   protected Content: TSVGElement;
-  constructor(
-    owner: Watermark,
-    readonly ElementInfo: TElementInfo,
-    readonly Option: WatermarkElementOption
-  ) {
+  constructor(owner: Watermark, readonly ElementInfo: TElementInfo) {
     super(owner);
   }
   protected abstract setInfo(info: TElementInfo);
@@ -39,8 +35,8 @@ export default abstract class InteractiveElement<
 
   protected updateTransform() {
     let value = "";
-    if (this.Option.XPosition != 0 || this.Option.YPosition != 0) {
-      value += `translate(${this.Option.XPosition} ${this.Option.YPosition}) `;
+    if (this.Position.X != 0 || this.Position.Y != 0) {
+      value += `translate(${this.Position.X} ${this.Position.Y}) `;
     }
     if (this.ElementInfo.Rotate != 0) {
       value += `rotate(${this.ElementInfo.Rotate}) `;
@@ -77,8 +73,8 @@ export default abstract class InteractiveElement<
     this.Content.addEventListener("move", (e) => {
       e.preventDefault();
       var d = (e as CustomEvent).detail as Position;
-      this.Option.XPosition += d.X;
-      this.Option.YPosition += d.Y;
+      this.Position.X += d.X;
+      this.Position.Y += d.Y;
       this.updateTransform();
     });
   }

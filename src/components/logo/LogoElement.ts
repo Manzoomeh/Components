@@ -12,7 +12,7 @@ export default class LogoElement extends InteractiveElement<
     this.updateElementFromElementInfo();
   }
   constructor(owner: Watermark, private readonly imageInfo: ImageElementInfo) {
-    super(owner, imageInfo, LogoElement.ToOption(imageInfo));
+    super(owner, imageInfo);
     console.log(imageInfo);
     this.initElement();
     this.updateElementFromElementInfo();
@@ -39,9 +39,5 @@ export default class LogoElement extends InteractiveElement<
     );
     image.setAttribute("visibility", "visible");
     return image;
-  }
-
-  static ToOption(imageInfo: ImageElementInfo): WatermarkElementOption {
-    return new WatermarkElementOption(0, 0, 0, 0);
   }
 }
