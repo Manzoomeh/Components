@@ -107,4 +107,8 @@ export default abstract class InteractiveElement<
   inActive() {
     this._borderElement.setAttribute("class", "wm-rect-box");
   }
+
+  remove() {
+    this._groupElement.remove();
+  }
 }

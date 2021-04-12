@@ -114,6 +114,7 @@
         </select>
       </label>
       <input type="submit" value="Apply" />
+      <input type="button" value="Remove" data-remove/>
     </form>
     </div>
 
@@ -163,6 +164,7 @@
       </label>
       <label>Color<input type="color" name="Color" id="Color" /></label>
       <input type="submit" value="Apply" />
+      <input type="button" value="Remove" data-remove/>
     </form>
     </div>
 
@@ -289,6 +291,10 @@
       }
       function initEditLogoForm() {
         const form = $("#logo-edit-form");
+        form.find('[data-remove]').click(e=>{
+          e.preventDefault();
+          $activeElement?.remove();
+        });
         //use of update real-time
         function updateFn() {
           if ($activeElement?.getElementInfo()?.Type == "LOGO") {
@@ -334,6 +340,10 @@
     }
     function initAddEditTextDlg() {
       const form = $('#text-form');
+      form.find('[data-remove]').click(e=>{
+          e.preventDefault();
+          $activeElement?.remove();
+        });
       //use of update real-time
       form.find(':input').change(e => {
         const data = new FormData(form[0]);

@@ -12,4 +12,5 @@ export default abstract class WatermarkElement {
   inActive() {}
   abstract getElementInfo(): ElementInfo;
   abstract setElementInfo(info: ElementInfo);
+  abstract remove(): void;
 }

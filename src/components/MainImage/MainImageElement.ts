@@ -4,7 +4,10 @@ import WatermarkElement from "../../models/WatermarkElement";
 import Watermark from "../Watermark/Watermark";
 export default class MainImageElement extends WatermarkElement {
   setElementInfo(info: ElementInfo) {
-    throw new Error("Method not implemented.");
+    throw new Error("Method not Supported.");
+  }
+  remove() {
+    throw new Error("Method not Supported.");
   }
   private _imageElement: SVGImageElement;
   getSVGElement(): SVGGraphicsElement {

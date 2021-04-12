@@ -24,7 +24,6 @@ export default class Watermark {
     });
 
     this.Element.addEventListener("click", (e) => {
-      console.log("select in root");
       this.setActiveElement();
     });
     this.Element.addEventListener("select-item", (e) => {
