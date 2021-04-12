@@ -9,7 +9,7 @@ export default class TextElementInfo extends ElementInfo {
     Rotate: number = 0,
     Opacity: number = 1
   ) {
-    super("TEXT", Rotate, 1, Opacity);
+    super("TEXT", Rotate, Opacity);
   }
 
   static fromDummyObject(obj: any | TextElementInfo): TextElementInfo {
@@ -17,7 +17,7 @@ export default class TextElementInfo extends ElementInfo {
       obj.Text,
       obj.FontFamily,
       obj.FontSize,
-      obj.Color,
+      obj.Color || "black",
       obj.Rotate || 0,
       obj.Opacity || 1
     );

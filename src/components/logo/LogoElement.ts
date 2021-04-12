@@ -8,15 +8,22 @@ export default class LogoElement extends InteractiveElement<
   ImageElementInfo
 > {
   setInfo(info: ImageElementInfo) {
-    //this.ElementInfo.Scale = info.Scale || 1;
-    this.updateTransform();
+    this.ElementInfo.Scale = info.Scale || 1;
+    this.updateElementFromElementInfo();
   }
-  constructor(owner: Watermark, imageInfo: ImageElementInfo) {
+  constructor(owner: Watermark, private readonly imageInfo: ImageElementInfo) {
     super(owner, imageInfo, LogoElement.ToOption(imageInfo));
+    console.log(imageInfo);
     this.initElement();
     this.updateElementFromElementInfo();
   }
   private updateElementFromElementInfo() {
+    if (this.ElementInfo.Scale != 1) {
+      var newHeight = this.imageInfo.Height * this.ElementInfo.Scale;
+      this.Content.setAttribute("height", newHeight.toString());
+    } else {
+      this.Content.removeAttribute("height");
+    }
     this.updateTransform();
   }
 

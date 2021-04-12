@@ -22,7 +22,6 @@ export default abstract class InteractiveElement<
   protected abstract setInfo(info: TElementInfo);
   setElementInfo(info: ElementInfo) {
     this.ElementInfo.Rotate = info.Rotate || 0;
-    this.ElementInfo.Scale = info.Scale || 1;
     this.ElementInfo.Opacity = info.Opacity || 1;
     this.setInfo(info as TElementInfo);
   }
@@ -45,10 +44,6 @@ export default abstract class InteractiveElement<
     }
     if (this.ElementInfo.Rotate != 0) {
       value += `rotate(${this.ElementInfo.Rotate}) `;
-    }
-
-    if (this.ElementInfo.Scale != 1) {
-      value += `scale(${this.ElementInfo.Scale}) `;
     }
 
     if (value !== "") {
