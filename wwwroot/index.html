@@ -146,7 +146,7 @@
         </select>
       </label>
       <input type="submit" value="Apply" />
-      <input type="button" value="Remove" data-remove/>
+      <input type="button" value="Remove" data-remove />
     </form>
     </div>
 
@@ -213,7 +213,7 @@
         </select>
       </label>
       <input type="submit" value="Apply" />
-      <input type="button" value="Remove" data-remove/>
+      <input type="button" value="Remove" data-remove />
     </form>
     </div>
 
@@ -284,9 +284,9 @@
             Text: "Sample",
             FontSize: 30,
             Color: "#ff0000",
-            Rotate:45,
-            TileMode:'FLOWER',
-            Span:50
+            Rotate: 45,
+            TileMode: 'FLOWER',
+            Span: 50
           }
           $watermark.addTextElement(textOption);
         }
@@ -343,7 +343,7 @@
       }
       function initEditLogoForm() {
         const form = $("#logo-edit-form");
-        form.find('[data-remove]').click(e=>{
+        form.find('[data-remove]').click(e => {
           e.preventDefault();
           $activeElement?.remove();
         });
@@ -354,8 +354,8 @@
               Rotate: parseInt($("#logo-edit-form #Rotate").val()),
               Scale: parseFloat($("#logo-edit-form #Scale").val()),
               Opacity: parseFloat($("#logo-edit-form #Opacity").val()),
-              TileMode:$('#logo-edit-form #TileMode').val(),
-              Span:parseFloat($('#logo-edit-form #Span').val()),
+              TileMode: $('#logo-edit-form #TileMode').val(),
+              Span: parseFloat($('#logo-edit-form #Span').val()),
             }
             $activeElement.setElementInfo(imageOption);
           }
@@ -394,17 +394,17 @@
     }
     function initAddEditTextDlg() {
       const form = $('#text-form');
-      form.find('[data-remove]').click(e=>{
-          e.preventDefault();
-          $activeElement?.remove();
-        });
+      form.find('[data-remove]').click(e => {
+        e.preventDefault();
+        $activeElement?.remove();
+      });
       //use of update real-time
       form.find(':input').change(e => {
         if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
-        const data = new FormData(form[0]);
-        const textOption = Object.fromEntries(data.entries());
-        textOption.Rotate = parseInt(textOption.Rotate);
-        textOption.Span=parseInt(textOption.Span);
+          const data = new FormData(form[0]);
+          const textOption = Object.fromEntries(data.entries());
+          textOption.Rotate = parseInt(textOption.Rotate);
+          textOption.Span = parseInt(textOption.Span);
           $activeElement.setElementInfo(textOption);
         }
       });
@@ -414,6 +414,7 @@
         const data = new FormData(e.target);
         const textOption = Object.fromEntries(data.entries());
         textOption.Rotate = parseInt(textOption.Rotate);
+        textOption.Span = parseInt(textOption.Span);
         if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
           $activeElement.setElementInfo(textOption);
         } else {
@@ -435,6 +436,8 @@
             $('#text-form #FontSize').val(info.FontSize);
             $('#text-form #Color').val(info.Color);
             $('#text-form #Rotate').val(info.Rotate);
+            $('#text-form #TileMode').val(info.TileMode),
+            $('#text-form #Span').val(info.Span),
             $('[data-text-dlg]').show();
             break;
           }
