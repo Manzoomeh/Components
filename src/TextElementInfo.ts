@@ -1,4 +1,4 @@
-import ElementInfo from "./ElementInfo";
+import ElementInfo, { TileMode } from "./ElementInfo";
 
 export default class TextElementInfo extends ElementInfo {
   constructor(
@@ -6,10 +6,12 @@ export default class TextElementInfo extends ElementInfo {
     public FontFamily: string,
     public FontSize: number,
     public Color: string,
-    Rotate: number = 0,
-    Opacity: number = 1
+    rotate: number,
+    opacity: number,
+    tileMode: TileMode,
+    span: number
   ) {
-    super("TEXT", Rotate, Opacity);
+    super("TEXT", rotate, opacity, tileMode, span);
   }
 
   static fromDummyObject(obj: any | TextElementInfo): TextElementInfo {
@@ -19,7 +21,9 @@ export default class TextElementInfo extends ElementInfo {
       obj.FontSize,
       obj.Color || "black",
       obj.Rotate || 0,
-      obj.Opacity || 1
+      obj.Opacity || 1,
+      obj.TileMode || "NONE",
+      obj.Span || 0
     );
   }
 }

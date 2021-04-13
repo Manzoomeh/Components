@@ -70,7 +70,22 @@
           <option value="0.5">0.5</option>
           <option value="0.7">0.7</option>
           <option value="0.8">0.8</option>
-
+        </select>
+      </label>
+      <label>Tile Mode
+        <select name="TileMode" id="TileMode" required>
+          <option value="NONE">None</option>
+          <option value="BOX">Box</option>
+          <option value="FLOWER">Flower</option>
+        </select>
+      </label>
+      <label>Span
+        <select name="Span" id="Span" required>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="75">75</option>
+          <option value="100">100</option>
+          <option value="125">125</option>
         </select>
       </label>
       <input type="submit" value="Add" />
@@ -111,6 +126,23 @@
           <option value="0.7">0.7</option>
           <option value="0.5">0.5</option>
           <option value="0.3">0.3</option>
+        </select>
+      </label>
+      <label>Tile Mode
+        <select name="TileMode" id="TileMode" required>
+          <option value="NONE">None</option>
+          <option value="BOX">Box</option>
+          <option value="FLOWER">Flower</option>
+        </select>
+      </label>
+      <label>Span
+        <select name="Span" id="Span" required>
+          <option value="0">0</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="75">75</option>
+          <option value="100">100</option>
+          <option value="125">125</option>
         </select>
       </label>
       <input type="submit" value="Apply" />
@@ -163,6 +195,23 @@
         </select>
       </label>
       <label>Color<input type="color" name="Color" id="Color" /></label>
+      <label>Tile Mode
+        <select name="TileMode" id="TileMode" required>
+          <option value="NONE">None</option>
+          <option value="BOX">Box</option>
+          <option value="FLOWER">Flower</option>
+        </select>
+      </label>
+      <label>Span
+        <select name="Span" id="Span" required>
+          <option value="0">0</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="75">75</option>
+          <option value="100">100</option>
+          <option value="125">125</option>
+        </select>
+      </label>
       <input type="submit" value="Apply" />
       <input type="button" value="Remove" data-remove/>
     </form>
@@ -234,7 +283,10 @@
             FontFamily: "Arial",
             Text: "Sample",
             FontSize: 30,
-            Color: "#ff0000"
+            Color: "#ff0000",
+            Rotate:45,
+            TileMode:'FLOWER',
+            Span:50
           }
           $watermark.addTextElement(textOption);
         }
@@ -301,7 +353,9 @@
             const imageOption = {
               Rotate: parseInt($("#logo-edit-form #Rotate").val()),
               Scale: parseFloat($("#logo-edit-form #Scale").val()),
-              Opacity: parseFloat($("#logo-edit-form #Opacity").val())
+              Opacity: parseFloat($("#logo-edit-form #Opacity").val()),
+              TileMode:$('#logo-edit-form #TileMode').val(),
+              Span:parseFloat($('#logo-edit-form #Span').val()),
             }
             $activeElement.setElementInfo(imageOption);
           }
@@ -346,10 +400,11 @@
         });
       //use of update real-time
       form.find(':input').change(e => {
+        if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
         const data = new FormData(form[0]);
         const textOption = Object.fromEntries(data.entries());
         textOption.Rotate = parseInt(textOption.Rotate);
-        if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
+        textOption.Span=parseInt(textOption.Span);
           $activeElement.setElementInfo(textOption);
         }
       });
@@ -358,7 +413,6 @@
         e.preventDefault();
         const data = new FormData(e.target);
         const textOption = Object.fromEntries(data.entries());
-
         textOption.Rotate = parseInt(textOption.Rotate);
         if ($activeElement && $activeElement.getElementInfo().Type == "TEXT") {
           $activeElement.setElementInfo(textOption);
@@ -387,6 +441,8 @@
           case "LOGO": {
             $('#logo-edit-form #Scale').val(info.Scale);
             $('#logo-edit-form #Rotate').val(info.Rotate);
+            $('#logo-edit-form #TileMode').val(info.TileMode),
+            $('#logo-edit-form #Span').val(info.Span),
             $('[data-logo-edit-dlg]').show();
             break;
           }

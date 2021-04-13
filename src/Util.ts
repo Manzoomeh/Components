@@ -19,7 +19,10 @@ export default class Util {
                   0,
                   1,
                   imageElement.width,
-                  imageElement.height
+                  imageElement.height,
+                  1,
+                  "NONE",
+                  0
                 )
               );
             };

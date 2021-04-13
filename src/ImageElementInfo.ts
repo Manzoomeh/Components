@@ -1,15 +1,17 @@
-import ElementInfo from "./ElementInfo";
+import ElementInfo, { TileMode } from "./ElementInfo";
 
 export default class ImageElementInfo extends ElementInfo {
   constructor(
     readonly Data: string | ArrayBuffer,
-    Rotate: number = 0,
+    rotate: number,
     public Scale: number,
     public Width: number,
     public Height: number,
-    Opacity: number = 1
+    opacity: number,
+    tileMode: TileMode,
+    span: number
   ) {
-    super("LOGO", Rotate, Opacity);
+    super("LOGO", rotate, opacity, tileMode, span);
   }
 
   static fromDummyObject(obj: any | ImageElementInfo): ImageElementInfo {
@@ -19,7 +21,9 @@ export default class ImageElementInfo extends ElementInfo {
       obj.Scale || 1,
       obj.Width,
       obj.Height,
-      obj.Opacity || 1
+      obj.Opacity || 1,
+      obj.TileMode,
+      obj.Span
     );
   }
 }

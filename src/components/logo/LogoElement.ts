@@ -13,7 +13,6 @@ export default class LogoElement extends InteractiveElement<
   }
   constructor(owner: Watermark, private readonly imageInfo: ImageElementInfo) {
     super(owner, imageInfo);
-    console.log(imageInfo);
     this.initElement();
     this.updateElementFromElementInfo();
   }
