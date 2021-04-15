@@ -1,6 +1,5 @@
 import Watermark from "../Watermark/Watermark";
 import ImageElementInfo from "../../ImageElementInfo";
-import { WatermarkElementOption } from "../../models/WatermarkElementOption";
 import InteractiveElement from "../Interactive/InterActiveElement";
 
 export default class LogoElement extends InteractiveElement<
@@ -9,21 +8,20 @@ export default class LogoElement extends InteractiveElement<
 > {
   setInfo(info: ImageElementInfo) {
     this.ElementInfo.Scale = info.Scale || 1;
-    this.updateElementFromElementInfo();
+    this.updateElementFromInfo();
   }
   constructor(owner: Watermark, private readonly imageInfo: ImageElementInfo) {
     super(owner, imageInfo);
-    this.initElement();
-    this.updateElementFromElementInfo();
+    this.updateElementFromInfo();
   }
-  private updateElementFromElementInfo() {
+  private updateElementFromInfo() {
     if (this.ElementInfo.Scale != 1) {
       var newHeight = this.imageInfo.Height * this.ElementInfo.Scale;
       this.Content.setAttribute("height", newHeight.toString());
     } else {
       this.Content.removeAttribute("height");
     }
-    this.updateTransform();
+    this.updateUI();
   }
 
   protected getContentElement(): SVGImageElement {

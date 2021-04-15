@@ -1,5 +1,3 @@
-//export type AppImageData = string | ArrayBuffer;
-
 import ImageElementInfo from "./ImageElementInfo";
 
 export default class Util {

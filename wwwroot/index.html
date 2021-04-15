@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <script src="basiscore.watermark.js" defer></script>
+  <script src="basiscore.wmDemoData.js" defer></script>
   <script src="jquery.min.js"></script>
 
 </head>
@@ -239,8 +240,6 @@
 
     $(document).ready(_ => {
 
-      $('#img').attr('src', watermark.DemoData.Data);
-
       updateNaveBar('start');
       $('fieldset').hide();
       initNavBar();
@@ -271,11 +270,11 @@
         updateNaveBar("in-project");
 
         function createDemoWaterMark() {
-          initWatermark(watermark.DemoData.ImageInfo);
+          initWatermark(wmDemoData.ImageInfo);
         }
 
         function addDemoImage() {
-          $watermark.addImageElement(watermark.DemoData.LogoInfo);
+          $watermark.addImageElement(wmDemoData.LogoInfo);
         }
 
         function addDemoText() {

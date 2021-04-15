@@ -1,13 +1,15 @@
 const path = require("path");
 module.exports = {
-  mode: "development",
-  entry:  "./src/loader.ts",
+  entry: {
+    watermark: "./src/loader.ts",
+    wmDemoData: "./src/DemoData.ts",
+  },
   output: {
-    filename:"basiscore.watermark.js",
-    library: 'watermark'
+    filename: "basiscore.[name].js",
+    library: "[name]",
   },
   devServer: {
-    static: path.resolve(__dirname, 'wwwroot')
+    static: path.resolve(__dirname, "wwwroot"),
   },
   // optimization: {
   //   splitChunks: {
@@ -29,15 +31,15 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: ["ts-loader"]
+        use: ["ts-loader"],
       },
       {
         test: /\.css$/,
-        use: ["style-loader","css-loader"]
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx",".css"], // there's a dot missing
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".css"], // there's a dot missing
   },
 };

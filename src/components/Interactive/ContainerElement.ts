@@ -13,7 +13,7 @@ export default abstract class ContainerElement<
   }
 
   protected abstract getContentElement(): TSVGElement;
-  protected abstract updateTransform(): void;
+  protected abstract updateUI(): void;
 
   protected initElement(): void {
     this.createGroupElement();
@@ -32,7 +32,6 @@ export default abstract class ContainerElement<
     element.setAttribute("visibility", "visible");
     element.setAttribute("draggable", "true");
     element.setAttribute("style", "fill-opacity: 0");
-
     this._borderElement = element;
     this._groupElement.appendChild(this._borderElement);
   }
@@ -50,6 +49,7 @@ export default abstract class ContainerElement<
       "http://www.w3.org/2000/svg",
       "g"
     );
+
     this._groupElement.setAttribute(
       "style",
       "transform-origin:center;transform-box:fill-box"
@@ -61,10 +61,8 @@ export default abstract class ContainerElement<
     this._groupElement.appendChild(this.Content);
     this.Content.addEventListener("inactive", (e) => this.inActive());
     this.Content.addEventListener("click", (e) => {
-      //if ((e.target as TSVGElement).parentElement.parentElement) {
       e.stopPropagation();
       this.Owner.setActiveElement(this);
-      //}
     });
     this.createBorder();
     this.Content.addEventListener("move", (e) => {
@@ -72,7 +70,7 @@ export default abstract class ContainerElement<
       var d = (e as CustomEvent).detail as Position;
       this.Position.X += d.X;
       this.Position.Y += d.Y;
-      this.updateTransform();
+      this.updateUI();
     });
   }
 

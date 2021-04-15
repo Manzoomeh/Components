@@ -1,13 +1,13 @@
-import  Position  from './models/Position';
+import Position from "./models/Position";
 
-export class DragDropHandler {
+export default class DragDropHandler {
   ActiveElement: SVGElement = null;
   PreviousLocation: Position;
   constructor(readonly Element: SVGElement) {
-    this.Element.addEventListener('mousedown', startDrag);
-    this.Element.addEventListener('mousemove', drag);
-    this.Element.addEventListener('mouseup', endDrag);
-    this.Element.addEventListener('mouseleave', endDrag);
+    this.Element.addEventListener("mousedown", startDrag);
+    this.Element.addEventListener("mousemove", drag);
+    this.Element.addEventListener("mouseup", endDrag);
+    this.Element.addEventListener("mouseleave", endDrag);
 
     function startDrag(event) {
       this.ActiveElement = event.target;
@@ -20,7 +20,7 @@ export class DragDropHandler {
         const now = Position.CreateFromEvent(event);
         const change = this.PreviousLocation.GetDistance(now);
         this.PreviousLocation = now;
-        const moveEvent = new CustomEvent('move', { detail: change });
+        const moveEvent = new CustomEvent("move", { detail: change });
         this.ActiveElement.dispatchEvent(moveEvent);
       }
     }

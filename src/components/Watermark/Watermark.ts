@@ -2,9 +2,9 @@ import LogoElement from "../logo/LogoElement";
 import IOption from "./IOptions";
 import MainImageElement from "../MainImage/MainImageElement";
 import ImageElementInfo from "../../ImageElementInfo";
-import { DragDropHandler } from "../../DragDropHandler";
+import DragDropHandler from "../../DragDropHandler";
 import WatermarkElement from "../../models/WatermarkElement";
-import { TextElement } from "../Text/TextElement";
+import TextElement from "../Text/TextElement";
 import TextElementInfo from "../../TextElementInfo";
 
 export default class Watermark {
@@ -17,11 +17,6 @@ export default class Watermark {
     this.Element = option.SvgElement;
     this.Elements = new Array<WatermarkElement>();
     this.Image = new MainImageElement(this, option.ImageInfo);
-
-    const eventAwesome = new CustomEvent("select-item", {
-      bubbles: true,
-      detail: { text: "() => textarea.value" },
-    });
 
     this.Element.addEventListener("click", (e) => {
       this.setActiveElement();

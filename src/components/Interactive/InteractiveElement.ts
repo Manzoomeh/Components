@@ -1,6 +1,4 @@
 import Watermark from "../Watermark/Watermark";
-import { WatermarkElementOption } from "../../models/WatermarkElementOption";
-import Position from "../../models/Position";
 import "./InteractiveElement.css";
 import ElementInfo from "../../ElementInfo";
 import ContainerElement from "./ContainerElement";
@@ -10,13 +8,11 @@ export default abstract class InteractiveElement<
   TSVGElement extends SVGGraphicsElement,
   TElementInfo extends ElementInfo
 > extends ContainerElement<TSVGElement> {
-  private p: TileElement<TSVGElement>;
-  //protected Content: TSVGElement;
+  private _tileElement: TileElement<TSVGElement>;
   constructor(owner: Watermark, readonly ElementInfo: TElementInfo) {
     super(owner);
-    this.p = new TileElement<TSVGElement>(owner, this);
-    //this.updateTransform();
-    //this.setInfo(ElementInfo);
+    this._tileElement = new TileElement<TSVGElement>(owner, this);
+    this.initElement();
   }
   protected abstract setInfo(info: TElementInfo);
   setElementInfo(info: ElementInfo) {
@@ -30,7 +26,7 @@ export default abstract class InteractiveElement<
     return this.ElementInfo;
   }
 
-  protected updateTransform() {
+  protected updateUI() {
     let value = "";
     if (this.Position.X != 0 || this.Position.Y != 0) {
       value += `translate(${this.Position.X} ${this.Position.Y}) `;
@@ -51,6 +47,9 @@ export default abstract class InteractiveElement<
       this.Content.removeAttribute("opacity");
     }
     this.updateBorder();
-    this.p.Calc(this.ElementInfo.TileMode, this.ElementInfo.Span);
+    this._tileElement.updateTiles(
+      this.ElementInfo.TileMode,
+      this.ElementInfo.Span
+    );
   }
 }

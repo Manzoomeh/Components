@@ -1,10 +1,8 @@
-import ElementInfo from "../../ElementInfo";
-import { WatermarkElementOption } from "../../models/WatermarkElementOption";
 import TextElementInfo from "../../TextElementInfo";
 import InteractiveElement from "../Interactive/InterActiveElement";
 import Watermark from "../Watermark/Watermark";
 
-export class TextElement extends InteractiveElement<
+export default class TextElement extends InteractiveElement<
   SVGTextElement,
   TextElementInfo
 > {
@@ -13,16 +11,15 @@ export class TextElement extends InteractiveElement<
     this.ElementInfo.FontFamily = info.FontFamily;
     this.ElementInfo.FontSize = info.FontSize;
     this.ElementInfo.Text = info.Text;
-    this.updateElementFromElementInfo();
+    this.updateElementFromInfo();
   }
 
   constructor(owner: Watermark, textInfo: TextElementInfo) {
     super(owner, textInfo);
-    this.initElement();
-    this.updateElementFromElementInfo();
+    this.updateElementFromInfo();
   }
 
-  private updateElementFromElementInfo() {
+  private updateElementFromInfo() {
     this.Content.setAttribute("font-family", this.ElementInfo.FontFamily);
     this.Content.setAttribute(
       "font-size",
@@ -30,7 +27,7 @@ export class TextElement extends InteractiveElement<
     );
     this.Content.setAttribute("fill", this.ElementInfo.Color);
     this.Content.textContent = this.ElementInfo.Text;
-    this.updateTransform();
+    this.updateUI();
   }
   protected getContentElement(): SVGTextElement {
     const textElement = document.createElementNS(
