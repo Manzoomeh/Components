@@ -12,21 +12,28 @@ export default abstract class InteractiveElement<
   constructor(owner: Watermark, readonly ElementInfo: TElementInfo) {
     super(owner);
     this._tileElement = new TileElement<TSVGElement>(owner, this);
+    this.updateElementInfo(ElementInfo);
     this.initElement();
+    this.applyElementInfoToUI();
   }
-  protected abstract setInfo(info: TElementInfo);
-  setElementInfo(info: ElementInfo) {
+  protected applyElementInfoToUI() {
+    this.updateUIEffect();
+  }
+  protected updateElementInfo(info: ElementInfo) {
     this.ElementInfo.Rotate = info.Rotate || 0;
     this.ElementInfo.Opacity = info.Opacity || 1;
     this.ElementInfo.TileMode = info.TileMode || "NONE";
     this.ElementInfo.Span = info.Span || 0;
-    this.setInfo(info as TElementInfo);
+  }
+  setElementInfo(info: ElementInfo) {
+    this.updateElementInfo(info);
+    this.applyElementInfoToUI();
   }
   getElementInfo(): ElementInfo {
     return this.ElementInfo;
   }
 
-  protected updateUI() {
+  protected updateUIEffect() {
     let value = "";
     if (this.Position.X != 0 || this.Position.Y != 0) {
       value += `translate(${this.Position.X} ${this.Position.Y}) `;

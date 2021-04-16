@@ -6,20 +6,17 @@ export default class TextElement extends InteractiveElement<
   SVGTextElement,
   TextElementInfo
 > {
-  setInfo(info: TextElementInfo) {
-    this.ElementInfo.Color = info.Color;
+  constructor(owner: Watermark, textInfo: TextElementInfo) {
+    super(owner, textInfo);
+  }
+  protected updateElementInfo(info: TextElementInfo) {
+    super.updateElementInfo(info);
+    this.ElementInfo.Color = info.Color || "Black";
     this.ElementInfo.FontFamily = info.FontFamily;
     this.ElementInfo.FontSize = info.FontSize;
     this.ElementInfo.Text = info.Text;
-    this.updateElementFromInfo();
   }
-
-  constructor(owner: Watermark, textInfo: TextElementInfo) {
-    super(owner, textInfo);
-    this.updateElementFromInfo();
-  }
-
-  private updateElementFromInfo() {
+  protected applyElementInfoToUI() {
     this.Content.setAttribute("font-family", this.ElementInfo.FontFamily);
     this.Content.setAttribute(
       "font-size",
@@ -27,7 +24,7 @@ export default class TextElement extends InteractiveElement<
     );
     this.Content.setAttribute("fill", this.ElementInfo.Color);
     this.Content.textContent = this.ElementInfo.Text;
-    this.updateUI();
+    super.applyElementInfoToUI();
   }
   protected getContentElement(): SVGTextElement {
     const textElement = document.createElementNS(

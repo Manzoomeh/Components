@@ -13,7 +13,7 @@ export default abstract class ContainerElement<
   }
 
   protected abstract getContentElement(): TSVGElement;
-  protected abstract updateUI(): void;
+  protected abstract updateUIEffect(): void;
 
   protected initElement(): void {
     this.createGroupElement();
@@ -70,7 +70,7 @@ export default abstract class ContainerElement<
       var d = (e as CustomEvent).detail as Position;
       this.Position.X += d.X;
       this.Position.Y += d.Y;
-      this.updateUI();
+      this.updateUIEffect();
     });
   }
 

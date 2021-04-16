@@ -17,11 +17,11 @@ export default class ImageElementInfo extends ElementInfo {
   static fromDummyObject(obj: any | ImageElementInfo): ImageElementInfo {
     return new ImageElementInfo(
       obj.Data,
-      obj.Rotate || 0,
-      obj.Scale || 1,
+      obj.Rotate,
+      obj.Scale,
       obj.Width,
       obj.Height,
-      obj.Opacity || 1,
+      obj.Opacity,
       obj.TileMode,
       obj.Span
     );

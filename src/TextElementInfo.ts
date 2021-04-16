@@ -19,11 +19,11 @@ export default class TextElementInfo extends ElementInfo {
       obj.Text,
       obj.FontFamily,
       obj.FontSize,
-      obj.Color || "black",
-      obj.Rotate || 0,
-      obj.Opacity || 1,
-      obj.TileMode || "NONE",
-      obj.Span || 0
+      obj.Color,
+      obj.Rotate,
+      obj.Opacity,
+      obj.TileMode,
+      obj.Span
     );
   }
 }
