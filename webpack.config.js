@@ -10,6 +10,8 @@ module.exports = {
   },
   devServer: {
     static: path.resolve(__dirname, "wwwroot"),
+    open: true,
+    port: 3001,
   },
   // optimization: {
   //   splitChunks: {
