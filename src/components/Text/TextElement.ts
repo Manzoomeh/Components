@@ -13,7 +13,7 @@ export default class TextElement extends InteractiveElement<
     super.updateElementInfo(info);
     this.ElementInfo.Color = info.Color || "Black";
     this.ElementInfo.FontFamily = info.FontFamily;
-    this.ElementInfo.FontSize = info.FontSize;
+    this.ElementInfo.FontSize = +info.FontSize;
     this.ElementInfo.Text = info.Text;
   }
   protected applyElementInfoToUI() {

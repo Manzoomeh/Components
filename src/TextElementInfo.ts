@@ -9,9 +9,10 @@ export default class TextElementInfo extends ElementInfo {
     rotate: number,
     opacity: number,
     tileMode: TileMode,
-    span: number
+    span: number,
+    key?: string
   ) {
-    super("TEXT", rotate, opacity, tileMode, span);
+    super("TEXT", rotate, opacity, tileMode, span, key);
   }
 
   static fromDummyObject(obj: any | TextElementInfo): TextElementInfo {
@@ -23,7 +24,8 @@ export default class TextElementInfo extends ElementInfo {
       obj.Rotate,
       obj.Opacity,
       obj.TileMode,
-      obj.Span
+      obj.Span,
+      obj.Key
     );
   }
 }

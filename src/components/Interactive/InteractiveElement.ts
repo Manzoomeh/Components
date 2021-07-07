@@ -20,10 +20,10 @@ export default abstract class InteractiveElement<
     this.updateUIEffect();
   }
   protected updateElementInfo(info: ElementInfo) {
-    this.ElementInfo.Rotate = info.Rotate || 0;
-    this.ElementInfo.Opacity = info.Opacity || 1;
+    this.ElementInfo.Rotate = +info.Rotate || 0;
+    this.ElementInfo.Opacity = +info.Opacity || 1;
     this.ElementInfo.TileMode = info.TileMode || "NONE";
-    this.ElementInfo.Span = info.Span || 0;
+    this.ElementInfo.Span = +info.Span || 0;
   }
   setElementInfo(info: ElementInfo) {
     this.updateElementInfo(info);

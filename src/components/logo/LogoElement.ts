@@ -11,7 +11,7 @@ export default class LogoElement extends InteractiveElement<
   }
   protected updateElementInfo(info: ImageElementInfo) {
     super.updateElementInfo(info);
-    this.ElementInfo.Scale = info.Scale || 1;
+    this.ElementInfo.Scale = +info.Scale || 1;
   }
   protected applyElementInfoToUI() {
     if (this.ElementInfo.Scale != 1) {
@@ -30,7 +30,7 @@ export default class LogoElement extends InteractiveElement<
     image.setAttributeNS(
       "http://www.w3.org/1999/xlink",
       "xlink:href",
-      (this.ElementInfo.Data as any) as string
+      this.ElementInfo.Data as any as string
     );
     image.setAttribute("visibility", "visible");
     return image;

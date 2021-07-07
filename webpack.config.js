@@ -2,6 +2,7 @@ const path = require("path");
 module.exports = {
   entry: {
     watermark: "./src/loader.ts",
+    watermarkComponent: "./src/basiscore-usercomponent-loader.ts",
     wmDemoData: "./src/DemoData.ts",
   },
   output: {

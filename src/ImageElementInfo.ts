@@ -9,9 +9,10 @@ export default class ImageElementInfo extends ElementInfo {
     public Height: number,
     opacity: number,
     tileMode: TileMode,
-    span: number
+    span: number,
+    key?: string
   ) {
-    super("LOGO", rotate, opacity, tileMode, span);
+    super("LOGO", rotate, opacity, tileMode, span, key);
   }
 
   static fromDummyObject(obj: any | ImageElementInfo): ImageElementInfo {
@@ -23,7 +24,8 @@ export default class ImageElementInfo extends ElementInfo {
       obj.Height,
       obj.Opacity,
       obj.TileMode,
-      obj.Span
+      obj.Span,
+      obj.Key
     );
   }
 }

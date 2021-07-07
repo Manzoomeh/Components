@@ -70,9 +70,13 @@ export default class Watermark {
   }
 
   preview(img: HTMLImageElement) {
+    img.src = this.getResult();
+  }
+
+  getResult(): string {
     const data = new XMLSerializer().serializeToString(this.Element);
     var svg = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
-    img.src = Watermark.DOMURL.createObjectURL(svg);
+    return Watermark.DOMURL.createObjectURL(svg);
   }
 
   exportImage(): Promise<void> {

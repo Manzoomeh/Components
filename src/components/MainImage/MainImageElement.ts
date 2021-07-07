@@ -25,7 +25,7 @@ export default class MainImageElement extends WatermarkElement {
     this._imageElement.setAttributeNS(
       "http://www.w3.org/1999/xlink",
       "href",
-      (this.ImageInfo.Data as any) as string
+      this.ImageInfo.Data as any as string
     );
     this._imageElement.setAttribute("x", this.Position.X.toString());
     this._imageElement.setAttribute("y", this.Position.Y.toString());

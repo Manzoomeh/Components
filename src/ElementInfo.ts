@@ -7,6 +7,7 @@ export default class ElementInfo {
     public Rotate: number,
     public Opacity: number,
     public TileMode: TileMode,
-    public Span?: number
+    public Span?: number,
+    readonly Key?: string
   ) {}
 }
