@@ -1,13 +1,33 @@
 const path = require("path");
 module.exports = {
   entry: {
-    watermark: "./src/loader.ts",
-    watermarkComponent: "./src/basiscore-usercomponent-loader.ts",
-    wmDemoData: "./src/DemoData.ts",
+    watermark: {
+      import: "./src/loader.ts",
+      filename: "basiscore.watermark.js",
+      library: {
+        name: "[name]",
+        type: "assign",
+      },
+    },
+    watermarkComponent: {
+      import: "./src/BcComponentLoader.ts",
+      filename: "basiscore.watermark.component.js",
+      library: {
+        name: "bc",
+        type: "assign",
+      },
+    },
+    wmDemoData: {
+      import: "./src/DemoData.ts",
+      filename: "basiscore.watermark.demo-data.js",
+      library: {
+        name: "[name]",
+        type: "assign",
+      },
+    },
   },
   output: {
     filename: "basiscore.[name].js",
-    library: "[name]",
   },
   devServer: {
     static: path.resolve(__dirname, "wwwroot"),
