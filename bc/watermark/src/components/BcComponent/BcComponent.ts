@@ -43,6 +43,7 @@ export default class BcComponent implements IComponentManager {
   }
 
   public async runAsync(source?: ISource): Promise<boolean> {
+    console.log(source);
     if (source?.id === this.svgBgImageSourceId) {
       const svg = await this.owner.getAttributeValueAsync("wm-element");
       const svgElement = document.querySelector<SVGElement>(svg);
@@ -84,7 +85,7 @@ export default class BcComponent implements IComponentManager {
 
   async extractElementSourcesAsync(source: ISource) {
     const elements = [];
-    const rows = source.rows[0]?.value?._root?.elements;
+    const rows = source.rows[0]?._root?.elements;
     if (rows) {
       for (const element of rows) {
         if (element.Type === "LOGO") {
