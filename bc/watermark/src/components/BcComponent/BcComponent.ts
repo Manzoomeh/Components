@@ -33,7 +33,7 @@ export default class BcComponent implements IComponentManager {
       e.preventDefault();
       if (this.watermark) {
         const img = this.watermark.getResult();
-        this.owner.setSource(resultSourceId, img, MergeType.replace);
+        this.owner.setSource(resultSourceId, img);
       }
     });
     this.owner.addTrigger([
