@@ -1,1 +1,14 @@
-console.log("let's Start");
+import Grid from "./Grid";
+fetch("./grid.config.json").then(async (r) => {
+  let options = null;
+  try {
+    options = await r.json();
+  } catch {}
+  const dataResponse = await fetch("./data.json");
+  let data = null;
+  try {
+    data = await dataResponse.json();
+  } catch {}
+  const element = document.getElementById("tbl") as HTMLTableElement;
+  const grid = new Grid(element, options, data);
+});
