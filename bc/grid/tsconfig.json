@@ -1,0 +1,7 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "ES3",
+    "module": "ES2015"
+  }
+}
