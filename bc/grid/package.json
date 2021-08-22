@@ -16,7 +16,6 @@
   "author": "Manzomeh",
   "license": "ISC",
   "devDependencies": {
-    "alasql": "^1.7.3",
     "circular-dependency-plugin": "^5.2.2",
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.2.0",
