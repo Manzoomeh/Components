@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jquery.js"></script>
+    <script src="jquery-form-generator.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .fg-answer input[type="text"],
+        .fg-answer input[type="password"],
+        .fg-answer input[type="email"],
+        .fg-answer input[type="url"],
+        .fg-answer input[type="number"],
+        .fg-answer input[type="search"],
+        .fg-answer input[type="tel"],
+        .fg-answer input[type="color"],
+        .fg-answer input[type="file"],
+        .fg-answer select,
+        .fg-answer textarea {
+            width: 320px;
+            display: inline-block;
+            border-radius: 3px;
+            padding: 5px;
+            font-size: 12px;
+            box-sizing: border-box;
+            color: var(--dark_gray);
+            background: var(--vlight_blue);
+            border: 1px solid var(--light_blue);
+            border-radius: 3px;
+            transition: border 0.3s linear 0s;
+        }
+
+        .fg-property-title {
+            width: 250px;
+            min-height: 20px;
+            display: inline-block;
+        }
+
+        td {
+            display: block !important;
+        }
+
+        input {
+            border: 1px solid #ccc !important;
+        }
+    </style>
+
+    <div class="widget_wrapper">
+
+        <div class="widget_body">
+
+            <div class="schema_content">
+                <form action="#" method="POST" id="">
+                    <div class="dtab_padd">
+                        <div id="continer"></div>
+                        <div id="xml"> </div>
+                        <div id="ui"> </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.basiscore.net/fingerfood.ir/js/jquery-3.3.1.min.js"></script>
+    <script src="https://user.basiscore.com/js/jquery-ui.js" defer></script>
+    <script src="https://user.basiscore.com/js/jquery-validate.js" defer></script>
+    <script src="https://user.basiscore.com/js/jquery-form-generatorv1-5-users.js" defer></script>
+    <script defer>
+        $(document).ready(function () {
+            console.log("ssss")
+            $('#continer').formGenerator(
+                '/schema.xml?id=122503&lid=1&mid=24&rkey=8453EDDD-E086-494A-BCD7-50DDF5D73466refresh=true', //sourceUrl
+
+                '', //'/home/GetXml',    //destinationUrl
+                '#xml', //xml_container
+                '#ui', //uiStatus_container
+                true //inEditMode,default true
+                , false //use ajax,default false
+                , {
+                    showSubmit: false,
+                    validateOptions: Opts
+                }
+            );
+            $("<div></div>").attr("id", "messageBox1").appendTo("#continer");
+            $("<ul></ul>").appendTo("#messageBox1");
+            var Opts = {
+                errorClass: "ggg",
+
+                errorContainer: "#messageBox1",
+                errorLabelContainer: "#messageBox1 ul",
+
+                wrapper: "li",
+                invalidHandler: function (e, validator) {
+                    for (var i = 0; i < validator.errorList.length; i++) {
+                        var element = $(validator.errorList[i].element);
+                        var prpId = element.closest('[fg-prp-id]').attr('fg-prp-id')
+                        var name = formGenerator.getContainer(element).find('.fg-property-title[data-prp-id="' + prpId + '"]  span').text()
+                        validator.errorList[i].message = name + ' : ' + validator.errorList[i].message
+                    }
+                }
+            };
+
+        })
+    </script>
+</body>
+
+</html>

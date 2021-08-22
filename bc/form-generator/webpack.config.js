@@ -4,17 +4,17 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
-    grid: {
-      import: "./src/Loader.ts",
-      filename: "basiscore.grid.js",
+    watermark: {
+      import: "./src/loader.ts",
+      filename: "basiscore.form-generator.js",
       library: {
         name: "[name]",
         type: "assign",
       },
     },
-    gridComponent: {
-      import: "./src/ComponentLoader.ts",
-      filename: "basiscore.grid.component.js",
+    watermarkComponent: {
+      import: "./src/BcComponentLoader.ts",
+      filename: "basiscore.form-generator.component.js",
       library: {
         name: "bc",
         type: "assign",
@@ -67,12 +67,6 @@ module.exports = {
           from: path.resolve(
             __dirname,
             "node_modules/jquery/dist/jquery.min.js"
-          ),
-        },
-        {
-          from: path.resolve(
-            __dirname,
-            "node_modules/alasql/dist/alasql.min.js"
           ),
         },
       ],

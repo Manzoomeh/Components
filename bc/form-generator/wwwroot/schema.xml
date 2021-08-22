@@ -1,0 +1,567 @@
+<root>
+	<properties LID="1" MId="20" usedForId="1423330" script="" helpUrl="/PrpHelpUrl.aspx" submitClass="submit_xml" uiType="form" multi="false" submitImageUrl="/images/submit/submit.png" errorUrl="/xmlerror_print.json">
+		<property question="نام دیزل ژنراتور کوپله" prpid="13050" multi="false">
+			<answers>
+				<answer valueId="15058631" answer_ord="1000">
+					<part v_minlength="2" v_maxlength="100" v_required="true" class="CSS_150" type="text" order="3">
+						<![CDATA[ تست دیزل ژنراتور ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="مدل دیزل ژنراتور کوپله" prpid="13051" multi="false">
+			<answers>
+				<answer valueId="15058632" answer_ord="1000">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3">
+						<![CDATA[ مدل تست ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="کمپانی کوپله کننده" prpid="65769" multi="false">
+			<answers>
+				<answer valueId="15058633" answer_ord="1000">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_164" type="text" order="3">
+						<![CDATA[ کمپانی تست ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="مدل ژنراتور" prpid="13052" multi="false">
+			<answers>
+				<answer valueId="15058634" answer_ord="1000">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3">
+						<![CDATA[ مدل ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="برند ژنراتور" prpid="13053" multi="false">
+			<answers>
+				<answer valueId="15058635" answer_ord="1000">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3">
+						<![CDATA[ برند ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="مدل موتور" prpid="13054" multi="false">
+			<answers>
+				<answer valueId="15058636" answer_ord="1000">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3">
+						<![CDATA[ مدل تست ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="برند موتور" prpid="13055" multi="false">
+			<answers>
+				<answer valueId="15058637" answer_ord="1000">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3">
+						<![CDATA[ برند تست ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="توان اضطراری" prpid="13057" multi="true">
+			<answers>
+				<answer valueId="15058638" answer_ord="1000">
+					<part class="CSS_257" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13057" value="20266" />
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 1000 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="4" caption="میزان توان">
+						<![CDATA[ 200 ]]>
+					</part>
+				</answer>
+				<answer valueId="15058639" answer_ord="1000">
+					<part class="CSS_257" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13057" value="20267" />
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 10 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="4" caption="میزان توان">
+						<![CDATA[ 105 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="توان پرایم" prpid="13056" multi="true">
+			<answers>
+				<answer valueId="15058640" answer_ord="1000">
+					<part class="CSS_257" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13056" value="20263" />
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 200 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="4" caption="میزان توان">
+						<![CDATA[ 200 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="توان دائم" prpid="13058" multi="true">
+			<answers>
+				<answer valueId="15058641" answer_ord="1000">
+					<part class="CSS_257" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13058" value="20269" />
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 500 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="4" caption="میزان توان">
+						<![CDATA[ 200 ]]>
+					</part>
+				</answer>
+				<answer valueId="15058642" answer_ord="1000">
+					<part class="CSS_257" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13058" value="20271" />
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 10 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="4" caption="میزان توان">
+						<![CDATA[ 200 ]]>
+					</part>
+				</answer>
+				<answer valueId="15058643" answer_ord="1000">
+					<part class="CSS_257" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13058" value="20270" />
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 15 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="4" caption="میزان توان">
+						<![CDATA[ 250 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="فرکانس (هرتز)" prpid="13059" multi="false">
+			<answers>
+				<answer valueId="15058644" answer_ord="1000">
+					<part class="CSS_141" type="checkList" order="1" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13059" value="20272" />
+				</answer>
+			</answers>
+		</property>
+		<property question="ولتاژ (ولت)" prpid="13060" multi="false">
+			<answers>
+				<answer valueId="15058645" answer_ord="1000">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3">
+						<![CDATA[ 1000 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="فاز" prpid="13061" multi="false">
+			<answers>
+				<answer valueId="15058646" answer_ord="1000">
+					<part class="CSS_141" type="checkList" order="1" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13061" value="20274" />
+				</answer>
+				<answer valueId="15058647" answer_ord="1000">
+					<part class="CSS_141" type="checkList" order="1" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13061" value="20275" />
+				</answer>
+			</answers>
+		</property>
+		<property question="سیستم خنک کننده" prpid="13062" multi="false">
+			<answers>
+				<answer valueId="15058648" answer_ord="1000">
+					<part class="CSS_137" type="select" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13062" value="20276" />
+				</answer>
+			</answers>
+		</property>
+		<property question="سیستم سوخت" prpid="13063" multi="false">
+			<answers>
+				<answer valueId="15058649" answer_ord="1000">
+					<part class="CSS_137" type="select" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13063" value="20278" />
+				</answer>
+			</answers>
+		</property>
+		<property question="کلاس عایق حرارتی" prpid="13064" multi="false">
+			<answers>
+				<answer valueId="15058650" answer_ord="1000">
+					<part class="CSS_137" type="select" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13064" value="20281" />
+				</answer>
+			</answers>
+		</property>
+		<property question="درجه حفاظت" prpid="13065" multi="false">
+			<answers>
+				<answer valueId="15058651" answer_ord="1000">
+					<part class="CSS_137" type="select" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13065" value="20283" />
+				</answer>
+			</answers>
+		</property>
+		<property question="بلبرینگ" prpid="13066" multi="false">
+			<answers>
+				<answer valueId="15058652" answer_ord="1000">
+					<part class="CSS_137" type="select" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13066" value="20285" />
+				</answer>
+			</answers>
+		</property>
+		<property question="ابعاد (ارتفاع×عرض×طول) (میلی متر)" prpid="13067" multi="false">
+			<answers>
+				<answer valueId="15058653" answer_ord="1000">
+					<part class="css_146" type="text" order="3">
+						<![CDATA[ 1000 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="وزن خشک (کیلوگرم)" prpid="13068" multi="false">
+			<answers>
+				<answer valueId="15058654" answer_ord="1000">
+					<part class="css_145" type="text" order="3" v_number="true">
+						<![CDATA[ 105 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="ظرفیت باک سوخت (لیتر)" prpid="13069" multi="false">
+			<answers>
+				<answer valueId="15058655" answer_ord="1000">
+					<part class="css_130" type="text" order="1" v_number="true">
+						<![CDATA[ 5000 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="شدت نویز در فاصله 7 متری (دسی بل)" prpid="13070" multi="false">
+			<answers>
+				<answer valueId="15058656" answer_ord="1000">
+					<part class="css_131" type="text" order="2" v_number="true">
+						<![CDATA[ 10 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="قدرت موتور در حالت اضطراری" prpid="13071" multi="true">
+			<answers>
+				<answer valueId="15058657" answer_ord="1000">
+					<part class="css_251" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13071" value="21180" />
+					<part v_maxlength="4000" class="CSS_251" type="text" order="4" caption="میزان قدرت">
+						<![CDATA[ 1000 ]]>
+					</part>
+				</answer>
+				<answer valueId="15058658" answer_ord="1000">
+					<part class="css_251" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13071" value="21181" />
+					<part v_maxlength="4000" class="CSS_251" type="text" order="4" caption="میزان قدرت">
+						<![CDATA[ 105 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="قدرت موتور در حالت پرایم" prpid="13072" multi="true">
+			<answers>
+				<answer valueId="15058659" answer_ord="1000">
+					<part class="css_251" type="select" order="3" caption="واحد اندازه گیری" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13072" value="21182" />
+					<part v_maxlength="4000" class="CSS_251" type="text" order="4" caption="میزان قدرت">
+						<![CDATA[ 100 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="تعداد سیلندر" prpid="13073" multi="false">
+			<answers>
+				<answer valueId="15058660" answer_ord="1000">
+					<part class="css_138" type="select" order="1" v_number="true" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13073" value="20295" />
+				</answer>
+			</answers>
+		</property>
+		<property question="چیدمان سیلندر" prpid="13074" multi="false">
+			<answers>
+				<answer valueId="15058661" answer_ord="1000">
+					<part class="CSS_137" type="select" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13074" value="20297" />
+				</answer>
+			</answers>
+		</property>
+		<property question="قطر سیلندر (میلی متر)" prpid="13075" multi="false">
+			<answers>
+				<answer valueId="15058662" answer_ord="1000">
+					<part class="css_131" type="text" order="2" v_number="true">
+						<![CDATA[ 102 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="کورس پیستون (میلی متر)" prpid="13076" multi="false">
+			<answers>
+				<answer valueId="15058663" answer_ord="1000">
+					<part class="css_131" type="text" order="2" v_number="true">
+						<![CDATA[ 1520 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="نسبت تراکم" prpid="13077" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3" />
+				</answer>
+			</answers>
+		</property>
+		<property question="ولتاژ شروع کار (ولت)" prpid="13078" multi="false">
+			<answers>
+				<answer valueId="15058664" answer_ord="1000">
+					<part class="CSS_141" type="checkList" order="1" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13078" value="20299" />
+				</answer>
+			</answers>
+		</property>
+		<property question="سیستم هوادهی" prpid="13079" multi="false">
+			<answers>
+				<answer valueId="15058665" answer_ord="1000">
+					<part class="CSS_137" type="select" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13079" value="20301" />
+				</answer>
+			</answers>
+		</property>
+		<property question="سیکل (چرخه)" prpid="13080" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part class="css_138" type="select" order="1" v_number="true" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13080" value="0" />
+				</answer>
+			</answers>
+		</property>
+		<property question="حجم سیلندر (لیتر)" prpid="13081" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part class="css_131" type="text" order="2" v_number="true" />
+				</answer>
+			</answers>
+		</property>
+		<property question="نوع گاورنر" prpid="13082" multi="false">
+			<answers>
+				<answer valueId="15058666" answer_ord="1000">
+					<part class="CSS_137" type="select" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13082" value="20306" />
+				</answer>
+			</answers>
+		</property>
+		<property question="میزان مصرف سوخت بر اساس توان پرایم(لیتر در ساعت)" prpid="13544" multi="true">
+			<answers>
+				<answer valueId="15058667" answer_ord="1000">
+					<part class="CSS_257" type="text" order="3" caption="میزان مصرف سوخت (لیتر بر ساعت)">
+						<![CDATA[ 1000 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 1000 ]]>
+					</part>
+					<part class="CSS_260" type="select" order="1" caption="بار (درصد)" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13544" value="21184" />
+				</answer>
+				<answer valueId="15058668" answer_ord="1000">
+					<part class="CSS_257" type="text" order="3" caption="میزان مصرف سوخت (لیتر بر ساعت)">
+						<![CDATA[ 555 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 105 ]]>
+					</part>
+					<part class="CSS_260" type="select" order="1" caption="بار (درصد)" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13544" value="21185" />
+				</answer>
+				<answer valueId="15058669" answer_ord="1000">
+					<part class="CSS_257" type="text" order="3" caption="میزان مصرف سوخت (لیتر بر ساعت)">
+						<![CDATA[ 58 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 49 ]]>
+					</part>
+					<part class="CSS_260" type="select" order="1" caption="بار (درصد)" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13544" value="21187" />
+				</answer>
+			</answers>
+		</property>
+		<property question="میزان مصرف سوخت بر اساس توان اضطراری (لیتر در ساعت)" prpid="13545" multi="true">
+			<answers>
+				<answer valueId="15058670" answer_ord="1000">
+					<part class="CSS_257" type="text" order="3" caption="میزان مصرف سوخت (لیتر بر ساعت)">
+						<![CDATA[ 589 ]]>
+					</part>
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)">
+						<![CDATA[ 10 ]]>
+					</part>
+					<part class="CSS_260" type="select" order="1" caption="بار (درصد)" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13545" value="21189" />
+				</answer>
+			</answers>
+		</property>
+		<property question="میزان مصرف سوخت بر اساس توان دائم (لیتر در ساعت)" prpid="13546" multi="true">
+			<answers>
+				<answer valueId="0">
+					<part class="CSS_257" type="text" order="3" caption="میزان مصرف سوخت (لیتر بر ساعت)" />
+					<part class="CSS_260" type="text" order="2" caption="سرعت (دور بر دقیقه)" />
+					<part class="CSS_260" type="select" order="1" caption="بار (درصد)" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13546" value="0" />
+				</answer>
+			</answers>
+		</property>
+		<property question="ظرفیت سیستم خنک کننده (لیتر)" prpid="13083" multi="false">
+			<answers>
+				<answer valueId="15058671" answer_ord="1000">
+					<part class="css_131" type="text" order="2" v_number="true">
+						<![CDATA[ 10 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="ظرفیت کل روغن (لیتر)" prpid="13084" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part class="css_131" type="text" order="2" v_number="true" />
+				</answer>
+			</answers>
+		</property>
+		<property question="میزان مصرف روغن (لیتر در ساعت)" prpid="13085" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part class="css_131" type="text" order="2" v_number="true" />
+				</answer>
+			</answers>
+		</property>
+		<property question="شدت جریان (آمپر)" prpid="13086" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part class="css_131" type="text" order="2" v_number="true" />
+				</answer>
+			</answers>
+		</property>
+		<property question="راندمان آلترناتور (درصد)" prpid="13087" multi="false">
+			<answers>
+				<answer valueId="15058672" answer_ord="1000">
+					<part class="css_131" type="text" order="2" v_number="true">
+						<![CDATA[ 20 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="ضریب قدرت" prpid="13088" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part class="css_131" type="text" order="2" />
+				</answer>
+			</answers>
+		</property>
+		<property question="تنظیم ولتاژ (% ±)" prpid="13089" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3" />
+				</answer>
+			</answers>
+		</property>
+		<property question="قطب" prpid="13090" multi="false">
+			<answers>
+				<answer valueId="15058673" answer_ord="1000">
+					<part class="css_138" type="select" order="1" v_number="true" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13090" value="20308" />
+				</answer>
+			</answers>
+		</property>
+		<property question="نوع تابلو کنترل" prpid="13091" multi="false">
+			<answers>
+				<answer valueId="15058674" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13091" value="20311" />
+				</answer>
+				<answer valueId="15058675" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13091" value="20314" />
+				</answer>
+			</answers>
+		</property>
+		<property question="برند کلید کنتاکتور" prpid="13092" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3" />
+				</answer>
+			</answers>
+		</property>
+		<property question="برند کلید قطع کن قدرت" prpid="13093" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_128" type="text" order="3" />
+				</answer>
+			</answers>
+		</property>
+		<property question="گروه رنگ" prpid="13094" multi="false">
+			<answers>
+				<answer valueId="15058676" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13094" value="20315" />
+				</answer>
+				<answer valueId="15058677" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13094" value="20317" />
+				</answer>
+			</answers>
+		</property>
+		<property question="رنگ" prpid="13095" multi="true">
+			<answers>
+				<answer valueId="0">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_132" type="text" order="3" />
+				</answer>
+			</answers>
+		</property>
+		<property question="امکانات" prpid="13096" multi="false">
+			<answers>
+				<answer valueId="15058678" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13096" value="20364" />
+				</answer>
+				<answer valueId="15058679" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13096" value="20376" />
+				</answer>
+				<answer valueId="15058680" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13096" value="20379" />
+				</answer>
+				<answer valueId="15058681" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13096" value="20382" />
+				</answer>
+			</answers>
+		</property>
+		<property question="عکس اورجینال" prpid="54538" multi="false">
+			<answers>
+				<answer valueId="0">
+					<part v_minlength="10" v_maxlength="1000" class="CSS_159" type="text" order="3" />
+				</answer>
+			</answers>
+		</property>
+		<property question="پشتیبانی و خدمات پس از فروش" prpid="13097" multi="false">
+			<answers>
+				<answer valueId="15058682" answer_ord="1000">
+					<part class="CSS_140" type="checkList" order="3" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13097" value="20389" />
+				</answer>
+			</answers>
+		</property>
+		<property question="گواهی نامه" prpid="13098" multi="true">
+			<answers>
+				<answer valueId="0">
+					<part v_minlength="2" v_maxlength="4000" class="CSS_132" type="text" order="3" />
+				</answer>
+			</answers>
+		</property>
+		<property question="مدت زمان تعویض و تعمیر" prpid="13099" multi="true">
+			<answers>
+				<answer valueId="15058683" answer_ord="1000">
+					<part class="css_251" type="select" order="3" caption="واحدهای زمان" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13099" value="20393" />
+					<part v_maxlength="4000" class="CSS_251" type="text" order="4" caption="مدت زمان">
+						<![CDATA[ 50 دقیقه ]]>
+					</part>
+				</answer>
+				<answer valueId="15058684" answer_ord="1000">
+					<part class="css_251" type="select" order="3" caption="واحدهای زمان" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13099" value="20394" />
+					<part v_maxlength="4000" class="CSS_251" type="text" order="4" caption="مدت زمان">
+						<![CDATA[ 5 ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="مدت زمان تامین قطعات و تعمیر" prpid="13100" multi="true">
+			<answers>
+				<answer valueId="15058685" answer_ord="1000">
+					<part class="css_251" type="select" order="3" caption="واحدهای زمان" url="/PrpfixUrl.aspx?Lid=1&amp;Prpid=13100" value="20397" />
+					<part v_maxlength="4000" class="CSS_251" type="text" order="4" caption="مدت زمان">
+						<![CDATA[ ]]>
+					</part>
+				</answer>
+			</answers>
+		</property>
+		<property question="کشور تولیدکننده" prpid="10000629" multi="false">
+			<answers>
+				<answer valueId="1002236">
+					<part type="textList" order="3" class="CSS_199" url="/jsonsearch/jsonsearch.htm?mid2=10&amp;Prpid=10000629&amp;lid=1" text="ایران" value="1002236" />
+				</answer>
+				<answer valueId="1167330">
+					<part type="textList" order="3" class="CSS_199" url="/jsonsearch/jsonsearch.htm?mid2=10&amp;Prpid=10000629&amp;lid=1" text="انگلستان" value="1167330" />
+				</answer>
+				<answer valueId="0">
+					<part type="textList" order="3" class="CSS_199" url="/jsonsearch/jsonsearch.htm?mid2=10&amp;Prpid=10000629&amp;lid=1" text="" value="0" />
+				</answer>
+			</answers>
+		</property>
+		<property question="توضیحات" prpid="13101" multi="true">
+			<answers>
+				<answer valueId="0">
+					<part class="CSS_144" type="text" order="4" />
+				</answer>
+			</answers>
+		</property>
+	</properties>
+</root>
