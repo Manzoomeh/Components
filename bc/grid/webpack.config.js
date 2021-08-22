@@ -35,14 +35,18 @@ module.exports = {
         test: /\.ts$/,
         use: ["ts-loader"],
       },
-      //   {
-      //     test: /\.css$/,
-      //     use: ["style-loader", "css-loader"],
-      //   },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.png/,
+        type: "asset/resource",
+      },
     ],
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx", ".css"], // there's a dot missing
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".png"], // there's a dot missing
   },
   plugins: [
     new CircularDependencyPlugin({

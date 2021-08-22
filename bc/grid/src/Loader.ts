@@ -15,11 +15,11 @@ import Grid from "./Grid";
 // });
 
 const data = [
-  { id: 1, name: "Data1" },
-  { id: 2, name: "Data2" },
-  { id: 3, name: "Data3" },
-  { id: 4, name: "Data4" },
-  { id: 5, name: "Data5" },
+  { id: 1, name: "Amir", age: 12 },
+  { id: 2, name: "javad", age: 30 },
+  { id: 3, name: "hasan", age: 55 },
+  { id: 4, name: "Jamshid", age: 10 },
+  { id: 5, name: "akbar", age: 80 },
 ];
 
 const options = {
@@ -28,6 +28,7 @@ const options = {
       title: "شناسه",
     },
     name: "name-1",
+    age: "سن",
   },
 };
 const element = document.getElementById("tbl") as HTMLTableElement;
