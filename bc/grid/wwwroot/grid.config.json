@@ -6,5 +6,6 @@
     "name": "name-1",
     "age": "سن"
   },
-  "rowNumber": { "sort": false, "name": "age" }
+  "rowNumber": { "sort": false, "name": "age" },
+  "defaultSort": { "name": "age" }
 }

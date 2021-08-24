@@ -98,11 +98,30 @@ export default class Grid {
         }
         this.sortInfo = {
           column: columnInfo,
-          sortType: sortType,
+          sort: sortType,
         };
         td.setAttribute("data-bc-sorting", sortType);
         this.refreshData();
       });
+      if (this.options.defaultSort) {
+        let sortType: SortType = null;
+        let find = false;
+        if (typeof this.options.defaultSort === "string") {
+          if (this.options.defaultSort === columnInfo.name) {
+            find = true;
+          }
+        } else if (this.options.defaultSort.name === columnInfo.name) {
+          find = true;
+          sortType = this.options.defaultSort.sort;
+        }
+        if (find) {
+          this.sortInfo = {
+            column: columnInfo,
+            sort: sortType ?? "asc",
+          };
+          td.setAttribute("data-bc-sorting", this.sortInfo.sort);
+        }
+      }
     };
     if (this.options.rowNumber) {
       const td = document.createElement("td");
@@ -155,6 +174,7 @@ export default class Grid {
       const rowObj = new GridRow(this, row, index);
       this.rows.push(rowObj);
     });
+
     this.refreshData();
   }
 
@@ -166,9 +186,7 @@ export default class Grid {
     }
     if (this.sortInfo) {
       rows = rows.sort(
-        (this.sortInfo.sortType === "asc" ? this.sortAsc : this.sortDesc).bind(
-          this
-        )
+        (this.sortInfo.sort === "asc" ? this.sortAsc : this.sortDesc).bind(this)
       );
     }
     rows?.forEach((row) => this.body.appendChild(row.uiElement));
