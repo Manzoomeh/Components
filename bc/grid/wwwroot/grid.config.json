@@ -3,6 +3,7 @@
     "id": {
       "title": "شناسه"
     },
-    "name": "name-1"
+    "name": "name-1",
+    "age": "سن"
   }
 }
