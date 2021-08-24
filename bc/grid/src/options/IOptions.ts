@@ -5,11 +5,16 @@ export type IOptions = {
   filter?: boolean;
   pageSize?: number[];
   paging?: boolean;
+  rowNumber?: boolean | GridColumnInfo;
 };
 
 export type Column = string | ColumnInfo;
 
 export type ColumnInfo = {
   title?: string;
-  sortable?: boolean;
+  sort?: boolean;
+};
+
+export type GridColumnInfo = ColumnInfo & {
+  name: string;
 };
