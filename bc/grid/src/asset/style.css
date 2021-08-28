@@ -15,3 +15,22 @@ table[data-bc-grid] thead [data-bc-sorting="asc"] {
 table[data-bc-grid] thead [data-bc-sorting="desc"] {
   background-image: url("img/sort_desc.png") !important;
 }
+
+[data-bc-grid-page][data-bc-grid-current-page="active"] {
+  background-color: red;
+}
+
+[data-bc-grid-btn-status],
+[data-bc-grid-page] {
+  border: 1px solid black;
+  padding: 4px;
+  margin: 2px;
+  cursor: pointer;
+}
+[data-bc-grid-btn-status="disabled"] {
+  color: lightslategray;
+  cursor: no-drop;
+}
+[data-bc-grid-paging-container] {
+  margin-top: 5px;
+}

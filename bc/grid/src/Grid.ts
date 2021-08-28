@@ -2,9 +2,10 @@ import { GridColumnInfo, IOptions } from "./options/IOptions";
 import { SortInfo, SortType, Source } from "./type-alias";
 import "./asset/style.css";
 import GridRow from "./GridRow";
-//import alasql from "alasql";
+import IGrid from "./IGrid";
+import GridPaginate from "./GridPaginate";
 
-export default class Grid {
+export default class Grid implements IGrid {
   readonly table: HTMLTableElement;
   readonly options: IOptions;
   readonly head: HTMLTableSectionElement;
@@ -15,6 +16,9 @@ export default class Grid {
   static _defaults: Partial<IOptions>;
   private rows: GridRow[] = new Array<GridRow>();
   private source: Source;
+  pageSize: number;
+  pageNumber: number = 1;
+  private paginate: GridPaginate;
   static getDefaults(): Partial<IOptions> {
     if (!Grid._defaults) {
       Grid._defaults = {
@@ -28,7 +32,7 @@ export default class Grid {
 
   public readonly columns: GridColumnInfo[] = new Array<GridColumnInfo>();
 
-  constructor(table: HTMLTableElement, options: IOptions, source: Source) {
+  constructor(table: HTMLTableElement, options: IOptions) {
     if (!table) {
       throw "table element in null or undefined";
     }
@@ -40,7 +44,7 @@ export default class Grid {
     this.table.appendChild(this.head);
     this.body = document.createElement("tbody");
     this.table.appendChild(this.body);
-    this.CreateTable(source);
+    this.CreateTable();
   }
 
   private init(table: HTMLTableElement) {
@@ -63,21 +67,27 @@ export default class Grid {
       filter.appendChild(label);
     }
     if (this.options.paging) {
-      if (this.options.pageSize?.length > 1) {
-        const pageSize = document.createElement("div");
-        pageSize.setAttribute("data-bc-grid-pagesize-container", "");
-        container.appendChild(pageSize);
-      }
+      const pageSizeContainer = document.createElement("div");
+      pageSizeContainer.setAttribute("data-bc-grid-pagesize-container", "");
+      container.appendChild(pageSizeContainer);
+
       container.appendChild(table);
-      const paging = document.createElement("div");
-      paging.setAttribute("data-bc-grid-paging-container", "");
-      container.appendChild(paging);
+      const pagingContainer = document.createElement("div");
+      pagingContainer.setAttribute("data-bc-grid-paging-container", "");
+      container.appendChild(pagingContainer);
+
+      this.paginate = new GridPaginate(
+        this,
+        pageSizeContainer,
+        pagingContainer
+      );
     }
   }
 
-  private CreateTable(source: Source): void {
-    this.source = source;
+  private CreateTable(): void {
+    //this.source = source;
     const tr = document.createElement("tr");
+    tr.setAttribute("data-bc-grid-header", "");
     this.head.appendChild(tr);
     const addSorting = (
       td: HTMLTableDataCellElement,
@@ -159,7 +169,12 @@ export default class Grid {
         this.columns.push(columnInfo);
         tr.appendChild(td);
       });
-    } else {
+    }
+  }
+
+  public setSource(source: Source) {
+    if (!this.options.columns) {
+      const tr = this.head.querySelector("tr[data-bc-grid-header]");
       if (source && source.length > 0 && source[0]) {
         Object.getOwnPropertyNames(source[0]).forEach((property) => {
           const td = document.createElement("td");
@@ -169,7 +184,10 @@ export default class Grid {
         });
       }
     }
+
+    //TODO:add repository for store generated ui element data
     this.rows = [];
+    this.source = source;
     this.source?.forEach((row, index) => {
       const rowObj = new GridRow(this, row, index);
       this.rows.push(rowObj);
@@ -179,7 +197,6 @@ export default class Grid {
   }
 
   private refreshData(): void {
-    this.body.innerHTML = "";
     let rows = this.rows;
     if (this.filter?.length > 0) {
       rows = rows.filter(this.applyFilter.bind(this));
@@ -189,7 +206,14 @@ export default class Grid {
         (this.sortInfo.sort === "asc" ? this.sortAsc : this.sortDesc).bind(this)
       );
     }
-    rows?.forEach((row) => this.body.appendChild(row.uiElement));
+    this.paginate.setSource(rows);
+    this.displayCurrentRows();
+  }
+
+  public displayCurrentRows() {
+    this.body.innerHTML = "";
+    const toDrawRow = this.paginate?.getCurrentPageRows() ?? this.source;
+    toDrawRow?.forEach((row) => this.body.appendChild(row.uiElement));
   }
 
   private applyFilter(row: GridRow) {
@@ -198,7 +222,7 @@ export default class Grid {
       console.log(value, this.filter, value.indexOf(this.filter) >= 0);
       return value.indexOf(this.filter) >= 0;
     });
-    console.log(row.data, colInfo);
+    //console.log(row.data, colInfo);
     return colInfo;
   }
 

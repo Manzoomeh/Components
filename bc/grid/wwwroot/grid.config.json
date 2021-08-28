@@ -7,5 +7,6 @@
     "age": "سن"
   },
   "rowNumber": { "sort": false, "name": "age" },
-  "defaultSort": { "name": "age" }
+  "defaultSort": { "name": "age" },
+  "pageSize": [1, 2, 3]
 }

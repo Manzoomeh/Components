@@ -18,4 +18,8 @@ import Grid from "./Grid";
 var data = require("../wwwroot/data.json");
 const options = require("../wwwroot/grid.config.json");
 const element = document.getElementById("tbl") as HTMLTableElement;
-const grid = new Grid(element, options, data);
+const grid = new Grid(element, options);
+document
+  .getElementById("data-btn")
+  .addEventListener("click", (_) => grid.setSource(data));
+//grid.setSource(data);
