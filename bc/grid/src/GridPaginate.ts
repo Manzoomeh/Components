@@ -10,6 +10,8 @@ export default class GridPaginate {
   private previousButton: HTMLAnchorElement;
   private nextButton: HTMLAnchorElement;
   private pageButtonsContainer: HTMLSpanElement;
+  private remainFromStart: boolean;
+  private remainFromEnd: boolean;
 
   private data: Source;
 
@@ -40,9 +42,33 @@ export default class GridPaginate {
       Math.floor(this.totalRows / this.pageSize) +
       (Math.ceil(this.totalRows % this.pageSize) > 0 ? 1 : 0);
     console.log("total page", this.totalPage);
+    this.updatePaging();
+    this.owner.displayCurrentRows();
+  }
+
+  updatePaging() {
     this.pageButtonsContainer.innerHTML = "";
-    for (let i = 0; i < this.totalPage; i++) {
+    const pageSideCount = Math.floor(this.owner.options.pageCount / 2);
+    const startPage = Math.max(0, this.pageNumber - pageSideCount);
+    const remainFromStart = Math.max(
+      0,
+      pageSideCount - this.pageNumber - startPage
+    );
+
+    const endPage = Math.min(
+      this.totalPage,
+      this.pageNumber + pageSideCount + remainFromStart
+    );
+    this.remainFromStart = startPage != 0;
+    this.remainFromEnd = endPage != this.totalPage;
+    for (let i = startPage; i < endPage; i++) {
       const page = document.createElement("a");
+      if (i === startPage) {
+        page.setAttribute("data-bc-grid-page-start", "");
+      }
+      if (i === endPage - 1) {
+        page.setAttribute("data-bc-grid-page-end", "");
+      }
       page.appendChild(document.createTextNode((i + 1).toString()));
       page.setAttribute("data-bc-grid-page", i.toString());
       page.addEventListener("click", (e) => {
@@ -51,7 +77,6 @@ export default class GridPaginate {
       });
       this.pageButtonsContainer.append(page);
     }
-    this.owner.displayCurrentRows();
   }
 
   getCurrentPageRows(): Source {
@@ -76,7 +101,6 @@ export default class GridPaginate {
       const newSize = parseInt((x.target as HTMLSelectElement).value);
       if (this.pageSize != newSize) {
         this.pageSize = newSize;
-        console.log(newSize);
         this.setSource(this.data);
       }
     });
@@ -117,6 +141,15 @@ export default class GridPaginate {
       "data-bc-grid-btn-status",
       this.pageNumber === 0 ? "disabled" : ""
     );
+    const pageBtn = this.pageButtonsContainer.querySelector(
+      `[data-bc-grid-page='${this.pageNumber}']`
+    );
+    if (
+      (pageBtn.hasAttribute("data-bc-grid-page-end") && this.remainFromEnd) ||
+      (pageBtn.hasAttribute("data-bc-grid-page-start") && this.remainFromStart)
+    ) {
+      this.updatePaging();
+    }
     this.pageButtonsContainer
       .querySelectorAll("[data-bc-grid-page]")
       .forEach((x) => {

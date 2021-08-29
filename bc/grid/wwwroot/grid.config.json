@@ -8,5 +8,5 @@
   },
   "rowNumber": { "sort": false, "name": "age" },
   "defaultSort": { "name": "age" },
-  "pageSize": [1, 2, 3]
+  "pageSize": [10, 30, 50]
 }

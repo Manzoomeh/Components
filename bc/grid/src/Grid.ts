@@ -25,6 +25,7 @@ export default class Grid implements IGrid {
         filter: true,
         pageSize: [10, 30, 50],
         paging: true,
+        pageCount: 10,
       };
     }
     return Grid._defaults;

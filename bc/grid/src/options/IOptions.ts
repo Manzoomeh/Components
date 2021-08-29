@@ -7,6 +7,7 @@ export type IOptions = {
   paging?: boolean;
   rowNumber?: boolean | GridColumnInfo;
   defaultSort: string | SortInfo;
+  pageCount?: number;
 };
 
 export type Column = string | ColumnInfo;
