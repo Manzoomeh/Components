@@ -1,27 +1,23 @@
-import { IDictionary, SortType } from "../type-alias";
+import { IDictionary, ISortType } from "../type-alias";
 
 export type IOptions = {
-  columns: IDictionary<Column>;
+  columns: IDictionary<IColumn>;
   filter?: boolean;
   pageSize?: number[];
   paging?: boolean;
-  rowNumber?: boolean | GridColumnInfo;
-  defaultSort: string | SortInfo;
+  rowNumber?: string;
+  defaultSort: string | ISortInfo;
   pageCount?: number;
 };
 
-export type Column = string | ColumnInfo;
+export type IColumn = string | IColumnInfo;
 
-export type SortInfo = {
+export type ISortInfo = {
   name: string;
-  sort?: SortType;
+  sort?: ISortType;
 };
 
-export type ColumnInfo = {
+export type IColumnInfo = {
   title?: string;
   sort?: boolean;
-};
-
-export type GridColumnInfo = ColumnInfo & {
-  name: string;
 };

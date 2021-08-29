@@ -1,5 +1,11 @@
-import { GridColumnInfo, IOptions } from "./options/IOptions";
-import { SortInfo, SortType, Source } from "./type-alias";
+import { IOptions } from "./options/IOptions";
+import {
+  ColumnType,
+  IGridColumnInfo,
+  ISortInfo,
+  ISortType,
+  ISource,
+} from "./type-alias";
 import "./asset/style.css";
 import GridRow from "./GridRow";
 import IGrid from "./IGrid";
@@ -10,12 +16,12 @@ export default class Grid implements IGrid {
   readonly options: IOptions;
   readonly head: HTMLTableSectionElement;
   readonly body: HTMLTableSectionElement;
-  private sortInfo: SortInfo;
+  private sortInfo: ISortInfo;
   private filter: string;
 
   static _defaults: Partial<IOptions>;
   private rows: GridRow[] = new Array<GridRow>();
-  private source: Source;
+  private source: ISource;
   pageSize: number;
   pageNumber: number = 1;
   private paginate: GridPaginate;
@@ -31,7 +37,7 @@ export default class Grid implements IGrid {
     return Grid._defaults;
   }
 
-  public readonly columns: GridColumnInfo[] = new Array<GridColumnInfo>();
+  public readonly columns: IGridColumnInfo[] = new Array<IGridColumnInfo>();
 
   constructor(table: HTMLTableElement, options: IOptions) {
     if (!table) {
@@ -86,13 +92,12 @@ export default class Grid implements IGrid {
   }
 
   private CreateTable(): void {
-    //this.source = source;
     const tr = document.createElement("tr");
     tr.setAttribute("data-bc-grid-header", "");
     this.head.appendChild(tr);
     const addSorting = (
       td: HTMLTableDataCellElement,
-      columnInfo: GridColumnInfo
+      columnInfo: IGridColumnInfo
     ) => {
       td.setAttribute("data-bc-sorting", "");
       td.addEventListener("click", (_) => {
@@ -101,7 +106,7 @@ export default class Grid implements IGrid {
             .querySelectorAll("[data-bc-sorting]")
             .forEach((element) => element.setAttribute("data-bc-sorting", ""));
         }
-        let sortType = td.getAttribute("data-bc-sorting") as SortType;
+        let sortType = td.getAttribute("data-bc-sorting") as ISortType;
         if (sortType) {
           sortType = sortType === "asc" ? "desc" : "asc";
         } else {
@@ -115,7 +120,7 @@ export default class Grid implements IGrid {
         this.refreshData();
       });
       if (this.options.defaultSort) {
-        let sortType: SortType = null;
+        let sortType: ISortType = null;
         let find = false;
         if (typeof this.options.defaultSort === "string") {
           if (this.options.defaultSort === columnInfo.name) {
@@ -136,19 +141,14 @@ export default class Grid implements IGrid {
     };
     if (this.options.rowNumber) {
       const td = document.createElement("td");
-      let columnInfo: GridColumnInfo;
-      if (typeof this.options.rowNumber === "boolean") {
-        td.appendChild(document.createTextNode("#"));
-        columnInfo = { title: null, name: "orderId" };
-      } else {
-        const title = this.options.rowNumber.title ?? "#";
-        td.appendChild(document.createTextNode(title));
-        columnInfo = { ...{ name: "orderId" }, ...this.options.rowNumber };
-        columnInfo.title = this.options.rowNumber.name ? title : null;
-      }
-      if (columnInfo.sort ?? true) {
-        addSorting(td, columnInfo);
-      }
+      const title = this.options.rowNumber?.toString() ?? "#";
+      td.appendChild(document.createTextNode("#"));
+      const columnInfo: IGridColumnInfo = {
+        title: title,
+        name: null,
+        type: ColumnType.Sort,
+      };
+
       this.columns.push(columnInfo);
       tr.appendChild(td);
     }
@@ -156,13 +156,16 @@ export default class Grid implements IGrid {
       Object.getOwnPropertyNames(this.options.columns).forEach((property) => {
         var value = this.options.columns[property];
         const td = document.createElement("td");
-        let columnInfo: GridColumnInfo;
+        let columnInfo: IGridColumnInfo;
         if (typeof value === "string") {
           td.appendChild(document.createTextNode(value));
-          columnInfo = { title: value, name: property };
+          columnInfo = { title: value, name: property, type: ColumnType.Data };
         } else {
           td.appendChild(document.createTextNode(value.title));
-          columnInfo = { ...value, ...{ name: property } };
+          columnInfo = {
+            ...value,
+            ...{ name: property, type: ColumnType.Data },
+          };
         }
         if (columnInfo.sort ?? true) {
           addSorting(td, columnInfo);
@@ -173,7 +176,7 @@ export default class Grid implements IGrid {
     }
   }
 
-  public setSource(source: Source) {
+  public setSource(source: ISource) {
     if (!this.options.columns) {
       const tr = this.head.querySelector("tr[data-bc-grid-header]");
       if (source && source.length > 0 && source[0]) {
@@ -181,7 +184,7 @@ export default class Grid implements IGrid {
           const td = document.createElement("td");
           td.appendChild(document.createTextNode(property));
           tr.appendChild(td);
-          this.columns.push({ name: property });
+          this.columns.push({ name: property, type: ColumnType.Data });
         });
       }
     }
@@ -207,6 +210,8 @@ export default class Grid implements IGrid {
         (this.sortInfo.sort === "asc" ? this.sortAsc : this.sortDesc).bind(this)
       );
     }
+    console.log("set order");
+    rows.forEach((row, i) => row.setOrder(i));
     this.paginate.setSource(rows);
     this.displayCurrentRows();
   }
@@ -219,8 +224,12 @@ export default class Grid implements IGrid {
 
   private applyFilter(row: GridRow) {
     const colInfo = this.columns.find((col) => {
-      const value = Reflect.get(row.data, col.name)?.toString().toLowerCase();
-      return value.indexOf(this.filter) >= 0;
+      let retVal = false;
+      if (col.type != ColumnType.Sort) {
+        const value = Reflect.get(row.data, col.name)?.toString().toLowerCase();
+        retVal = value.indexOf(this.filter) >= 0;
+      }
+      return retVal;
     });
     return colInfo;
   }

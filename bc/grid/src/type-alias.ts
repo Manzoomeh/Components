@@ -1,12 +1,23 @@
-import { GridColumnInfo } from "./options/IOptions";
+import { IColumnInfo } from "./options/IOptions";
 
-export type Source = any[];
+export type ISource = any[];
 
 export type IDictionary<T> = { [key: string]: T };
 
-export type SortType = "asc" | "desc";
+export type ISortType = "asc" | "desc";
 
-export type SortInfo = {
-  column: GridColumnInfo;
-  sort: SortType;
+export type IGridColumnInfo = IColumnInfo & {
+  type: ColumnType;
+  name: string;
 };
+
+export type ISortInfo = {
+  column: IGridColumnInfo;
+  sort: ISortType;
+};
+
+export enum ColumnType {
+  Data,
+  Sort,
+  Action,
+}
