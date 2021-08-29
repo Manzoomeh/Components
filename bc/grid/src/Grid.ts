@@ -220,10 +220,8 @@ export default class Grid implements IGrid {
   private applyFilter(row: GridRow) {
     const colInfo = this.columns.find((col) => {
       const value = Reflect.get(row.data, col.name)?.toString().toLowerCase();
-      console.log(value, this.filter, value.indexOf(this.filter) >= 0);
       return value.indexOf(this.filter) >= 0;
     });
-    //console.log(row.data, colInfo);
     return colInfo;
   }
 

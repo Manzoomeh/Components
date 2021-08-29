@@ -41,7 +41,6 @@ export default class GridPaginate {
     this.totalPage =
       Math.floor(this.totalRows / this.pageSize) +
       (Math.ceil(this.totalRows % this.pageSize) > 0 ? 1 : 0);
-    console.log("total page", this.totalPage);
     this.updatePaging();
     this.owner.displayCurrentRows();
   }
