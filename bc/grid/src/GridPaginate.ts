@@ -49,14 +49,9 @@ export default class GridPaginate {
     this.pageButtonsContainer.innerHTML = "";
     const pageSideCount = Math.floor(this.owner.options.pageCount / 2);
     const startPage = Math.max(0, this.pageNumber - pageSideCount);
-    const remainFromStart = Math.max(
-      0,
-      pageSideCount - this.pageNumber - startPage
-    );
-
     const endPage = Math.min(
       this.totalPage,
-      this.pageNumber + pageSideCount + remainFromStart
+      startPage + this.owner.options.pageCount
     );
     this.remainFromStart = startPage != 0;
     this.remainFromEnd = endPage != this.totalPage;
@@ -144,8 +139,10 @@ export default class GridPaginate {
       `[data-bc-grid-page='${this.pageNumber}']`
     );
     if (
-      (pageBtn.hasAttribute("data-bc-grid-page-end") && this.remainFromEnd) ||
-      (pageBtn.hasAttribute("data-bc-grid-page-start") && this.remainFromStart)
+      pageBtn &&
+      ((pageBtn.hasAttribute("data-bc-grid-page-end") && this.remainFromEnd) ||
+        (pageBtn.hasAttribute("data-bc-grid-page-start") &&
+          this.remainFromStart))
     ) {
       this.updatePaging();
     }
