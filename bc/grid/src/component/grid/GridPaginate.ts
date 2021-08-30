@@ -1,6 +1,6 @@
 import GridRow from "./GridRow";
 import IGrid from "./IGrid";
-import { ISource } from "./type-alias";
+import { IGridSource } from "./../../type-alias";
 
 export default class GridPaginate {
   readonly owner: IGrid;
@@ -13,7 +13,7 @@ export default class GridPaginate {
   private remainFromStart: boolean;
   private remainFromEnd: boolean;
 
-  private data: ISource;
+  private data: IGridSource;
 
   public pageSize: number;
   public pageNumber: number;
@@ -73,7 +73,7 @@ export default class GridPaginate {
     }
   }
 
-  getCurrentPageRows(): ISource {
+  getCurrentPageRows(): IGridSource {
     const from = this.pageNumber * this.pageSize;
     const to = from + this.pageSize;
     this.updateState();

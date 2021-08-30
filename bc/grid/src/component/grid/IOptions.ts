@@ -1,6 +1,6 @@
-import { IDictionary, ISortType } from "../type-alias";
+import { IDictionary, ISortType } from "../../type-alias";
 
-export type IOptions = {
+export type IGridOptions = {
   columns: IDictionary<IColumn>;
   filter?: boolean;
   pageSize?: number[];
@@ -8,6 +8,7 @@ export type IOptions = {
   rowNumber?: string;
   defaultSort: string | ISortInfo;
   pageCount?: number;
+  sorting?: boolean;
 };
 
 export type IColumn = string | IColumnInfo;

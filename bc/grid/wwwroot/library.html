@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Document</title>
+  </head>
+
+  <body>
+    <button id="data-btn">Load</button>
+    <table id="tbl" style="width: 300px"></table>
+    <script src="basiscore.grid.js"></script>
+    <script>
+      const MIN_ID = 1000;
+      const MAX_ID = 1200;
+      const MIN_COUNT = 10;
+
+      const dataList = [];
+      for (let index = MIN_ID; index < MAX_ID; index++) {
+        const data = {
+          id: index,
+          count: Math.floor(Math.random() * 80) + MIN_COUNT,
+          data: Math.random().toString(36).substring(7),
+        };
+        dataList.push(data);
+      }
+
+      const options = {
+        columns: {
+          id: {
+            title: "Data-Id",
+          },
+          data: "Data",
+          count: "Count",
+        },
+        rowNumber: { sort: false, name: "count" },
+        defaultSort: { name: "count" },
+        pageSize: [10, 30, 50],
+      };
+
+      const element = document.getElementById("tbl");
+      const myGrid = new grid.Grid(element, options);
+      document
+        .getElementById("data-btn")
+        .addEventListener("click", (_) => myGrid.setSource(dataList));
+      myGrid.setSource(dataList);
+    </script>
+  </body>
+</html>

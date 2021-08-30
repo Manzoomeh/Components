@@ -1,7 +1,43 @@
 const path = require("path");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
 
+function makeSourceData(count) {
+  const MIN_ID = 1;
+
+  const dataList = [];
+  dataList.push(["id", "count", "data"]);
+  for (let index = MIN_ID; index < count; index++) {
+    dataList.push([
+      index,
+      Math.floor(Math.random() * 80),
+      Math.random().toString(36).substring(7),
+    ]);
+  }
+  return {
+    "book.list": dataList,
+  };
+}
+
+function makeApiData(count) {
+  const MIN_ID = 1;
+  const dataList = [];
+  for (let index = MIN_ID; index < count; index++) {
+    const data = {
+      id: index,
+      count: Math.floor(Math.random() * 80),
+      data: Math.random().toString(36).substring(7),
+    };
+    dataList.push(data);
+  }
+  return {
+    sources: {
+      "api.demo": {
+        options: null,
+        data: dataList,
+      },
+    },
+  };
+}
 module.exports = {
   entry: {
     grid: {
@@ -21,11 +57,19 @@ module.exports = {
       },
     },
   },
-  output: {
-    filename: "basiscore.[name].js",
-  },
   devServer: {
     static: path.resolve(__dirname, "wwwroot"),
+    onBeforeSetupMiddleware: function (server) {
+      server.app.get("/api/demo", function (req, res) {
+        res.send(makeApiData(300));
+      });
+      server.app.post("/source/demo", function (req, res) {
+        res.json(makeSourceData(300));
+      });
+      server.app.post("*", (req, res) => {
+        res.redirect(req.originalUrl);
+      });
+    },
     open: true,
     port: 3001,
   },
@@ -64,16 +108,6 @@ module.exports = {
       onEnd({ compilation }) {
         console.log("end detecting webpack modules cycles");
       },
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.resolve(
-            __dirname,
-            "node_modules/jquery/dist/jquery.min.js"
-          ),
-        },
-      ],
     }),
   ],
 };

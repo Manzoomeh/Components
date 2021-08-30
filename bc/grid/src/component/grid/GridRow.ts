@@ -1,5 +1,5 @@
+import { ColumnType } from "../../enum";
 import Grid from "./Grid";
-import { ColumnType } from "./type-alias";
 
 export default class GridRow {
   private _data: any;
@@ -32,9 +32,11 @@ export default class GridRow {
         this._uiElement.appendChild(td);
       });
     } else if (this.order != 0) {
-      this._uiElement.querySelector("[data-bc-grid-cell-order]").textContent =
-        this.order.toString();
-      this.order = 0;
+      const cel = this._uiElement.querySelector("[data-bc-grid-cell-order]");
+      if (cel) {
+        cel.textContent = this.order.toString();
+        this.order = 0;
+      }
     }
     return this._uiElement;
   }

@@ -1,6 +1,7 @@
-import { IColumnInfo } from "./options/IOptions";
+import { IColumnInfo } from "./component/grid/IOptions";
+import { ColumnType } from "./enum";
 
-export type ISource = any[];
+export type IGridSource = any[];
 
 export type IDictionary<T> = { [key: string]: T };
 
@@ -15,9 +16,3 @@ export type ISortInfo = {
   column: IGridColumnInfo;
   sort: ISortType;
 };
-
-export enum ColumnType {
-  Data,
-  Sort,
-  Action,
-}
