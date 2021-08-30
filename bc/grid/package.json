@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --mode=development",
-    "pub": "webpack --mode=production"
+    "pub": "webpack --mode=production",
+    "ws": "node websocket-server/server.js"
   },
   "keywords": [
     "TypeScript",
