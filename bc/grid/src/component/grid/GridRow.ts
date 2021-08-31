@@ -17,17 +17,19 @@ export default class GridRow {
         let value: Node = null;
         switch (column.type) {
           case ColumnType.Data: {
+            td.setAttribute("data-bc-data", "");
             const tmpValue = Reflect.get(this._data, column.name);
             value = document.createTextNode(tmpValue?.toString());
             break;
           }
           case ColumnType.Sort: {
-            td.setAttribute("data-bc-grid-cell-order", "");
+            td.setAttribute("data-bc-order", "");
             value = document.createTextNode(this.order.toString());
             break;
           }
           case ColumnType.Action: {
-            td.setAttribute("data-bc-grid-cell-action", "");
+            td.setAttribute("data-bc-action", "");
+            td.setAttribute("data-bc-no-selection", "");
             if (column.actions) {
               value = new DocumentFragment();
               column.actions.forEach((actionInfo) => {
@@ -69,7 +71,7 @@ export default class GridRow {
         this._uiElement.appendChild(td);
       });
     } else if (this.order != 0) {
-      const cel = this._uiElement.querySelector("[data-bc-grid-cell-order]");
+      const cel = this._uiElement.querySelector("[data-bc-order]");
       if (cel) {
         cel.textContent = this.order.toString();
         this.order = 0;

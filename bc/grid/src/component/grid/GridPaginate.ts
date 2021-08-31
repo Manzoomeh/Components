@@ -58,13 +58,13 @@ export default class GridPaginate {
     for (let i = startPage; i < endPage; i++) {
       const page = document.createElement("a");
       if (i === startPage) {
-        page.setAttribute("data-bc-grid-page-start", "");
+        page.setAttribute("data-bc-first", "");
       }
       if (i === endPage - 1) {
-        page.setAttribute("data-bc-grid-page-end", "");
+        page.setAttribute("data-bc-last", "");
       }
       page.appendChild(document.createTextNode((i + 1).toString()));
-      page.setAttribute("data-bc-grid-page", i.toString());
+      page.setAttribute("data-bc-page", i.toString());
       page.addEventListener("click", (e) => {
         this.pageNumber = i;
         this.owner.displayCurrentRows();
@@ -128,31 +128,30 @@ export default class GridPaginate {
   }
   private updateState() {
     this.nextButton.setAttribute(
-      "data-bc-grid-btn-status",
+      "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
     );
     this.previousButton.setAttribute(
-      "data-bc-grid-btn-status",
+      "data-bc-status",
       this.pageNumber === 0 ? "disabled" : ""
     );
     const pageBtn = this.pageButtonsContainer.querySelector(
-      `[data-bc-grid-page='${this.pageNumber}']`
+      `[data-bc-page='${this.pageNumber}']`
     );
     if (
       pageBtn &&
-      ((pageBtn.hasAttribute("data-bc-grid-page-end") && this.remainFromEnd) ||
-        (pageBtn.hasAttribute("data-bc-grid-page-start") &&
-          this.remainFromStart))
+      ((pageBtn.hasAttribute("data-bc-last") && this.remainFromEnd) ||
+        (pageBtn.hasAttribute("data-bc-first") && this.remainFromStart))
     ) {
       this.updatePaging();
     }
     this.pageButtonsContainer
-      .querySelectorAll("[data-bc-grid-page]")
+      .querySelectorAll("[data-bc-page]")
       .forEach((x) => {
-        const pageId = parseInt(x.getAttribute("data-bc-grid-page"));
+        const pageId = parseInt(x.getAttribute("data-bc-page"));
         x.setAttribute(
-          "data-bc-grid-current-page",
-          this.pageNumber === pageId ? "active" : ""
+          "data-bc-current",
+          this.pageNumber === pageId ? "true" : "false"
         );
       });
   }

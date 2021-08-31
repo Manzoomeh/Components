@@ -67,7 +67,7 @@ export default class Grid implements IGrid {
     table.parentNode.removeChild(table);
     if (this.options.filter) {
       const filter = document.createElement("div");
-      filter.setAttribute("data-bc-grid-filter-container", "");
+      filter.setAttribute("data-bc-filter-container", "");
       container.appendChild(filter);
       const label = document.createElement("label");
       label.appendChild(document.createTextNode("Search:"));
@@ -81,12 +81,13 @@ export default class Grid implements IGrid {
     }
     if (this.options.paging) {
       const pageSizeContainer = document.createElement("div");
-      pageSizeContainer.setAttribute("data-bc-grid-pagesize-container", "");
+      pageSizeContainer.setAttribute("data-bc-pagesize-container", "");
       container.appendChild(pageSizeContainer);
 
       container.appendChild(table);
       const pagingContainer = document.createElement("div");
-      pagingContainer.setAttribute("data-bc-grid-paging-container", "");
+      pagingContainer.setAttribute("data-bc-paging-container", "");
+      pagingContainer.setAttribute("data-bc-no-selection", "");
       container.appendChild(pagingContainer);
 
       this.paginate = new GridPaginate(
@@ -99,10 +100,10 @@ export default class Grid implements IGrid {
 
   private CreateTable(): void {
     const tr = document.createElement("tr");
-    tr.setAttribute("data-bc-grid-header", "");
+    tr.setAttribute("data-bc-no-selection", "");
     this.head.appendChild(tr);
     if (this.options.rowNumber) {
-      const td = document.createElement("td");
+      const td = document.createElement("th");
       const title = this.options.rowNumber?.toString() ?? "#";
       td.appendChild(document.createTextNode("#"));
       const columnInfo: IGridColumnInfo = {
@@ -191,7 +192,7 @@ export default class Grid implements IGrid {
 
   public setSource(source: IGridSource) {
     if (!this.columnsInitialized) {
-      const tr = this.head.querySelector("tr[data-bc-grid-header]");
+      const tr = this.head.querySelector("tr");
       if (source && source.length > 0 && source[0]) {
         Object.getOwnPropertyNames(source[0]).forEach((property) => {
           const columnInfo = {
