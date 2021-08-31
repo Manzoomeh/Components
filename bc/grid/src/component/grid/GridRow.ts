@@ -2,11 +2,8 @@ import { ColumnType } from "../../enum";
 import Grid from "./Grid";
 
 export default class GridRow {
-  private _data: any;
+  public readonly data: any;
   private readonly owner: Grid;
-  public get data(): any {
-    return this._data;
-  }
   private order: number;
   private _uiElement: HTMLTableRowElement = null;
   public get uiElement(): HTMLTableRowElement {
@@ -18,7 +15,7 @@ export default class GridRow {
         switch (column.type) {
           case ColumnType.Data: {
             td.setAttribute("data-bc-data", "");
-            const tmpValue = Reflect.get(this._data, column.name);
+            const tmpValue = Reflect.get(this.data, column.name);
             value = document.createTextNode(tmpValue?.toString());
             break;
           }
@@ -48,7 +45,7 @@ export default class GridRow {
                   if (typeof actionInfo.url === "string") {
                     anchorElement.href = actionInfo.url;
                   } else {
-                    anchorElement.href = actionInfo.url(this._data);
+                    anchorElement.href = actionInfo.url(this.data);
                   }
                 } else if (actionInfo.action) {
                   anchorElement.href = "javascript:void()";
@@ -80,7 +77,7 @@ export default class GridRow {
     return this._uiElement;
   }
   constructor(owner: Grid, data: any, order: number) {
-    this._data = data;
+    this.data = data;
     this.owner = owner;
     this.order = order + 1;
   }

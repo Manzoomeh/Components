@@ -3,5 +3,5 @@ import { IGridOptions } from "./IOptions";
 
 export default interface IGrid {
   options: IGridOptions;
-  displayCurrentRows(rows: GridRow[]): void;
+  displayRows(rows: GridRow[]): void;
 }

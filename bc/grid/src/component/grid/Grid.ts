@@ -12,6 +12,7 @@ import GridPaginate from "./GridPaginate";
 import { ColumnType } from "../../enum";
 
 export default class Grid implements IGrid {
+  readonly container: HTMLElement;
   readonly table: HTMLTableElement;
   readonly options: IGridOptions;
   readonly head: HTMLTableSectionElement;
@@ -26,6 +27,7 @@ export default class Grid implements IGrid {
   pageSize: number;
   pageNumber: number = 1;
   private paginate: GridPaginate;
+  public readonly columns: IGridColumnInfo[] = new Array<IGridColumnInfo>();
   static getDefaults(): Partial<IGridOptions> {
     if (!Grid._defaults) {
       Grid._defaults = {
@@ -39,10 +41,8 @@ export default class Grid implements IGrid {
     return Grid._defaults;
   }
 
-  public readonly columns: IGridColumnInfo[] = new Array<IGridColumnInfo>();
-
-  constructor(table: HTMLTableElement, options?: IGridOptions) {
-    if (!table) {
+  constructor(container: HTMLElement, options?: IGridOptions) {
+    if (!container) {
       throw "table element in null or undefined";
     }
 
@@ -50,25 +50,29 @@ export default class Grid implements IGrid {
       ...Grid.getDefaults(),
       ...(options ? options : ({} as any)),
     };
-    this.init(table);
-    this.table = table;
+
+    this.container = container;
+    this.table = document.createElement("table");
     this.table.setAttribute("data-bc-grid", "");
     this.head = document.createElement("thead");
     this.table.appendChild(this.head);
     this.body = document.createElement("tbody");
     this.table.appendChild(this.body);
-    this.CreateTable();
+
+    this.createUI();
   }
 
-  private init(table: HTMLTableElement) {
-    const container = document.createElement("div");
-    container.setAttribute("data-bc-grid-container", "");
-    table.parentNode.insertBefore(container, table);
-    table.parentNode.removeChild(table);
+  private createUI(): void {
+    this.createContainers();
+    this.createTable();
+  }
+
+  private createContainers(): void {
+    this.container.setAttribute("data-bc-grid-container", "");
     if (this.options.filter) {
       const filter = document.createElement("div");
       filter.setAttribute("data-bc-filter-container", "");
-      container.appendChild(filter);
+      this.container.appendChild(filter);
       const label = document.createElement("label");
       label.appendChild(document.createTextNode("Search:"));
       const input = document.createElement("input");
@@ -79,15 +83,15 @@ export default class Grid implements IGrid {
       });
       filter.appendChild(label);
     }
-    container.appendChild(table);
+    this.container.appendChild(this.table);
     if (this.options.paging) {
       const pageSizeContainer = document.createElement("div");
       pageSizeContainer.setAttribute("data-bc-pagesize-container", "");
-      container.insertBefore(pageSizeContainer, table);
+      this.container.insertBefore(pageSizeContainer, this.table);
       const pagingContainer = document.createElement("div");
       pagingContainer.setAttribute("data-bc-paging-container", "");
       pagingContainer.setAttribute("data-bc-no-selection", "");
-      container.appendChild(pagingContainer);
+      this.container.appendChild(pagingContainer);
       this.paginate = new GridPaginate(
         this,
         pageSizeContainer,
@@ -96,7 +100,7 @@ export default class Grid implements IGrid {
     }
   }
 
-  private CreateTable(): void {
+  private createTable(): void {
     const tr = document.createElement("tr");
     tr.setAttribute("data-bc-no-selection", "");
     this.head.appendChild(tr);
@@ -109,7 +113,6 @@ export default class Grid implements IGrid {
         name: null,
         type: ColumnType.Sort,
       };
-
       this.columns.push(columnInfo);
       tr.appendChild(td);
     }
@@ -188,7 +191,7 @@ export default class Grid implements IGrid {
     return td;
   }
 
-  public setSource(source: IGridSource) {
+  public setSource(source: IGridSource): void {
     if (!this.columnsInitialized) {
       const tr = this.head.querySelector("tr");
       if (source && source.length > 0 && source[0]) {
@@ -230,16 +233,16 @@ export default class Grid implements IGrid {
     if (this.paginate) {
       this.paginate.setSource(rows);
     } else {
-      this.displayCurrentRows(rows);
+      this.displayRows(rows);
     }
   }
 
-  public displayCurrentRows(rows: GridRow[]) {
+  public displayRows(rows: GridRow[]): void {
     this.body.innerHTML = "";
     rows?.forEach((row) => this.body.appendChild(row.uiElement));
   }
 
-  private applyFilter(row: GridRow) {
+  private applyFilter(row: GridRow): IGridColumnInfo {
     const colInfo = this.columns.find((col) => {
       let retVal = false;
       if (col.type != ColumnType.Sort) {

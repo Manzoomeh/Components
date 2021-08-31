@@ -7,7 +7,7 @@ import Grid from "./grid/Grid";
 export default class BcComponent implements IComponentManager {
   readonly owner: IUserDefineComponent;
   private grid: Grid;
-  private container: HTMLTableElement;
+  private container: HTMLDivElement;
   private sourceId: SourceId = null;
 
   constructor(owner: IUserDefineComponent) {
@@ -22,7 +22,7 @@ export default class BcComponent implements IComponentManager {
       this.owner.addTrigger([this.sourceId]);
     }
     const style = await this.owner.getAttributeValueAsync("style");
-    this.container = document.createElement("table");
+    this.container = document.createElement("div");
     if (style) {
       this.container.setAttribute("style", style);
     }

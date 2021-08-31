@@ -34,7 +34,7 @@ export default class GridPaginate {
       : -1;
   }
 
-  setSource(data: Array<GridRow>) {
+  setSource(data: Array<GridRow>): void {
     this.data = data;
     this.totalRows = data.length;
     this.pageNumber = 0;
@@ -42,18 +42,18 @@ export default class GridPaginate {
       Math.floor(this.totalRows / this.pageSize) +
       (Math.ceil(this.totalRows % this.pageSize) > 0 ? 1 : 0);
     this.updatePaging();
-    //this.owner.displayCurrentRows();
     this.displayCurrentRows();
   }
 
-  private displayCurrentRows() {
+  private displayCurrentRows(): void {
     const from = this.pageNumber * this.pageSize;
     const to = from + this.pageSize;
     this.updateState();
     const rows = this.data.filter((_, i) => i >= from && i < to);
-    this.owner.displayCurrentRows(rows);
+    this.owner.displayRows(rows);
   }
-  updatePaging() {
+
+  private updatePaging(): void {
     this.pageButtonsContainer.innerHTML = "";
     const pageSideCount = Math.floor(this.owner.options.pageCount / 2);
     const startPage = Math.max(0, this.pageNumber - pageSideCount);
@@ -81,14 +81,7 @@ export default class GridPaginate {
     }
   }
 
-  // getCurrentPageRows(): IGridSource {
-  //   const from = this.pageNumber * this.pageSize;
-  //   const to = from + this.pageSize;
-  //   this.updateState();
-  //   return this.data.filter((_, i) => i >= from && i < to);
-  // }
-
-  initializeUI(): void {
+  private initializeUI(): void {
     const label = document.createElement("label");
     label.appendChild(document.createTextNode("Show"));
     const select = document.createElement("select");
@@ -134,7 +127,8 @@ export default class GridPaginate {
     this.pagingContainer.appendChild(this.pageButtonsContainer);
     this.pagingContainer.appendChild(this.nextButton);
   }
-  private updateState() {
+
+  private updateState(): void {
     this.nextButton.setAttribute(
       "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
