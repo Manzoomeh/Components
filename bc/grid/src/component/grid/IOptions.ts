@@ -1,4 +1,4 @@
-import { IDictionary, IGridSource, ISortType } from "../../type-alias";
+import { IDictionary, ISortType } from "../../type-alias";
 
 export type IGridOptions = {
   columns: IDictionary<IColumn>;

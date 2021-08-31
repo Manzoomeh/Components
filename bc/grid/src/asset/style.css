@@ -1,4 +1,4 @@
-[data-bc-grid-container] [data-bc-no-selection] * {
+[data-bc-grid] [data-bc-no-selection] * {
   user-select: none; /* standard syntax */
   -webkit-user-select: none; /* webkit (safari, chrome) browsers */
   -moz-user-select: none; /* mozilla browsers */
@@ -6,39 +6,39 @@
   -ms-user-select: none; /* IE10+ */
 }
 
-[data-bc-grid-container] table[data-bc-grid],
-[data-bc-grid-container] table[data-bc-grid] td {
+[data-bc-grid] table[data-bc-table],
+[data-bc-grid] table[data-bc-table] td {
   border: 1px solid lightgray;
 }
 
-[data-bc-grid-container] table[data-bc-grid] thead [data-bc-sorting] {
+[data-bc-grid] table[data-bc-table] thead [data-bc-sorting] {
   cursor: pointer;
   background-repeat: no-repeat;
   background-position: center right;
   background-image: url("img/sort_both.png");
 }
-[data-bc-grid-container] table[data-bc-grid] thead [data-bc-sorting="asc"] {
+[data-bc-grid] table[data-bc-table] thead [data-bc-sorting="asc"] {
   background-image: url("img/sort_asc.png") !important;
 }
-[data-bc-grid-container] table[data-bc-grid] thead [data-bc-sorting="desc"] {
+[data-bc-grid] table[data-bc-table] thead [data-bc-sorting="desc"] {
   background-image: url("img/sort_desc.png") !important;
 }
 
-[data-bc-grid-container] [data-bc-page][data-bc-current="true"] {
+[data-bc-grid] [data-bc-page][data-bc-current="true"] {
   background-color: red;
 }
 
-[data-bc-grid-container] [data-bc-status],
-[data-bc-grid-container] [data-bc-page] {
+[data-bc-grid] [data-bc-status],
+[data-bc-grid] [data-bc-page] {
   border: 1px solid black;
   padding: 4px;
   margin: 2px;
   cursor: pointer;
 }
-[data-bc-grid-container] [data-bc-status="disabled"] {
+[data-bc-grid] [data-bc-status="disabled"] {
   color: lightslategray;
   cursor: no-drop;
 }
-[data-bc-grid-container] [data-bc-paging-container] {
+[data-bc-grid] [data-bc-paging-container] {
   margin-top: 5px;
 }

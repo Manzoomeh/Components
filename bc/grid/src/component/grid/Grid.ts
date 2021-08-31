@@ -52,8 +52,9 @@ export default class Grid implements IGrid {
     };
 
     this.container = container;
+    this.container.setAttribute("data-bc-grid", "");
     this.table = document.createElement("table");
-    this.table.setAttribute("data-bc-grid", "");
+    this.table.setAttribute("data-bc-table", "");
     this.head = document.createElement("thead");
     this.table.appendChild(this.head);
     this.body = document.createElement("tbody");
@@ -63,12 +64,6 @@ export default class Grid implements IGrid {
   }
 
   private createUI(): void {
-    this.createContainers();
-    this.createTable();
-  }
-
-  private createContainers(): void {
-    this.container.setAttribute("data-bc-grid-container", "");
     if (this.options.filter) {
       const filter = document.createElement("div");
       filter.setAttribute("data-bc-filter-container", "");
@@ -98,6 +93,7 @@ export default class Grid implements IGrid {
         pagingContainer
       );
     }
+    this.createTable();
   }
 
   private createTable(): void {
