@@ -126,6 +126,7 @@ export default class GridPaginate {
     this.pagingContainer.appendChild(this.previousButton);
     this.pagingContainer.appendChild(this.pageButtonsContainer);
     this.pagingContainer.appendChild(this.nextButton);
+    this.updateState();
   }
 
   private updateState(): void {
