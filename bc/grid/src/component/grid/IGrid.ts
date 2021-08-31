@@ -1,6 +1,7 @@
+import GridRow from "./GridRow";
 import { IGridOptions } from "./IOptions";
 
 export default interface IGrid {
   options: IGridOptions;
-  displayCurrentRows(): void;
+  displayCurrentRows(rows: GridRow[]): void;
 }

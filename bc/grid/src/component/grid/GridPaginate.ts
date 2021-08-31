@@ -42,9 +42,17 @@ export default class GridPaginate {
       Math.floor(this.totalRows / this.pageSize) +
       (Math.ceil(this.totalRows % this.pageSize) > 0 ? 1 : 0);
     this.updatePaging();
-    this.owner.displayCurrentRows();
+    //this.owner.displayCurrentRows();
+    this.displayCurrentRows();
   }
 
+  private displayCurrentRows() {
+    const from = this.pageNumber * this.pageSize;
+    const to = from + this.pageSize;
+    this.updateState();
+    const rows = this.data.filter((_, i) => i >= from && i < to);
+    this.owner.displayCurrentRows(rows);
+  }
   updatePaging() {
     this.pageButtonsContainer.innerHTML = "";
     const pageSideCount = Math.floor(this.owner.options.pageCount / 2);
@@ -67,18 +75,18 @@ export default class GridPaginate {
       page.setAttribute("data-bc-page", i.toString());
       page.addEventListener("click", (e) => {
         this.pageNumber = i;
-        this.owner.displayCurrentRows();
+        this.displayCurrentRows();
       });
       this.pageButtonsContainer.append(page);
     }
   }
 
-  getCurrentPageRows(): IGridSource {
-    const from = this.pageNumber * this.pageSize;
-    const to = from + this.pageSize;
-    this.updateState();
-    return this.data.filter((_, i) => i >= from && i < to);
-  }
+  // getCurrentPageRows(): IGridSource {
+  //   const from = this.pageNumber * this.pageSize;
+  //   const to = from + this.pageSize;
+  //   this.updateState();
+  //   return this.data.filter((_, i) => i >= from && i < to);
+  // }
 
   initializeUI(): void {
     const label = document.createElement("label");
@@ -108,7 +116,7 @@ export default class GridPaginate {
       e.preventDefault();
       if (this.pageNumber > 0) {
         this.pageNumber -= 1;
-        this.owner.displayCurrentRows();
+        this.displayCurrentRows();
       }
     });
     this.pageButtonsContainer = document.createElement("span");
@@ -119,7 +127,7 @@ export default class GridPaginate {
       e.preventDefault();
       if (this.pageNumber + 1 < this.totalPage) {
         this.pageNumber += 1;
-        this.owner.displayCurrentRows();
+        this.displayCurrentRows();
       }
     });
     this.pagingContainer.appendChild(this.previousButton);

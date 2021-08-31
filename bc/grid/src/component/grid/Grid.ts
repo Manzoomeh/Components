@@ -79,17 +79,15 @@ export default class Grid implements IGrid {
       });
       filter.appendChild(label);
     }
+    container.appendChild(table);
     if (this.options.paging) {
       const pageSizeContainer = document.createElement("div");
       pageSizeContainer.setAttribute("data-bc-pagesize-container", "");
-      container.appendChild(pageSizeContainer);
-
-      container.appendChild(table);
+      container.insertBefore(pageSizeContainer, table);
       const pagingContainer = document.createElement("div");
       pagingContainer.setAttribute("data-bc-paging-container", "");
       pagingContainer.setAttribute("data-bc-no-selection", "");
       container.appendChild(pagingContainer);
-
       this.paginate = new GridPaginate(
         this,
         pageSizeContainer,
@@ -229,14 +227,16 @@ export default class Grid implements IGrid {
       );
     }
     rows.forEach((row, i) => row.setOrder(i));
-    this.paginate.setSource(rows);
-    this.displayCurrentRows();
+    if (this.paginate) {
+      this.paginate.setSource(rows);
+    } else {
+      this.displayCurrentRows(rows);
+    }
   }
 
-  public displayCurrentRows() {
+  public displayCurrentRows(rows: GridRow[]) {
     this.body.innerHTML = "";
-    const toDrawRow = this.paginate?.getCurrentPageRows() ?? this.source;
-    toDrawRow?.forEach((row) => this.body.appendChild(row.uiElement));
+    rows?.forEach((row) => this.body.appendChild(row.uiElement));
   }
 
   private applyFilter(row: GridRow) {

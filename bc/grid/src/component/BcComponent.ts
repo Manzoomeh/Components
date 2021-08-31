@@ -32,7 +32,6 @@ export default class BcComponent implements IComponentManager {
       "options-object"
     );
     const option = optionName ? eval(optionName) : null;
-    console.log("o", option);
     this.grid = new Grid(this.container, option);
   }
 
