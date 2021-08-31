@@ -131,7 +131,7 @@ export default class Grid implements IGrid {
             ...{
               name: property,
               sort: this.options.sorting,
-              type: ColumnType.Data,
+              type: value.actions ? ColumnType.Action : ColumnType.Data,
             },
           };
         }
@@ -144,7 +144,7 @@ export default class Grid implements IGrid {
   private createColumn(columnInfo: IGridColumnInfo): HTMLTableDataCellElement {
     const td = document.createElement("td");
     td.appendChild(document.createTextNode(columnInfo.title));
-    if (columnInfo.sort ?? true) {
+    if (columnInfo.type === ColumnType.Data && (columnInfo.sort ?? true)) {
       td.setAttribute("data-bc-sorting", "");
       td.addEventListener("click", (_) => {
         if (this.sortInfo?.column !== columnInfo) {

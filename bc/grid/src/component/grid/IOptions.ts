@@ -1,4 +1,4 @@
-import { IDictionary, ISortType } from "../../type-alias";
+import { IDictionary, IGridSource, ISortType } from "../../type-alias";
 
 export type IGridOptions = {
   columns: IDictionary<IColumn>;
@@ -21,4 +21,16 @@ export type ISortInfo = {
 export type IColumnInfo = {
   title?: string;
   sort?: boolean;
+  actions?: Array<IGridAction>;
 };
+
+export type IGridAction = {
+  url?: string | IActionUrlMakerCallback;
+  action?: IActionCallback;
+  label?: string;
+  imageUrl?: string;
+};
+
+export type IActionCallback = (any: any, element: HTMLTableRowElement) => void;
+
+export type IActionUrlMakerCallback = (any: any) => string;

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://github.com/Manzoomeh/BasisCore.Client-v2/releases/download/v2.2.1/basiscore.min.js"></script>
-    <title>Grid Command - Dynamic Data</title>
+    <title>Grid Command - With Config</title>
     <script>
       const host = {
         repositories: {
@@ -17,7 +17,12 @@
 
   <body>
     <button id="btn">Reload</button>
-    <Basis core="component.bc.grid" run="atclient" dataMemberName="sample.data">
+    <Basis
+      core="component.bc.grid"
+      run="atclient"
+      dataMemberName="sample.data"
+      options-object="options"
+    >
     </Basis>
     <basis core="callback" run="atclient" triggers="sample.data"></basis>
     <script>
@@ -40,6 +45,20 @@
       document.getElementById("btn").addEventListener("click", (e) => {
         setSource();
       });
+      setSource();
+
+      const options = {
+        columns: {
+          id: {
+            title: "Data-Id",
+          },
+          data: "Data",
+          count: "Count",
+        },
+        rowNumber: { sort: false, name: "count" },
+        defaultSort: { name: "count" },
+        pageSize: [10, 30, 50],
+      };
     </script>
   </body>
 </html>
