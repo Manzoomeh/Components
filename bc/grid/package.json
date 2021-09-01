@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack serve --mode=development",
     "pub": "webpack --mode=production",
-    "ws": "node websocket-server/server.js"
+    "ws": "node server/websocket.js"
   },
   "keywords": [
     "TypeScript",
