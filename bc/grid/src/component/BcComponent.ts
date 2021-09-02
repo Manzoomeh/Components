@@ -12,7 +12,6 @@ export default class BcComponent implements IComponentManager {
 
   constructor(owner: IUserDefineComponent) {
     this.owner = owner;
-    this.container;
   }
 
   public async initializeAsync(): Promise<void> {
