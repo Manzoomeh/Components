@@ -101,16 +101,12 @@ export default class Grid implements IGrid {
     tr.setAttribute("data-bc-no-selection", "");
     this.head.appendChild(tr);
     if (this.options.rowNumber) {
-      const td = document.createElement("th");
-      const title = this.options.rowNumber?.toString() ?? "#";
-      td.appendChild(document.createTextNode("#"));
       const columnInfo: IGridColumnInfo = {
-        title: title,
+        title: this.options.rowNumber,
         name: null,
         type: ColumnType.Sort,
       };
-      this.columns.push(columnInfo);
-      tr.appendChild(td);
+      tr.appendChild(this.createColumn(columnInfo));
     }
     if (this.options.columns) {
       Object.getOwnPropertyNames(this.options.columns).forEach((property) => {
@@ -125,12 +121,12 @@ export default class Grid implements IGrid {
           };
         } else {
           columnInfo = {
-            ...value,
             ...{
               name: property,
               sort: this.options.sorting,
               type: value.actions ? ColumnType.Action : ColumnType.Data,
             },
+            ...value,
           };
         }
         tr.appendChild(this.createColumn(columnInfo));
