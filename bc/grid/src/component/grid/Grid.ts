@@ -238,7 +238,7 @@ export default class Grid implements IGrid {
   private applyFilter(row: GridRow): IGridColumnInfo {
     const colInfo = this.columns.find((col) => {
       let retVal = false;
-      if (col.type != ColumnType.Sort) {
+      if (col.type === ColumnType.Data) {
         const value = Reflect.get(row.data, col.name)?.toString().toLowerCase();
         retVal = value.indexOf(this.filter) >= 0;
       }
