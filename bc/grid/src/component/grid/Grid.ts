@@ -71,6 +71,7 @@ export default class Grid implements IGrid {
       const label = document.createElement("label");
       label.appendChild(document.createTextNode("Search:"));
       const input = document.createElement("input");
+      input.setAttribute("type", "text");
       label.appendChild(input);
       input.addEventListener("keyup", (_) => {
         this.filter = input.value?.toLowerCase();

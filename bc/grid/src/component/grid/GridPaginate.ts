@@ -130,10 +130,12 @@ export default class GridPaginate {
   }
 
   private updateState(): void {
+    this.nextButton.setAttribute("data-bc-next", "")
     this.nextButton.setAttribute(
       "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
     );
+    this.previousButton.setAttribute("data-bc-previous", "")
     this.previousButton.setAttribute(
       "data-bc-status",
       this.pageNumber === 0 ? "disabled" : ""
