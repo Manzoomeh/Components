@@ -29,6 +29,9 @@ export default class GridRow {
             td.setAttribute("data-bc-no-selection", "");
             if (column.actions) {
               value = new DocumentFragment();
+              const div = document.createElement("div");
+              div.setAttribute("data-bc-icons", "");
+              value = value.appendChild(div);
               column.actions.forEach((actionInfo) => {
                 const anchorElement = document.createElement("a");
                 value.appendChild(anchorElement);

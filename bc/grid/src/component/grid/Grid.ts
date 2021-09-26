@@ -69,7 +69,7 @@ export default class Grid implements IGrid {
       filter.setAttribute("data-bc-filter-container", "");
       this.container.appendChild(filter);
       const label = document.createElement("label");
-      label.appendChild(document.createTextNode("Search:"));
+      label.appendChild(document.createTextNode("Search :"));
       const input = document.createElement("input");
       input.setAttribute("type", "text");
       label.appendChild(input);
@@ -98,10 +98,16 @@ export default class Grid implements IGrid {
   }
 
   private createTable(): void {
+    const colgroup = document.createElement("colgroup");
+    this.table.prepend(colgroup);
     const tr = document.createElement("tr");
     tr.setAttribute("data-bc-no-selection", "");
     this.head.appendChild(tr);
     if (this.options.rowNumber) {
+      const col = document.createElement("col");
+      col.setAttribute("width", '5%');
+      colgroup.appendChild(col);
+
       const columnInfo: IGridColumnInfo = {
         title: this.options.rowNumber,
         name: null,
@@ -112,6 +118,7 @@ export default class Grid implements IGrid {
     if (this.options.columns) {
       Object.getOwnPropertyNames(this.options.columns).forEach((property) => {
         var value = this.options.columns[property];
+        const col = document.createElement("col");
         let columnInfo: IGridColumnInfo;
         if (typeof value === "string") {
           columnInfo = {
@@ -129,7 +136,11 @@ export default class Grid implements IGrid {
             },
             ...value,
           };
+          if (value.width) {
+            col.setAttribute("width", value.width);
+          }
         }
+        colgroup.appendChild(col);
         tr.appendChild(this.createColumn(columnInfo));
       });
       this.columnsInitialized = true;

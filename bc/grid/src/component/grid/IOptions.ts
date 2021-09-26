@@ -22,6 +22,7 @@ export type IColumnInfo = {
   title?: string;
   sort?: boolean;
   actions?: Array<IGridAction>;
+  width?: string;
 };
 
 export type IGridAction = {

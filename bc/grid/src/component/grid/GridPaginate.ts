@@ -83,7 +83,7 @@ export default class GridPaginate {
 
   private initializeUI(): void {
     const label = document.createElement("label");
-    label.appendChild(document.createTextNode("Show"));
+    label.appendChild(document.createTextNode("PerPage :"));
     const select = document.createElement("select");
     this.owner.options.pageSize.forEach((pageSize) => {
       const option = document.createElement("option");
@@ -100,7 +100,7 @@ export default class GridPaginate {
       }
     });
     label.appendChild(select);
-    label.appendChild(document.createTextNode("entries"));
+    // label.appendChild(document.createTextNode("entries"));
     this.pageSizeContainer.appendChild(label);
 
     this.previousButton = document.createElement("a");
