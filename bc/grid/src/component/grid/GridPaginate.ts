@@ -29,15 +29,17 @@ export default class GridPaginate {
     this.pageSizeContainer = pageSizeContainer;
     this.pagingContainer = pagingContainer;
     this.initializeUI();
-    this.pageSize = this.owner.options.pageSize
-      ? this.owner.options.pageSize[0]
+    this.pageSize = this.owner.options.paging
+      ? this.owner.options.paging[0]
       : -1;
+    this.pageNumber = -1;
   }
 
   setSource(data: Array<GridRow>): void {
     this.data = data;
     this.totalRows = data.length;
-    this.pageNumber = 0;
+    this.pageNumber =
+      this.pageNumber == -1 ? this.owner.options.pageNumber - 1 : 0;
     this.totalPage =
       Math.floor(this.totalRows / this.pageSize) +
       (Math.ceil(this.totalRows % this.pageSize) > 0 ? 1 : 0);
@@ -83,9 +85,11 @@ export default class GridPaginate {
 
   private initializeUI(): void {
     const label = document.createElement("label");
-    label.appendChild(document.createTextNode("PerPage :"));
+    label.appendChild(
+      document.createTextNode(this.owner.options.culture.labels.perPage)
+    );
     const select = document.createElement("select");
-    this.owner.options.pageSize.forEach((pageSize) => {
+    this.owner.options.paging?.forEach((pageSize) => {
       const option = document.createElement("option");
       const value = pageSize.toString();
       option.appendChild(document.createTextNode(value));
@@ -100,9 +104,7 @@ export default class GridPaginate {
       }
     });
     label.appendChild(select);
-    // label.appendChild(document.createTextNode("entries"));
     this.pageSizeContainer.appendChild(label);
-
     this.previousButton = document.createElement("a");
     this.previousButton.appendChild(document.createTextNode("previous"));
     this.previousButton.addEventListener("click", (e) => {
@@ -130,12 +132,12 @@ export default class GridPaginate {
   }
 
   private updateState(): void {
-    this.nextButton.setAttribute("data-bc-next", "")
+    this.nextButton.setAttribute("data-bc-next", "");
     this.nextButton.setAttribute(
       "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
     );
-    this.previousButton.setAttribute("data-bc-previous", "")
+    this.previousButton.setAttribute("data-bc-previous", "");
     this.previousButton.setAttribute(
       "data-bc-status",
       this.pageNumber === 0 ? "disabled" : ""

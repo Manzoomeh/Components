@@ -4,11 +4,11 @@ export type FilterType = "none" | "simple" | "row";
 export type IGridOptions = {
   columns: IDictionary<IColumn>;
   filter?: FilterType;
-  pageSize?: number[];
-  paging?: boolean;
+  paging?: number[];
   rowNumber?: string;
   defaultSort: string | ISortInfo;
   pageCount?: number;
+  pageNumber?: number;
   sorting?: boolean;
   culture: {
     labels: IDictionary<string>;
