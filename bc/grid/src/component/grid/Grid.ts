@@ -31,7 +31,7 @@ export default class Grid implements IGrid {
   static getDefaults(): Partial<IGridOptions> {
     if (!Grid._defaults) {
       Grid._defaults = {
-        filter: true,
+        filter: "simple",
         pageSize: [10, 30, 50],
         paging: true,
         pageCount: 10,
@@ -64,7 +64,7 @@ export default class Grid implements IGrid {
   }
 
   private createUI(): void {
-    if (this.options.filter) {
+    if (this.options.filter == "simple") {
       const filter = document.createElement("div");
       filter.setAttribute("data-bc-filter-container", "");
       this.container.appendChild(filter);
@@ -105,7 +105,7 @@ export default class Grid implements IGrid {
     this.head.appendChild(tr);
     if (this.options.rowNumber) {
       const col = document.createElement("col");
-      col.setAttribute("width", '5%');
+      col.setAttribute("width", "5%");
       colgroup.appendChild(col);
 
       const columnInfo: IGridColumnInfo = {
@@ -126,6 +126,7 @@ export default class Grid implements IGrid {
             name: property,
             sort: this.options.sorting,
             type: ColumnType.Data,
+            filter: true,
           };
         } else {
           columnInfo = {
@@ -133,6 +134,7 @@ export default class Grid implements IGrid {
               name: property,
               sort: this.options.sorting,
               type: value.actions ? ColumnType.Action : ColumnType.Data,
+              filter: true,
             },
             ...value,
           };
@@ -200,11 +202,12 @@ export default class Grid implements IGrid {
       const tr = this.head.querySelector("tr");
       if (source && source.length > 0 && source[0]) {
         Object.getOwnPropertyNames(source[0]).forEach((property) => {
-          const columnInfo = {
+          const columnInfo: IGridColumnInfo = {
             title: property,
             name: property,
             sort: this.options.sorting,
             type: ColumnType.Data,
+            filter: true,
           };
           tr.appendChild(this.createColumn(columnInfo));
         });
@@ -249,7 +252,7 @@ export default class Grid implements IGrid {
   private applyFilter(row: GridRow): IGridColumnInfo {
     const colInfo = this.columns.find((col) => {
       let retVal = false;
-      if (col.type === ColumnType.Data) {
+      if (col.type === ColumnType.Data && col.filter) {
         const value = Reflect.get(row.data, col.name)?.toString().toLowerCase();
         retVal = value.indexOf(this.filter) >= 0;
       }

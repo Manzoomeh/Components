@@ -1,8 +1,9 @@
 import { IDictionary, ISortType } from "../../type-alias";
 
+export type FilterType = "none" | "simple" | "row";
 export type IGridOptions = {
   columns: IDictionary<IColumn>;
-  filter?: boolean;
+  filter?: FilterType;
   pageSize?: number[];
   paging?: boolean;
   rowNumber?: string;
@@ -23,8 +24,10 @@ export type IColumnInfo = {
   sort?: boolean;
   actions?: Array<IGridAction>;
   width?: string;
+  filter?: boolean | IFilterOption;
 };
 
+export type IFilterOption = {};
 export type IGridAction = {
   url?: string | IActionUrlMakerCallback;
   action?: IActionCallback;
