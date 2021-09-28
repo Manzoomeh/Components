@@ -113,6 +113,7 @@ export default class Grid implements IGrid {
           const td = document.createElement("td");
           const input = document.createElement("input");
           input.setAttribute("type", "text");
+          input.setAttribute("placeholder", columnInfo.title);
           input.addEventListener("keyup", (_) => {
             const value = input.value?.toLowerCase();
             if (value.length > 0) {
