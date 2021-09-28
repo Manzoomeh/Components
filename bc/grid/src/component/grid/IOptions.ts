@@ -10,6 +10,9 @@ export type IGridOptions = {
   defaultSort: string | ISortInfo;
   pageCount?: number;
   sorting?: boolean;
+  culture: {
+    labels: IDictionary<string>;
+  };
 };
 
 export type IColumn = string | IColumnInfo;

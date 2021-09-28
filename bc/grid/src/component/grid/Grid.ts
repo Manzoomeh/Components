@@ -41,6 +41,11 @@ export default class Grid implements IGrid {
         paging: true,
         pageCount: 10,
         sorting: true,
+        culture: {
+          labels: {
+            Search: "Search :",
+          },
+        },
       };
     }
     return Grid._defaults;
@@ -55,7 +60,7 @@ export default class Grid implements IGrid {
       ...Grid.getDefaults(),
       ...(options ? options : ({} as any)),
     };
-
+    console.log(this.options, options);
     this.container = container;
     this.container.setAttribute("data-bc-grid", "");
     this.table = document.createElement("table");
@@ -74,7 +79,9 @@ export default class Grid implements IGrid {
       filter.setAttribute("data-bc-filter-container", "");
       this.container.appendChild(filter);
       const label = document.createElement("label");
-      label.appendChild(document.createTextNode("Search :"));
+      label.appendChild(
+        document.createTextNode(this.options.culture.labels.Search)
+      );
       const input = document.createElement("input");
       input.setAttribute("type", "text");
       label.appendChild(input);

@@ -44,7 +44,7 @@
     setSource();
 
     const options = {
-      filter: "row",
+      filter: "simple",
       columns: {
         id: {
           title: "Data-Id",
@@ -60,6 +60,11 @@
       defaultSort: { name: "count" },
       //paging: false,
       pageSize: [10, 30, 60],
+      culture: {
+        labels: {
+          "Search": "Type for Search :"
+        }
+      }
     };
   </script>
 </body>
