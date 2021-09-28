@@ -44,7 +44,11 @@ export default class Grid implements IGrid {
         culture: {
           labels: {
             search: "Search :",
-            perPage: "PerPage :",
+            pageSize: "Page Size :",
+            next: "Next",
+            previous: "Previous",
+            first: "First",
+            last: "last",
           },
         },
       };

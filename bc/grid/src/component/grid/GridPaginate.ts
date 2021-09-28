@@ -8,7 +8,9 @@ export default class GridPaginate {
   readonly pageSizeContainer: HTMLDivElement;
 
   private previousButton: HTMLAnchorElement;
+  private firstButton: HTMLAnchorElement;
   private nextButton: HTMLAnchorElement;
+  private lastButton: HTMLAnchorElement;
   private pageButtonsContainer: HTMLSpanElement;
   private remainFromStart: boolean;
   private remainFromEnd: boolean;
@@ -86,7 +88,7 @@ export default class GridPaginate {
   private initializeUI(): void {
     const label = document.createElement("label");
     label.appendChild(
-      document.createTextNode(this.owner.options.culture.labels.perPage)
+      document.createTextNode(this.owner.options.culture.labels.pageSize)
     );
     const select = document.createElement("select");
     this.owner.options.paging?.forEach((pageSize) => {
@@ -105,8 +107,16 @@ export default class GridPaginate {
     });
     label.appendChild(select);
     this.pageSizeContainer.appendChild(label);
+    this.firstButton = document.createElement("a");
+    this.firstButton.innerHTML = this.owner.options.culture.labels.first;
+    this.firstButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.pageNumber = 0;
+      this.displayCurrentRows();
+    });
+
     this.previousButton = document.createElement("a");
-    this.previousButton.appendChild(document.createTextNode("previous"));
+    this.previousButton.innerHTML = this.owner.options.culture.labels.previous;
     this.previousButton.addEventListener("click", (e) => {
       e.preventDefault();
       if (this.pageNumber > 0) {
@@ -117,7 +127,7 @@ export default class GridPaginate {
     this.pageButtonsContainer = document.createElement("span");
 
     this.nextButton = document.createElement("a");
-    this.nextButton.appendChild(document.createTextNode("next"));
+    this.nextButton.innerHTML = this.owner.options.culture.labels.next;
     this.nextButton.addEventListener("click", (e) => {
       e.preventDefault();
       if (this.pageNumber + 1 < this.totalPage) {
@@ -125,9 +135,20 @@ export default class GridPaginate {
         this.displayCurrentRows();
       }
     });
+
+    this.lastButton = document.createElement("a");
+    this.lastButton.innerHTML = this.owner.options.culture.labels.last;
+    this.lastButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.pageNumber = this.totalPage - 1;
+      this.displayCurrentRows();
+    });
+
+    this.pagingContainer.appendChild(this.firstButton);
     this.pagingContainer.appendChild(this.previousButton);
     this.pagingContainer.appendChild(this.pageButtonsContainer);
     this.pagingContainer.appendChild(this.nextButton);
+    this.pagingContainer.appendChild(this.lastButton);
     this.updateState();
   }
 
@@ -137,18 +158,26 @@ export default class GridPaginate {
       "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
     );
+    this.lastButton.setAttribute(
+      "data-bc-status",
+      this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
+    );
     this.previousButton.setAttribute("data-bc-previous", "");
     this.previousButton.setAttribute(
       "data-bc-status",
-      this.pageNumber === 0 ? "disabled" : ""
+      this.pageNumber == 0 ? "disabled" : ""
+    );
+    this.firstButton.setAttribute(
+      "data-bc-status",
+      this.pageNumber == 0 ? "disabled" : ""
     );
     const pageBtn = this.pageButtonsContainer.querySelector(
       `[data-bc-page='${this.pageNumber}']`
     );
     if (
-      pageBtn &&
-      ((pageBtn.hasAttribute("data-bc-last") && this.remainFromEnd) ||
-        (pageBtn.hasAttribute("data-bc-first") && this.remainFromStart))
+      !pageBtn ||
+      (pageBtn.hasAttribute("data-bc-last") && this.remainFromEnd) ||
+      (pageBtn.hasAttribute("data-bc-first") && this.remainFromStart)
     ) {
       this.updatePaging();
     }
