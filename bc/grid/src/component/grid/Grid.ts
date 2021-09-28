@@ -4,6 +4,7 @@ import {
   ISortInfo,
   ISortType,
   IGridSource,
+  IDictionary,
 } from "../../type-alias";
 import "./../../asset/style.css";
 import GridRow from "./GridRow";
@@ -11,6 +12,10 @@ import IGrid from "./IGrid";
 import GridPaginate from "./GridPaginate";
 import { ColumnType } from "../../enum";
 
+// declare type FilterValue={
+// ColumnName:string;
+// Value:string;
+// }
 export default class Grid implements IGrid {
   readonly container: HTMLElement;
   readonly table: HTMLTableElement;
@@ -18,7 +23,7 @@ export default class Grid implements IGrid {
   readonly head: HTMLTableSectionElement;
   readonly body: HTMLTableSectionElement;
   private sortInfo: ISortInfo;
-  private filter: string;
+  private filter: any = null;
 
   static _defaults: Partial<IGridOptions>;
   private rows: GridRow[] = new Array<GridRow>();
@@ -97,11 +102,44 @@ export default class Grid implements IGrid {
     this.createTable();
   }
 
+  private addTableRowFilterPart() {
+    if (this.options.filter === "row") {
+      const tr = document.createElement("tr");
+      tr.setAttribute("data-bc-no-selection", "");
+      tr.setAttribute("data-bc-filter", "");
+      this.head.appendChild(tr);
+      this.columns.forEach((columnInfo) => {
+        if (columnInfo.filter) {
+          const td = document.createElement("td");
+          const input = document.createElement("input");
+          input.setAttribute("type", "text");
+          input.addEventListener("keyup", (_) => {
+            const value = input.value?.toLowerCase();
+            if (value.length > 0) {
+              if (!this.filter) {
+                this.filter = {};
+              }
+              this.filter[columnInfo.name] = input.value?.toLowerCase();
+            } else {
+              delete this.filter[columnInfo.name];
+            }
+            this.refreshData();
+          });
+          td.appendChild(input);
+          tr.appendChild(td);
+        } else {
+          tr.appendChild(document.createElement("td"));
+        }
+      });
+    }
+  }
+
   private createTable(): void {
     const colgroup = document.createElement("colgroup");
     this.table.prepend(colgroup);
     const tr = document.createElement("tr");
     tr.setAttribute("data-bc-no-selection", "");
+    tr.setAttribute("data-bc-column-title", "");
     this.head.appendChild(tr);
     if (this.options.rowNumber) {
       const col = document.createElement("col");
@@ -146,6 +184,7 @@ export default class Grid implements IGrid {
         tr.appendChild(this.createColumn(columnInfo));
       });
       this.columnsInitialized = true;
+      this.addTableRowFilterPart();
     }
   }
 
@@ -213,6 +252,7 @@ export default class Grid implements IGrid {
         });
       }
       this.columnsInitialized = true;
+      this.addTableRowFilterPart();
     }
 
     //TODO:add repository for store generated ui element data
@@ -228,8 +268,14 @@ export default class Grid implements IGrid {
 
   private refreshData(): void {
     let rows = this.rows;
-    if (this.filter?.length > 0) {
-      rows = rows.filter(this.applyFilter.bind(this));
+    if (this.options.filter === "simple" && this.filter?.length > 0) {
+      rows = rows.filter(this.applySimpleFilter.bind(this));
+    } else if (
+      this.options.filter === "row" &&
+      this.filter &&
+      Reflect.ownKeys(this.filter).length > 0
+    ) {
+      rows = rows.filter(this.applyRowFilter.bind(this));
     }
     if (this.sortInfo) {
       rows = rows.sort(
@@ -249,7 +295,23 @@ export default class Grid implements IGrid {
     rows?.forEach((row) => this.body.appendChild(row.uiElement));
   }
 
-  private applyFilter(row: GridRow): IGridColumnInfo {
+  private applyRowFilter(row: GridRow): IGridColumnInfo {
+    const colInfo = this.columns.find((col) => {
+      let retVal = true;
+      for (const key of Reflect.ownKeys(this.filter)) {
+        const element = Reflect.get(this.filter, key);
+        const value = Reflect.get(row.data, key)?.toString().toLowerCase();
+        retVal = retVal && value.indexOf(element) >= 0;
+        if (!retVal) {
+          break;
+        }
+      }
+      return retVal;
+    });
+    return colInfo;
+  }
+
+  private applySimpleFilter(row: GridRow): IGridColumnInfo {
     const colInfo = this.columns.find((col) => {
       let retVal = false;
       if (col.type === ColumnType.Data && col.filter) {
