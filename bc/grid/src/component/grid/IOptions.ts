@@ -26,7 +26,7 @@ export type ISortInfo = {
 };
 
 export type IColumnInfo = {
-  field?: string;
+  source?: string | IFieldMakerCallback;
   title?: string;
   sort?: boolean;
   actions?: Array<IGridAction>;
@@ -56,3 +56,5 @@ export type IRowMakerCallback = (
   row: any,
   element: HTMLTableRowElement
 ) => void;
+
+export type IFieldMakerCallback = (row: any) => any;

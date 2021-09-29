@@ -4,7 +4,6 @@ import {
   ISortInfo,
   ISortType,
   IGridSource,
-  IDictionary,
 } from "../../type-alias";
 import "./../../asset/style.css";
 import GridRow from "./GridRow";
@@ -12,10 +11,6 @@ import IGrid from "./IGrid";
 import GridPaginate from "./GridPaginate";
 import { ColumnType } from "../../enum";
 
-// declare type FilterValue={
-// ColumnName:string;
-// Value:string;
-// }
 export default class Grid implements IGrid {
   readonly container: HTMLElement;
   readonly table: HTMLTableElement;
@@ -139,9 +134,9 @@ export default class Grid implements IGrid {
               if (!this.filter) {
                 this.filter = {};
               }
-              this.filter[columnInfo.field] = input.value?.toLowerCase();
+              this.filter[columnInfo.name] = input.value?.toLowerCase();
             } else {
-              delete this.filter[columnInfo.field];
+              delete this.filter[columnInfo.name];
             }
             this.refreshData();
           });
@@ -168,7 +163,8 @@ export default class Grid implements IGrid {
 
       const columnInfo: IGridColumnInfo = {
         title: this.options.rowNumber,
-        field: null,
+        source: null,
+        name: null,
         type: ColumnType.Sort,
       };
       tr.appendChild(this.createColumn(columnInfo));
@@ -181,7 +177,8 @@ export default class Grid implements IGrid {
         if (typeof value === "string") {
           columnInfo = {
             title: value,
-            field: property,
+            source: property,
+            name: property,
             sort: this.options.sorting,
             type: ColumnType.Data,
             filter: true,
@@ -189,7 +186,9 @@ export default class Grid implements IGrid {
         } else {
           columnInfo = {
             ...{
-              field: property,
+              title: property,
+              source: property,
+              name: property,
               sort: this.options.sorting,
               type: value.actions ? ColumnType.Action : ColumnType.Data,
               filter: true,
@@ -236,10 +235,10 @@ export default class Grid implements IGrid {
         let sortType: ISortType = null;
         let find = false;
         if (typeof this.options.defaultSort === "string") {
-          if (this.options.defaultSort === columnInfo.field) {
+          if (this.options.defaultSort === columnInfo.source) {
             find = true;
           }
-        } else if (this.options.defaultSort.name === columnInfo.field) {
+        } else if (this.options.defaultSort.name === columnInfo.source) {
           find = true;
           sortType = this.options.defaultSort.sort;
         }
@@ -263,7 +262,8 @@ export default class Grid implements IGrid {
         Object.getOwnPropertyNames(source[0]).forEach((property) => {
           const columnInfo: IGridColumnInfo = {
             title: property,
-            field: property,
+            source: property,
+            name: property,
             sort: this.options.sorting,
             type: ColumnType.Data,
             filter: true,
@@ -289,18 +289,16 @@ export default class Grid implements IGrid {
   private refreshData(): void {
     let rows = this.rows;
     if (this.options.filter === "simple" && this.filter?.length > 0) {
-      rows = rows.filter(this.applySimpleFilter.bind(this));
+      rows = rows.filter((x) => x.acceptableBySimpleFilter(this.filter));
     } else if (
       this.options.filter === "row" &&
       this.filter &&
       Reflect.ownKeys(this.filter).length > 0
     ) {
-      rows = rows.filter(this.applyRowFilter.bind(this));
+      rows = rows.filter((x) => x.acceptableByRowFilter(this.filter));
     }
     if (this.sortInfo) {
-      rows = rows.sort(
-        (this.sortInfo.sort === "asc" ? this.sortAsc : this.sortDesc).bind(this)
-      );
+      rows = rows.sort((a, b) => GridRow.compare(a, b, this.sortInfo));
     }
     rows.forEach((row, i) => row.setOrder(i));
     if (this.paginate) {
@@ -313,71 +311,5 @@ export default class Grid implements IGrid {
   public displayRows(rows: GridRow[]): void {
     this.body.innerHTML = "";
     rows?.forEach((row) => this.body.appendChild(row.uiElement));
-  }
-
-  private applyRowFilter(row: GridRow): IGridColumnInfo {
-    const colInfo = this.columns.find((col) => {
-      let retVal = true;
-      for (const key of Reflect.ownKeys(this.filter)) {
-        const element = Reflect.get(this.filter, key);
-        const value = Reflect.get(row.data, key)?.toString().toLowerCase();
-        retVal = retVal && value.indexOf(element) >= 0;
-        if (!retVal) {
-          break;
-        }
-      }
-      return retVal;
-    });
-    return colInfo;
-  }
-
-  private applySimpleFilter(row: GridRow): IGridColumnInfo {
-    const colInfo = this.columns.find((col) => {
-      let retVal = false;
-      if (col.type === ColumnType.Data && col.filter) {
-        const value = Reflect.get(row.data, col.field)
-          ?.toString()
-          .toLowerCase();
-        retVal = value.indexOf(this.filter) >= 0;
-      }
-      return retVal;
-    });
-    return colInfo;
-  }
-
-  private sortAsc(first: GridRow, second: GridRow): number {
-    let valFirst = Reflect.get(
-      this.sortInfo.column.title ? first.data : first,
-      this.sortInfo.column.field
-    );
-    let valSecond = Reflect.get(
-      this.sortInfo.column.title ? second.data : second,
-      this.sortInfo.column.field
-    );
-    if (typeof valFirst === "string") {
-      valFirst = valFirst.toLowerCase();
-    }
-    if (typeof valSecond === "string") {
-      valSecond = valSecond.toLowerCase();
-    }
-    return valFirst < valSecond ? -1 : valFirst > valSecond ? 1 : 0;
-  }
-
-  private sortDesc(first: GridRow, second: GridRow): number {
-    let valFirst = Reflect.get(
-      this.sortInfo.column.title ? first.data : first,
-      this.sortInfo.column.field
-    );
-    let valSecond = Reflect.get(
-      this.sortInfo.column.title ? second.data : second,
-      this.sortInfo.column.field
-    );
-    if (typeof valFirst === "string") {
-      valFirst = valFirst.toLowerCase();
-    }
-    if (typeof valSecond === "string") {
-      valSecond = valSecond.toLowerCase();
-    }
-    return valFirst > valSecond ? -1 : valFirst < valSecond ? 1 : 0;
   }
 }
