@@ -21,56 +21,13 @@ export default class GridRow {
               td.innerHTML =
                 column.cellMaker(this.data, tmpValue, td) ?? tmpValue;
             } else {
-              td.appendChild(
-                document.createTextNode(tmpValue?.toString() ?? "")
-              );
+              td.appendChild(document.createTextNode(tmpValue?.toString()));
             }
             break;
           }
           case ColumnType.Sort: {
             td.setAttribute("data-bc-order", "");
             td.appendChild(document.createTextNode(this.order.toString()));
-            break;
-          }
-          case ColumnType.Action: {
-            td.setAttribute("data-bc-action", "");
-            td.setAttribute("data-bc-no-selection", "");
-            if (column.actions) {
-              const value = new DocumentFragment();
-              const div = document.createElement("div");
-              div.setAttribute("data-bc-icons", "");
-              value.appendChild(div);
-              column.actions.forEach((actionInfo) => {
-                const anchorElement = document.createElement("a");
-                value.appendChild(anchorElement);
-                if (actionInfo.imageUrl) {
-                  const img = document.createElement("img");
-                  anchorElement.appendChild(img);
-                  img.src = actionInfo.imageUrl;
-                  img.title = actionInfo.label;
-                } else if (actionInfo.label) {
-                  anchorElement.innerText = actionInfo.label;
-                }
-
-                if (actionInfo.url) {
-                  if (typeof actionInfo.url === "string") {
-                    anchorElement.href = actionInfo.url;
-                  } else {
-                    anchorElement.href = actionInfo.url(this.data);
-                  }
-                } else if (actionInfo.action) {
-                  anchorElement.href = "javascript:void()";
-                  anchorElement.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    actionInfo.action(
-                      this.data,
-                      td.parentElement as HTMLTableRowElement
-                    );
-                  });
-                }
-              });
-              td.appendChild(value);
-            }
             break;
           }
           default:
@@ -134,7 +91,6 @@ export default class GridRow {
           const value = Reflect.get(this.dataProxy, col.name)
             ?.toString()
             .toLowerCase();
-          //console.log("v", col, value, this.dataProxy, col.name);
           retVal = value && value.indexOf(filter) >= 0;
         }
         return retVal;

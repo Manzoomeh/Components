@@ -1,7 +1,9 @@
 import { IDictionary, ISortType } from "../../type-alias";
 
 export type FilterType = "none" | "simple" | "row";
+
 export type HtmlDirection = "ltr" | "rtl";
+
 export type IGridOptions = {
   columns: IDictionary<IColumn>;
   filter?: FilterType;
@@ -29,23 +31,11 @@ export type IColumnInfo = {
   source?: string | IFieldMakerCallback;
   title?: string;
   sort?: boolean;
-  actions?: Array<IGridAction>;
   width?: string;
-  filter?: boolean | IFilterOption;
+  filter?: boolean;
   cellMaker?: ICellMakerCallback;
 };
 
-export type IFilterOption = {};
-export type IGridAction = {
-  url?: string | IActionUrlMakerCallback;
-  action?: IActionCallback;
-  label?: string;
-  imageUrl?: string;
-};
-
-export type IActionCallback = (any: any, element: HTMLTableRowElement) => void;
-
-export type IActionUrlMakerCallback = (any: any) => string;
 export type ICellMakerCallback = (
   row: any,
   data: any,

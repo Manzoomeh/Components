@@ -190,7 +190,7 @@ export default class Grid implements IGrid {
               source: property,
               name: property,
               sort: this.options.sorting,
-              type: value.actions ? ColumnType.Action : ColumnType.Data,
+              type: ColumnType.Data,
               filter: true,
             },
             ...value,
@@ -207,7 +207,7 @@ export default class Grid implements IGrid {
     }
   }
 
-  private createColumn(columnInfo: IGridColumnInfo): HTMLTableDataCellElement {
+  private createColumn(columnInfo: IGridColumnInfo): HTMLTableCellElement {
     const td = document.createElement("td");
     td.appendChild(document.createTextNode(columnInfo.title));
     if (columnInfo.type === ColumnType.Data && (columnInfo.sort ?? true)) {
