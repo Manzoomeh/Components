@@ -1,6 +1,7 @@
 import { IDictionary, ISortType } from "../../type-alias";
 
 export type FilterType = "none" | "simple" | "row";
+export type HtmlDirection = "ltr" | "rtl";
 export type IGridOptions = {
   columns: IDictionary<IColumn>;
   filter?: FilterType;
@@ -14,6 +15,7 @@ export type IGridOptions = {
     labels: IDictionary<string>;
   };
   rowMaker?: IRowMakerCallback;
+  direction: HtmlDirection;
 };
 
 export type IColumn = string | IColumnInfo;

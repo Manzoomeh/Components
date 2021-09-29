@@ -41,6 +41,7 @@ export default class Grid implements IGrid {
         pageCount: 10,
         sorting: true,
         pageNumber: 1,
+        direction: "rtl",
         culture: {
           labels: {
             search: "Search :",
@@ -71,6 +72,9 @@ export default class Grid implements IGrid {
     };
     this.container = container;
     this.container.setAttribute("data-bc-grid", "");
+    if (this.options.direction) {
+      this.container.style["direction"] = this.options.direction;
+    }
     this.table = document.createElement("table");
     this.table.setAttribute("data-bc-table", "");
     this.head = document.createElement("thead");
