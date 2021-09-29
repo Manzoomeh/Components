@@ -14,9 +14,10 @@ export default class GridRow {
         switch (column.type) {
           case ColumnType.Data: {
             td.setAttribute("data-bc-data", "");
-            const tmpValue = Reflect.get(this.data, column.filed);
+            const tmpValue = Reflect.get(this.data, column.field);
             if (column.cellMaker) {
-              td.innerHTML = column.cellMaker(this.data, tmpValue, td);
+              td.innerHTML =
+                column.cellMaker(this.data, tmpValue, td) ?? tmpValue;
             } else {
               td.appendChild(
                 document.createTextNode(tmpValue?.toString() ?? "")

@@ -63,7 +63,7 @@
           "cellMaker": (row, data, td) => `<button data-id="${row.id}" onclick="alert(this);">${row.data}</button>`
         },
         custom3: {
-          filed: "id",
+          field: "id",
           title: "custom3",
           "cellMaker": (row, data, td) => {
             td.style["color"] = row.data?.indexOf("a") == -1 ? "red" : "blue";

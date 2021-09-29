@@ -139,9 +139,9 @@ export default class Grid implements IGrid {
               if (!this.filter) {
                 this.filter = {};
               }
-              this.filter[columnInfo.filed] = input.value?.toLowerCase();
+              this.filter[columnInfo.field] = input.value?.toLowerCase();
             } else {
-              delete this.filter[columnInfo.filed];
+              delete this.filter[columnInfo.field];
             }
             this.refreshData();
           });
@@ -168,7 +168,7 @@ export default class Grid implements IGrid {
 
       const columnInfo: IGridColumnInfo = {
         title: this.options.rowNumber,
-        filed: null,
+        field: null,
         type: ColumnType.Sort,
       };
       tr.appendChild(this.createColumn(columnInfo));
@@ -181,7 +181,7 @@ export default class Grid implements IGrid {
         if (typeof value === "string") {
           columnInfo = {
             title: value,
-            filed: property,
+            field: property,
             sort: this.options.sorting,
             type: ColumnType.Data,
             filter: true,
@@ -189,7 +189,7 @@ export default class Grid implements IGrid {
         } else {
           columnInfo = {
             ...{
-              filed: property,
+              field: property,
               sort: this.options.sorting,
               type: value.actions ? ColumnType.Action : ColumnType.Data,
               filter: true,
@@ -236,10 +236,10 @@ export default class Grid implements IGrid {
         let sortType: ISortType = null;
         let find = false;
         if (typeof this.options.defaultSort === "string") {
-          if (this.options.defaultSort === columnInfo.filed) {
+          if (this.options.defaultSort === columnInfo.field) {
             find = true;
           }
-        } else if (this.options.defaultSort.name === columnInfo.filed) {
+        } else if (this.options.defaultSort.name === columnInfo.field) {
           find = true;
           sortType = this.options.defaultSort.sort;
         }
@@ -263,7 +263,7 @@ export default class Grid implements IGrid {
         Object.getOwnPropertyNames(source[0]).forEach((property) => {
           const columnInfo: IGridColumnInfo = {
             title: property,
-            filed: property,
+            field: property,
             sort: this.options.sorting,
             type: ColumnType.Data,
             filter: true,
@@ -335,7 +335,7 @@ export default class Grid implements IGrid {
     const colInfo = this.columns.find((col) => {
       let retVal = false;
       if (col.type === ColumnType.Data && col.filter) {
-        const value = Reflect.get(row.data, col.filed)
+        const value = Reflect.get(row.data, col.field)
           ?.toString()
           .toLowerCase();
         retVal = value.indexOf(this.filter) >= 0;
@@ -348,11 +348,11 @@ export default class Grid implements IGrid {
   private sortAsc(first: GridRow, second: GridRow): number {
     let valFirst = Reflect.get(
       this.sortInfo.column.title ? first.data : first,
-      this.sortInfo.column.filed
+      this.sortInfo.column.field
     );
     let valSecond = Reflect.get(
       this.sortInfo.column.title ? second.data : second,
-      this.sortInfo.column.filed
+      this.sortInfo.column.field
     );
     if (typeof valFirst === "string") {
       valFirst = valFirst.toLowerCase();
@@ -366,11 +366,11 @@ export default class Grid implements IGrid {
   private sortDesc(first: GridRow, second: GridRow): number {
     let valFirst = Reflect.get(
       this.sortInfo.column.title ? first.data : first,
-      this.sortInfo.column.filed
+      this.sortInfo.column.field
     );
     let valSecond = Reflect.get(
       this.sortInfo.column.title ? second.data : second,
-      this.sortInfo.column.filed
+      this.sortInfo.column.field
     );
     if (typeof valFirst === "string") {
       valFirst = valFirst.toLowerCase();

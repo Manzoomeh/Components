@@ -26,7 +26,7 @@ export type ISortInfo = {
 };
 
 export type IColumnInfo = {
-  filed?: string;
+  field?: string;
   title?: string;
   sort?: boolean;
   actions?: Array<IGridAction>;
