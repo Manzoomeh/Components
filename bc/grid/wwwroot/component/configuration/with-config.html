@@ -50,6 +50,26 @@
           title: "Data-Id",
           filter: false
         },
+        custom0: {
+          title: "custom0",
+          "cellMaker": () => "statis"
+        },
+        custom1: {
+          title: "custom1",
+          "cellMaker": (row, data, td) => `${row.id}-${row.data}`
+        },
+        custom2: {
+          title: "custom2",
+          "cellMaker": (row, data, td) => `<button data-id="${row.id}" onclick="alert(this);">${row.data}</button>`
+        },
+        custom3: {
+          filed: "id",
+          title: "custom3",
+          "cellMaker": (row, data, td) => {
+            td.style["color"] = row.data?.indexOf("a") == -1 ? "red" : "blue";
+            return data;
+          }
+        },
         data: {
           title: "Data",
           filter: true
@@ -69,7 +89,8 @@
           "last": "to last"
         }
       },
-      pageNumber: 2
+      pageNumber: 2,
+      rowMaker: (data, tr) => console.log(data, tr)
     };
   </script>
 </body>

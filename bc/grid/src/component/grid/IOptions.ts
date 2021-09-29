@@ -13,6 +13,7 @@ export type IGridOptions = {
   culture: {
     labels: IDictionary<string>;
   };
+  rowMaker?: IRowMakerCallback;
 };
 
 export type IColumn = string | IColumnInfo;
@@ -23,11 +24,13 @@ export type ISortInfo = {
 };
 
 export type IColumnInfo = {
+  filed?: string;
   title?: string;
   sort?: boolean;
   actions?: Array<IGridAction>;
   width?: string;
   filter?: boolean | IFilterOption;
+  cellMaker?: ICellMakerCallback;
 };
 
 export type IFilterOption = {};
@@ -41,3 +44,13 @@ export type IGridAction = {
 export type IActionCallback = (any: any, element: HTMLTableRowElement) => void;
 
 export type IActionUrlMakerCallback = (any: any) => string;
+export type ICellMakerCallback = (
+  row: any,
+  data: any,
+  element: HTMLTableCellElement
+) => string;
+
+export type IRowMakerCallback = (
+  row: any,
+  element: HTMLTableRowElement
+) => void;

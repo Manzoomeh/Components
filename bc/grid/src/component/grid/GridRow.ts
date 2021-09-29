@@ -11,27 +11,32 @@ export default class GridRow {
       this._uiElement = document.createElement("tr");
       this.owner.columns.forEach((column) => {
         const td = document.createElement("td");
-        let value: Node = null;
         switch (column.type) {
           case ColumnType.Data: {
             td.setAttribute("data-bc-data", "");
-            const tmpValue = Reflect.get(this.data, column.name);
-            value = document.createTextNode(tmpValue?.toString());
+            const tmpValue = Reflect.get(this.data, column.filed);
+            if (column.cellMaker) {
+              td.innerHTML = column.cellMaker(this.data, tmpValue, td);
+            } else {
+              td.appendChild(
+                document.createTextNode(tmpValue?.toString() ?? "")
+              );
+            }
             break;
           }
           case ColumnType.Sort: {
             td.setAttribute("data-bc-order", "");
-            value = document.createTextNode(this.order.toString());
+            td.appendChild(document.createTextNode(this.order.toString()));
             break;
           }
           case ColumnType.Action: {
             td.setAttribute("data-bc-action", "");
             td.setAttribute("data-bc-no-selection", "");
             if (column.actions) {
-              value = new DocumentFragment();
+              const value = new DocumentFragment();
               const div = document.createElement("div");
               div.setAttribute("data-bc-icons", "");
-              value = value.appendChild(div);
+              value.appendChild(div);
               column.actions.forEach((actionInfo) => {
                 const anchorElement = document.createElement("a");
                 value.appendChild(anchorElement);
@@ -61,15 +66,18 @@ export default class GridRow {
                   });
                 }
               });
+              td.appendChild(value);
             }
             break;
           }
           default:
             break;
         }
-        td.appendChild(value);
         this._uiElement.appendChild(td);
       });
+      if (this.owner.options.rowMaker) {
+        this.owner.options.rowMaker(this.data, this._uiElement);
+      }
     } else if (this.order != 0) {
       const cel = this._uiElement.querySelector("[data-bc-order]");
       if (cel) {
@@ -79,6 +87,7 @@ export default class GridRow {
     }
     return this._uiElement;
   }
+
   constructor(owner: Grid, data: any, order: number) {
     this.data = data;
     this.owner = owner;

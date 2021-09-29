@@ -9,7 +9,6 @@ export type ISortType = "asc" | "desc";
 
 export type IGridColumnInfo = IColumnInfo & {
   type: ColumnType;
-  name: string;
 };
 
 export type ISortInfo = {
