@@ -158,6 +158,7 @@ export default class GridPaginate {
       "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
     );
+    this.lastButton.setAttribute("data-bc-end", "");
     this.lastButton.setAttribute(
       "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
@@ -167,6 +168,7 @@ export default class GridPaginate {
       "data-bc-status",
       this.pageNumber == 0 ? "disabled" : ""
     );
+    this.firstButton.setAttribute("data-bc-start", "");
     this.firstButton.setAttribute(
       "data-bc-status",
       this.pageNumber == 0 ? "disabled" : ""
