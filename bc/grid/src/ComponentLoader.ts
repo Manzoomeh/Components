@@ -1,4 +1,4 @@
-import BcComponent from "./component/BcComponent";
+import BasisCoreGridComponent from "./component/BasisCoreGridComponent";
 
-const grid = BcComponent;
+const grid = BasisCoreGridComponent;
 export { grid };

@@ -1,15 +1,19 @@
-import { IGridOptions } from "./IOptions";
+import { IGridOptions, IOffsetOptions } from "./IOptions";
 import {
   IGridColumnInfo,
-  ISortInfo,
   ISortType,
   IGridSource,
+  SignalSourceCallback,
 } from "../../type-alias";
 import "./../../asset/style.css";
 import GridRow from "./GridRow";
 import IGrid from "./IGrid";
-import GridPaginate from "./GridPaginate";
+import ClientProcess from "../paginate/ClientPaginate";
 import { ColumnType } from "../../enum";
+import IGridProcessManager from "../paginate/IGridProcessManager";
+import ServerProcess from "../paginate/ServerProcess";
+import NoPaginate from "../paginate/NoPaginate";
+import MixedProcess from "../paginate/MixedProcess";
 
 export default class Grid implements IGrid {
   readonly container: HTMLElement;
@@ -17,8 +21,6 @@ export default class Grid implements IGrid {
   readonly options: IGridOptions;
   readonly head: HTMLTableSectionElement;
   readonly body: HTMLTableSectionElement;
-  private sortInfo: ISortInfo;
-  private filter: any = null;
 
   static _defaults: Partial<IGridOptions>;
   private rows: GridRow[] = new Array<GridRow>();
@@ -26,12 +28,13 @@ export default class Grid implements IGrid {
   private columnsInitialized = false;
   pageSize: number;
   pageNumber: number = 1;
-  private paginate: GridPaginate;
+  private processManager: IGridProcessManager;
   public readonly columns: IGridColumnInfo[] = new Array<IGridColumnInfo>();
   static getDefaults(): Partial<IGridOptions> {
     if (!Grid._defaults) {
       Grid._defaults = {
         filter: "simple",
+        process: "client",
         paging: [10, 30, 50],
         pageCount: 10,
         sorting: true,
@@ -52,11 +55,14 @@ export default class Grid implements IGrid {
     return Grid._defaults;
   }
 
-  constructor(container: HTMLElement, options?: IGridOptions) {
+  constructor(
+    container: HTMLElement,
+    options?: IGridOptions,
+    signalSourceCallback?: SignalSourceCallback
+  ) {
     if (!container) {
       throw "table element in null or undefined";
     }
-
     this.options = {
       ...Grid.getDefaults(),
       ...(options ?? ({} as any)),
@@ -77,10 +83,10 @@ export default class Grid implements IGrid {
     this.body = document.createElement("tbody");
     this.table.appendChild(this.body);
 
-    this.createUI();
+    this.createUI(signalSourceCallback);
   }
 
-  private createUI(): void {
+  private createUI(signalSourceCallback?: SignalSourceCallback): void {
     if (this.options.filter == "simple") {
       const filter = document.createElement("div");
       filter.setAttribute("data-bc-filter-container", "");
@@ -93,8 +99,11 @@ export default class Grid implements IGrid {
       input.setAttribute("type", "text");
       label.appendChild(input);
       input.addEventListener("keyup", (_) => {
-        this.filter = input.value?.toLowerCase();
-        this.refreshData();
+        const newFilter = input.value.toLowerCase();
+        if (this.processManager.filter != newFilter) {
+          this.processManager.filter = newFilter;
+          this.processManager.updateUI();
+        }
       });
       filter.appendChild(label);
     }
@@ -107,11 +116,40 @@ export default class Grid implements IGrid {
       pagingContainer.setAttribute("data-bc-paging-container", "");
       pagingContainer.setAttribute("data-bc-no-selection", "");
       this.container.appendChild(pagingContainer);
-      this.paginate = new GridPaginate(
-        this,
-        pageSizeContainer,
-        pagingContainer
-      );
+      switch (this.options.process) {
+        case "server": {
+          this.processManager = new ServerProcess(
+            this,
+            pageSizeContainer,
+            pagingContainer,
+            signalSourceCallback
+          );
+          break;
+        }
+        case "client": {
+          this.processManager = new ClientProcess(
+            this,
+            pageSizeContainer,
+            pagingContainer,
+            signalSourceCallback
+          );
+          break;
+        }
+        case "mix": {
+          this.processManager = new MixedProcess(
+            this,
+            pageSizeContainer,
+            pagingContainer,
+            signalSourceCallback
+          );
+          break;
+        }
+        default: {
+          throw Error(`Type '${this.options.process}' not support in grid`);
+        }
+      }
+    } else {
+      this.processManager = new NoPaginate(this, signalSourceCallback);
     }
     this.createTable();
   }
@@ -129,16 +167,28 @@ export default class Grid implements IGrid {
           input.setAttribute("type", "text");
           input.setAttribute("placeholder", columnInfo.title);
           input.addEventListener("keyup", (_) => {
-            const value = input.value?.toLowerCase();
-            if (value.length > 0) {
-              if (!this.filter) {
-                this.filter = {};
+            const newFilter = input.value.toLowerCase();
+            let mustUpdate = false;
+            if (newFilter.length > 0) {
+              if (!this.processManager.filter) {
+                this.processManager.filter = {};
               }
-              this.filter[columnInfo.name] = input.value?.toLowerCase();
+              if (newFilter != this.processManager.filter[columnInfo.name]) {
+                this.processManager.filter[columnInfo.name] = newFilter;
+                mustUpdate = true;
+              }
             } else {
-              delete this.filter[columnInfo.name];
+              if (
+                typeof this.processManager.filter[columnInfo.name] !==
+                "undefined"
+              ) {
+                delete this.processManager.filter[columnInfo.name];
+                mustUpdate = true;
+              }
             }
-            this.refreshData();
+            if (mustUpdate) {
+              this.processManager.updateUI();
+            }
           });
           td.appendChild(input);
           tr.appendChild(td);
@@ -213,7 +263,7 @@ export default class Grid implements IGrid {
     if (columnInfo.type === ColumnType.Data && (columnInfo.sort ?? true)) {
       td.setAttribute("data-bc-sorting", "");
       td.addEventListener("click", (_) => {
-        if (this.sortInfo?.column !== columnInfo) {
+        if (this.processManager.sortInfo?.column !== columnInfo) {
           this.head
             .querySelectorAll("[data-bc-sorting]")
             .forEach((element) => element.setAttribute("data-bc-sorting", ""));
@@ -224,12 +274,12 @@ export default class Grid implements IGrid {
         } else {
           sortType = "asc";
         }
-        this.sortInfo = {
+        this.processManager.sortInfo = {
           column: columnInfo,
           sort: sortType,
         };
         td.setAttribute("data-bc-sorting", sortType);
-        this.refreshData();
+        this.processManager.updateUI();
       });
       if (this.options.defaultSort) {
         let sortType: ISortType = null;
@@ -243,11 +293,11 @@ export default class Grid implements IGrid {
           sortType = this.options.defaultSort.sort;
         }
         if (find) {
-          this.sortInfo = {
+          this.processManager.sortInfo = {
             column: columnInfo,
             sort: sortType ?? "asc",
           };
-          td.setAttribute("data-bc-sorting", this.sortInfo.sort);
+          td.setAttribute("data-bc-sorting", this.processManager.sortInfo.sort);
         }
       }
     }
@@ -255,7 +305,7 @@ export default class Grid implements IGrid {
     return td;
   }
 
-  public setSource(source: IGridSource): void {
+  public setSource(source: IGridSource, offsetOptions?: IOffsetOptions): void {
     if (!this.columnsInitialized) {
       const tr = this.head.querySelector("tr");
       if (source && source.length > 0 && source[0]) {
@@ -283,29 +333,7 @@ export default class Grid implements IGrid {
       this.rows.push(rowObj);
     });
 
-    this.refreshData();
-  }
-
-  private refreshData(): void {
-    let rows = this.rows;
-    if (this.options.filter === "simple" && this.filter?.length > 0) {
-      rows = rows.filter((x) => x.acceptableBySimpleFilter(this.filter));
-    } else if (
-      this.options.filter === "row" &&
-      this.filter &&
-      Reflect.ownKeys(this.filter).length > 0
-    ) {
-      rows = rows.filter((x) => x.acceptableByRowFilter(this.filter));
-    }
-    if (this.sortInfo) {
-      rows = rows.sort((a, b) => GridRow.compare(a, b, this.sortInfo));
-    }
-    rows.forEach((row, i) => row.setOrder(i));
-    if (this.paginate) {
-      this.paginate.setSource(rows);
-    } else {
-      this.displayRows(rows);
-    }
+    this.processManager.setSource(this.rows, offsetOptions);
   }
 
   public displayRows(rows: GridRow[]): void {

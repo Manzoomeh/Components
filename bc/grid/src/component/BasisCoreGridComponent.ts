@@ -4,7 +4,7 @@ import IUserDefineComponent from "../basiscore/IUserDefineComponent";
 import { SourceId } from "../basiscore/type-alias";
 import Grid from "./grid/Grid";
 
-export default class BcComponent implements IComponentManager {
+export default class BasisCoreGridComponent implements IComponentManager {
   readonly owner: IUserDefineComponent;
   private grid: Grid;
   private container: HTMLDivElement;
@@ -16,6 +16,9 @@ export default class BcComponent implements IComponentManager {
 
   public async initializeAsync(): Promise<void> {
     const sourceId = await this.owner.getAttributeValueAsync("DataMemberName");
+    const signalSourceId = await this.owner.getAttributeValueAsync(
+      "SignalSourceId"
+    );
     if (sourceId) {
       this.sourceId = sourceId.toLowerCase();
       this.owner.addTrigger([this.sourceId]);
@@ -31,7 +34,9 @@ export default class BcComponent implements IComponentManager {
       "options-object"
     );
     const option = optionName ? eval(optionName) : null;
-    this.grid = new Grid(this.container, option);
+    this.grid = new Grid(this.container, option, (data) => {
+      this.owner.setSource(signalSourceId, data);
+    });
   }
 
   public runAsync(source?: ISource): boolean {
@@ -39,8 +44,9 @@ export default class BcComponent implements IComponentManager {
       if (source?.id !== this.sourceId) {
         source = this.owner.tryToGetSource(this.sourceId);
       }
+
       if (source?.id === this.sourceId) {
-        this.grid.setSource(source.rows);
+        this.grid.setSource(source.rows, source.extra);
       }
     }
     return true;

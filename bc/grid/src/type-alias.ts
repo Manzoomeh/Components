@@ -18,3 +18,5 @@ export type ISortInfo = {
   column: IGridColumnInfo;
   sort: ISortType;
 };
+
+export type SignalSourceCallback = (source: any) => void;

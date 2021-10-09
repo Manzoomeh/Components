@@ -6,7 +6,7 @@ export default class GridRow {
   public readonly data: any;
   readonly dataProxy: any;
   private readonly owner: Grid;
-  private order: number;
+  public order: number;
   private _uiElement: HTMLTableRowElement = null;
   public get uiElement(): HTMLTableRowElement {
     if (!this._uiElement) {

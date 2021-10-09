@@ -1,9 +1,10 @@
-import GridRow from "./GridRow";
-import IGrid from "./IGrid";
-import { IGridSource } from "./../../type-alias";
+import { SignalSourceCallback } from "../../type-alias";
+import GridRow from "../grid/GridRow";
+import IGrid from "../grid/IGrid";
 
-export default class GridPaginate {
-  readonly owner: IGrid;
+import ProcessManager from "./SourceManager";
+
+export default abstract class PaginateBaseProcess extends ProcessManager {
   readonly pagingContainer: HTMLDivElement;
   readonly pageSizeContainer: HTMLDivElement;
 
@@ -15,19 +16,17 @@ export default class GridPaginate {
   private remainFromStart: boolean;
   private remainFromEnd: boolean;
 
-  private data: IGridSource;
-
-  public pageSize: number;
-  public pageNumber: number;
   public totalPage: number;
   public totalRows: number;
+  protected filteredData: Array<GridRow>;
 
   constructor(
     owner: IGrid,
     pageSizeContainer: HTMLDivElement,
-    pagingContainer: HTMLDivElement
+    pagingContainer: HTMLDivElement,
+    onSignalSourceCallback: SignalSourceCallback
   ) {
-    this.owner = owner;
+    super(owner, onSignalSourceCallback);
     this.pageSizeContainer = pageSizeContainer;
     this.pagingContainer = pagingContainer;
     this.initializeUI();
@@ -37,9 +36,9 @@ export default class GridPaginate {
     this.pageNumber = -1;
   }
 
-  setSource(data: Array<GridRow>): void {
-    this.data = data;
-    this.totalRows = data.length;
+  protected displayRows(rows: Array<GridRow>): void {
+    this.filteredData = rows;
+    this.totalRows = rows.length;
     this.pageNumber =
       this.pageNumber == -1 ? this.owner.options.pageNumber - 1 : 0;
     this.totalPage =
@@ -49,15 +48,17 @@ export default class GridPaginate {
     this.displayCurrentRows();
   }
 
-  private displayCurrentRows(): void {
+  protected displayCurrentRows(): void {
     const from = this.pageNumber * this.pageSize;
     const to = from + this.pageSize;
     this.updateState();
-    const rows = this.data.filter((_, i) => i >= from && i < to);
+    const rows = this.filteredData.filter(
+      (row) => row.order > from && row.order <= to
+    );
     this.owner.displayRows(rows);
   }
 
-  private updatePaging(): void {
+  protected updatePaging(): void {
     this.pageButtonsContainer.innerHTML = "";
     const pageSideCount = Math.floor(this.owner.options.pageCount / 2);
     const startPage = Math.max(0, this.pageNumber - pageSideCount);
@@ -102,7 +103,7 @@ export default class GridPaginate {
       const newSize = parseInt((x.target as HTMLSelectElement).value);
       if (this.pageSize != newSize) {
         this.pageSize = newSize;
-        this.setSource(this.data);
+        this.updateUI();
       }
     });
     label.appendChild(select);
@@ -152,7 +153,7 @@ export default class GridPaginate {
     this.updateState();
   }
 
-  private updateState(): void {
+  protected updateState(): void {
     this.nextButton.setAttribute("data-bc-next", "");
     this.nextButton.setAttribute(
       "data-bc-status",

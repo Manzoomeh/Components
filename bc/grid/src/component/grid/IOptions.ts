@@ -4,6 +4,8 @@ export type FilterType = "none" | "simple" | "row";
 
 export type HtmlDirection = "ltr" | "rtl";
 
+export type ProcessType = "server" | "client" | "mix";
+
 export type IGridOptions = {
   columns: IDictionary<IColumn>;
   filter?: FilterType;
@@ -18,8 +20,13 @@ export type IGridOptions = {
   };
   rowMaker?: IRowMakerCallback;
   direction: HtmlDirection;
+  process: ProcessType;
 };
 
+export type IOffsetOptions = {
+  total: number;
+  from: number;
+};
 export type IColumn = string | IColumnInfo;
 
 export type ISortInfo = {
