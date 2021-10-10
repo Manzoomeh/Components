@@ -89,9 +89,10 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
         document.createTextNode(this.owner.options.culture.labels.pageSize)
       );
       const select = document.createElement("select");
-      this.owner.options.paging?.forEach((pageSize) => {
+      this.owner.options.paging?.forEach((pageSize, index) => {
         const option = document.createElement("option");
         const value = pageSize.toString();
+        option.selected = index == this.owner.options.defaultPagingIndex;
         option.appendChild(document.createTextNode(value));
         option.setAttribute("value", value);
         select.appendChild(option);
@@ -105,7 +106,8 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
       });
       label.appendChild(select);
       this.pageSizeContainer.appendChild(label);
-      this.pageSize = this.owner.options.paging[0];
+      this.pageSize =
+        this.owner.options.paging[this.owner.options.defaultPagingIndex];
     } else {
       this.pageSize = this.owner.options.paging;
     }

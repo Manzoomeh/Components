@@ -10,6 +10,7 @@ export type IGridOptions = {
   columns: IDictionary<IColumn>;
   filter?: FilterType;
   paging?: number[] | number;
+  defaultPagingIndex?: number;
   rowNumber?: string;
   defaultSort: string | ISortInfo;
   pageCount?: number;
