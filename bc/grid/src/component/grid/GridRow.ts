@@ -13,6 +13,11 @@ export default class GridRow {
       this._uiElement = document.createElement("tr");
       this.owner.columns.forEach((column) => {
         const td = document.createElement("td");
+        if (column.cssClass) {
+          Array.isArray(column.cssClass)
+            ? td.classList.add(...column.cssClass)
+            : td.classList.add(column.cssClass);
+        }
         switch (column.type) {
           case ColumnType.Data: {
             td.setAttribute("data-bc-data", "");

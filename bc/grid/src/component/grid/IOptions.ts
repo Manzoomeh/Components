@@ -42,6 +42,7 @@ export type IColumnInfo = {
   width?: string;
   filter?: boolean;
   cellMaker?: ICellMakerCallback;
+  cssClass?: string | Array<string>;
 };
 
 export type ICellMakerCallback = (
