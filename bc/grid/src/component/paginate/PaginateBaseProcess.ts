@@ -29,10 +29,6 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
     this.pageSizeContainer = pageSizeContainer;
     this.pagingContainer = pagingContainer;
     this.initializeUI();
-    this.pageSize = this.owner.options.paging
-      ? this.owner.options.paging[0]
-      : -1;
-    this.pageNumber = -1;
   }
 
   protected displayRows(rows: Array<GridRow>): void {
@@ -87,27 +83,32 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
   }
 
   private initializeUI(): void {
-    const label = document.createElement("label");
-    label.appendChild(
-      document.createTextNode(this.owner.options.culture.labels.pageSize)
-    );
-    const select = document.createElement("select");
-    this.owner.options.paging?.forEach((pageSize) => {
-      const option = document.createElement("option");
-      const value = pageSize.toString();
-      option.appendChild(document.createTextNode(value));
-      option.setAttribute("value", value);
-      select.appendChild(option);
-    });
-    select.addEventListener("change", (x) => {
-      const newSize = parseInt((x.target as HTMLSelectElement).value);
-      if (this.pageSize != newSize) {
-        this.pageSize = newSize;
-        this.pageSizeChange();
-      }
-    });
-    label.appendChild(select);
-    this.pageSizeContainer.appendChild(label);
+    if (Array.isArray(this.owner.options.paging)) {
+      const label = document.createElement("label");
+      label.appendChild(
+        document.createTextNode(this.owner.options.culture.labels.pageSize)
+      );
+      const select = document.createElement("select");
+      this.owner.options.paging?.forEach((pageSize) => {
+        const option = document.createElement("option");
+        const value = pageSize.toString();
+        option.appendChild(document.createTextNode(value));
+        option.setAttribute("value", value);
+        select.appendChild(option);
+      });
+      select.addEventListener("change", (x) => {
+        const newSize = parseInt((x.target as HTMLSelectElement).value);
+        if (this.pageSize != newSize) {
+          this.pageSize = newSize;
+          this.pageSizeChange();
+        }
+      });
+      label.appendChild(select);
+      this.pageSizeContainer.appendChild(label);
+      this.pageSize = this.owner.options.paging[0];
+    } else {
+      this.pageSize = this.owner.options.paging;
+    }
     this.firstButton = document.createElement("a");
     this.firstButton.innerHTML = this.owner.options.culture.labels.first;
     this.firstButton.addEventListener("click", (e) => {
@@ -151,6 +152,7 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
     this.pagingContainer.appendChild(this.nextButton);
     this.pagingContainer.appendChild(this.lastButton);
     this.updateState();
+    this.pageNumber = -1;
   }
 
   protected updateState(): void {

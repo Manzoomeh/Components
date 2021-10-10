@@ -9,7 +9,7 @@ export type ProcessType = "server" | "client" | "mix";
 export type IGridOptions = {
   columns: IDictionary<IColumn>;
   filter?: FilterType;
-  paging?: number[];
+  paging?: number[] | number;
   rowNumber?: string;
   defaultSort: string | ISortInfo;
   pageCount?: number;

@@ -1,3 +1,4 @@
+import { Priority } from "../basiscore/enum";
 import IComponentManager from "../basiscore/IComponentManager";
 import ISource from "../basiscore/ISource";
 import IUserDefineComponent from "../basiscore/IUserDefineComponent";
@@ -12,6 +13,7 @@ export default class BasisCoreGridComponent implements IComponentManager {
 
   constructor(owner: IUserDefineComponent) {
     this.owner = owner;
+    this.owner.priority = Priority.none;
   }
 
   public async initializeAsync(): Promise<void> {
@@ -44,7 +46,7 @@ export default class BasisCoreGridComponent implements IComponentManager {
   }
 
   public runAsync(source?: ISource): boolean {
-    if (this.sourceId && source?.id === this.sourceId) {
+    if (source?.id === this.sourceId) {
       this.grid.setSource(source.rows, source.extra);
     }
     return true;
