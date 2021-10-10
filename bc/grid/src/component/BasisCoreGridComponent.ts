@@ -27,9 +27,7 @@ export default class BasisCoreGridComponent implements IComponentManager {
     }
     this.owner.setContent(this.container);
 
-    const optionName = await this.owner.getAttributeValueAsync(
-      "options-object"
-    );
+    const optionName = await this.owner.getAttributeValueAsync("options");
     const option = optionName ? eval(optionName) : null;
     this.grid = new Grid(this.container, option, (data) => {
       this.owner.setSource(signalSourceId, data);
