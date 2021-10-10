@@ -41,6 +41,7 @@ export default class Grid implements IGrid {
         sorting: true,
         pageNumber: 1,
         direction: "rtl",
+        noData: true,
         culture: {
           labels: {
             search: "Search :",
@@ -49,6 +50,7 @@ export default class Grid implements IGrid {
             previous: "Previous",
             first: "First",
             last: "last",
+            noData: "No Data Find",
           },
         },
       };
@@ -339,6 +341,33 @@ export default class Grid implements IGrid {
 
   public displayRows(rows: GridRow[]): void {
     this.body.innerHTML = "";
-    rows?.forEach((row) => this.body.appendChild(row.uiElement));
+    if (rows?.length > 0) {
+      rows?.forEach((row) => this.body.appendChild(row.uiElement));
+    } else if (
+      typeof this.options.noData !== "undefined" &&
+      this.options.noData
+    ) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      tr.appendChild(td);
+      td.colSpan = this.columns.length;
+      switch (typeof this.options.noData) {
+        case "boolean": {
+          td.appendChild(
+            document.createTextNode(this.options.culture.labels.noData)
+          );
+          break;
+        }
+        case "string": {
+          td.appendChild(document.createTextNode(this.options.noData));
+          break;
+        }
+        case "function": {
+          this.options.noData(td);
+          break;
+        }
+      }
+      this.body.appendChild(tr);
+    }
   }
 }

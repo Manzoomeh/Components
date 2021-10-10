@@ -22,6 +22,7 @@ export type IGridOptions = {
   rowMaker?: IRowMakerCallback;
   direction: HtmlDirection;
   process: ProcessType;
+  noData?: string | INoDataCallback | boolean;
 };
 
 export type IOffsetOptions = {
@@ -57,3 +58,5 @@ export type IRowMakerCallback = (
 ) => void;
 
 export type IFieldMakerCallback = (row: any) => any;
+
+export type INoDataCallback = (td: HTMLTableCellElement) => void;
