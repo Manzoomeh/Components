@@ -6,5 +6,5 @@ export default interface IGridProcessManager {
   sortInfo: ISortInfo;
   filter: any;
   setSource(data: Array<GridRow>, options: IOffsetOptions);
-  updateUI();
+  applyUserAction();
 }

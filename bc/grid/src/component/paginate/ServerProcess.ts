@@ -2,9 +2,8 @@ import { SignalSourceCallback } from "../../type-alias";
 import GridRow from "../grid/GridRow";
 import IGrid from "../grid/IGrid";
 import { IOffsetOptions } from "../grid/IOptions";
-import PaginateBaseProcess from "./PaginateBaseProcess";
-
-export default class ServerProcess extends PaginateBaseProcess {
+import ServerBaseProcess from "./ServerBaseProcess";
+export default class ServerProcess extends ServerBaseProcess {
   constructor(
     owner: IGrid,
     pageSizeContainer: HTMLDivElement,
@@ -25,38 +24,16 @@ export default class ServerProcess extends PaginateBaseProcess {
     this.filteredData = rows;
     this.totalRows = this.options.total;
     this.pageNumber = Math.floor(this.options.from / this.pageSize);
-    this.totalPage =
-      Math.floor(this.totalRows / this.pageSize) +
-      (Math.ceil(this.totalRows % this.pageSize) > 0 ? 1 : 0);
     this.updatePaging();
-    super.displayCurrentRows();
+    this.updateState();
+    this.owner.displayRows(rows);
   }
 
-  protected displayCurrentRows(): void {
+  protected displayCurrentPage(): void {
     this.tryLoadData();
   }
 
-  public updateUI(): void {
+  public applyUserAction(): void {
     this.tryLoadData();
-  }
-
-  protected tryLoadData() {
-    if (this.onSignalSourceCallback) {
-      const data = {
-        pageNumber: this.pageNumber + 1,
-        pageSize: this.pageSize,
-        filter: this.filter,
-        sortInfo: {
-          col: this.sortInfo.column.name,
-          type: this.sortInfo.sort,
-        },
-      };
-      this.onSignalSourceCallback({
-        ...data,
-        ...{ urlencoded: encodeURIComponent(JSON.stringify(data)) },
-      });
-    } else {
-      throw new Error("signalSourceId nor set form grid!");
-    }
   }
 }

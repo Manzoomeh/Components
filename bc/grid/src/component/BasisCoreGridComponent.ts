@@ -19,10 +19,7 @@ export default class BasisCoreGridComponent implements IComponentManager {
     const signalSourceId = await this.owner.getAttributeValueAsync(
       "SignalSourceId"
     );
-    if (sourceId) {
-      this.sourceId = sourceId.toLowerCase();
-      this.owner.addTrigger([this.sourceId]);
-    }
+
     const style = await this.owner.getAttributeValueAsync("style");
     this.container = document.createElement("div");
     if (style) {
@@ -37,17 +34,20 @@ export default class BasisCoreGridComponent implements IComponentManager {
     this.grid = new Grid(this.container, option, (data) => {
       this.owner.setSource(signalSourceId, data);
     });
+
+    if (sourceId) {
+      this.sourceId = sourceId.toLowerCase();
+      this.owner.addTrigger([this.sourceId]);
+      const source = this.owner.tryToGetSource(this.sourceId);
+      if (source) {
+        this.grid.setSource(source.rows, source.extra);
+      }
+    }
   }
 
   public runAsync(source?: ISource): boolean {
-    if (this.sourceId) {
-      if (source?.id !== this.sourceId) {
-        source = this.owner.tryToGetSource(this.sourceId);
-      }
-
-      if (source?.id === this.sourceId) {
-        this.grid.setSource(source.rows, source.extra);
-      }
+    if (this.sourceId && source?.id === this.sourceId) {
+      this.grid.setSource(source.rows, source.extra);
     }
     return true;
   }

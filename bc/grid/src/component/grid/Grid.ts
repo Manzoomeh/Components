@@ -102,7 +102,7 @@ export default class Grid implements IGrid {
         const newFilter = input.value.toLowerCase();
         if (this.processManager.filter != newFilter) {
           this.processManager.filter = newFilter;
-          this.processManager.updateUI();
+          this.processManager.applyUserAction();
         }
       });
       filter.appendChild(label);
@@ -187,7 +187,7 @@ export default class Grid implements IGrid {
               }
             }
             if (mustUpdate) {
-              this.processManager.updateUI();
+              this.processManager.applyUserAction();
             }
           });
           td.appendChild(input);
@@ -279,7 +279,7 @@ export default class Grid implements IGrid {
           sort: sortType,
         };
         td.setAttribute("data-bc-sorting", sortType);
-        this.processManager.updateUI();
+        this.processManager.applyUserAction();
       });
       if (this.options.defaultSort) {
         let sortType: ISortType = null;

@@ -42,7 +42,7 @@ router.get("/api", function (req, res) {
   });
 });
 
-router.get("/api/paging", function (req, res) {
+router.get("/api/server", function (req, res) {
   console.log(req.query);
   const clientData = JSON.parse(req.query.data);
 
@@ -68,7 +68,7 @@ router.get("/api/paging", function (req, res) {
     minId = 0;
   }
   const maxId = minId + pageSize;
-  let data = rootData.filter((_, i) => i >= minId && i <= maxId);
+  let data = rootData.filter((_, i) => i > minId && i <= maxId);
 
   console.log({ pageSize, pageNumber, sortInfo, filter });
   res.send({
@@ -81,6 +81,41 @@ router.get("/api/paging", function (req, res) {
           },
         },
         data: data,
+      },
+    },
+  });
+});
+
+router.get("/api/mix", function (req, res) {
+  console.log(req.query);
+  const clientData = JSON.parse(req.query.data);
+
+  const filter = clientData?.filter;
+
+  const rootData = filter
+    ? apiDataList.filter(
+        (x) =>
+          x.id.toString().indexOf(filter) != -1 ||
+          x.count.toString().indexOf(filter) != -1 ||
+          x.data.indexOf(filter) != -1
+      )
+    : apiDataList;
+
+  const sortInfo = clientData?.sortInfo;
+  if (sortInfo) {
+  }
+
+  console.log({ sortInfo, filter });
+  res.send({
+    sources: {
+      "api.demo": {
+        options: {
+          extra: {
+            total: rootData.length,
+            from: 0,
+          },
+        },
+        data: rootData,
       },
     },
   });

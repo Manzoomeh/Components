@@ -12,7 +12,7 @@
 
 <body>
 
-  <Basis core="api" url="/server/api/server?data=[##api.refresh_demo.urlencoded|(null)##]" method="get" run="atclient"
+  <Basis core="api" url="/server/api/mix?data=[##api.refresh_demo.urlencoded|(null)##]" method="get" run="atclient"
     triggers="api.refresh_demo"> </Basis>
   <Basis core="component.bc.grid" run="atclient" dataMemberName="api.demo" signalSourceId="api.refresh_demo"
     options-object="options">
@@ -35,7 +35,7 @@
       },
     };
     const options = {
-      process: "server",
+      process: "mix",
       filter: "simple",
       columns: {
         id: {

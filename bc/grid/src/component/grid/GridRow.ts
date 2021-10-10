@@ -28,6 +28,7 @@ export default class GridRow {
           case ColumnType.Sort: {
             td.setAttribute("data-bc-order", "");
             td.appendChild(document.createTextNode(this.order.toString()));
+            this._orderChanged = false;
             break;
           }
           default:
@@ -38,12 +39,12 @@ export default class GridRow {
       if (this.owner.options.rowMaker) {
         this.owner.options.rowMaker(this.data, this._uiElement);
       }
-    } else if (this.order != 0) {
+    } else if (this._orderChanged) {
       const cel = this._uiElement.querySelector("[data-bc-order]");
       if (cel) {
         cel.textContent = this.order.toString();
-        this.order = 0;
       }
+      this._orderChanged = false;
     }
     return this._uiElement;
   }
@@ -66,8 +67,10 @@ export default class GridRow {
       );
   }
 
+  private _orderChanged: boolean = true;
   public setOrder(order: number): void {
     this.order = order + 1;
+    this._orderChanged = true;
   }
 
   public acceptableByRowFilter(filter: object): boolean {

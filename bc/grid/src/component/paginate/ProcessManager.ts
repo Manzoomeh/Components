@@ -1,7 +1,7 @@
 import GridRow from "../grid/GridRow";
 import IGrid from "../grid/IGrid";
 import { IOffsetOptions } from "../grid/IOptions";
-import { IGridSource, ISortInfo, SignalSourceCallback } from "../../type-alias";
+import { ISortInfo, SignalSourceCallback } from "../../type-alias";
 import IGridProcessManager from "./IGridProcessManager";
 
 export default abstract class ProcessManager implements IGridProcessManager {
@@ -22,7 +22,7 @@ export default abstract class ProcessManager implements IGridProcessManager {
   public setSource(data: GridRow[], options: IOffsetOptions) {
     this.originalData = data;
     this.options = options;
-    this.updateUI();
+    this.applyUserAction();
   }
 
   protected applyFilterAndSort(): Array<GridRow> {
@@ -43,12 +43,9 @@ export default abstract class ProcessManager implements IGridProcessManager {
     return rows;
   }
 
-  public updateUI(): void {
+  public applyUserAction(): void {
     const rows = this.applyFilterAndSort();
-    if (rows) {
-      console.log("updateUI", rows);
-      this.displayRows(rows);
-    }
+    this.displayRows(rows);
   }
 
   protected displayRows(rows: Array<GridRow>): void {

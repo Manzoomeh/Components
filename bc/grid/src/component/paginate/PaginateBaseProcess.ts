@@ -1,8 +1,7 @@
 import { SignalSourceCallback } from "../../type-alias";
 import GridRow from "../grid/GridRow";
 import IGrid from "../grid/IGrid";
-
-import ProcessManager from "./SourceManager";
+import ProcessManager from "./ProcessManager";
 
 export default abstract class PaginateBaseProcess extends ProcessManager {
   readonly pagingContainer: HTMLDivElement;
@@ -41,24 +40,25 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
     this.totalRows = rows.length;
     this.pageNumber =
       this.pageNumber == -1 ? this.owner.options.pageNumber - 1 : 0;
-    this.totalPage =
-      Math.floor(this.totalRows / this.pageSize) +
-      (Math.ceil(this.totalRows % this.pageSize) > 0 ? 1 : 0);
     this.updatePaging();
-    this.displayCurrentRows();
+    this.displayCurrentPage();
   }
 
-  protected displayCurrentRows(): void {
+  protected displayCurrentPage(): void {
     const from = this.pageNumber * this.pageSize;
     const to = from + this.pageSize;
     this.updateState();
     const rows = this.filteredData.filter(
       (row) => row.order > from && row.order <= to
     );
-    this.owner.displayRows(rows);
+    super.displayRows(rows);
   }
 
-  protected updatePaging(): void {
+  public updatePaging(): void {
+    this.totalPage =
+      Math.floor(this.totalRows / this.pageSize) +
+      (Math.ceil(this.totalRows % this.pageSize) > 0 ? 1 : 0);
+    this.pageNumber = Math.min(this.pageNumber, this.totalPage - 1);
     this.pageButtonsContainer.innerHTML = "";
     const pageSideCount = Math.floor(this.owner.options.pageCount / 2);
     const startPage = Math.max(0, this.pageNumber - pageSideCount);
@@ -80,7 +80,7 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
       page.setAttribute("data-bc-page", i.toString());
       page.addEventListener("click", (e) => {
         this.pageNumber = i;
-        this.displayCurrentRows();
+        this.displayCurrentPage();
       });
       this.pageButtonsContainer.append(page);
     }
@@ -103,7 +103,7 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
       const newSize = parseInt((x.target as HTMLSelectElement).value);
       if (this.pageSize != newSize) {
         this.pageSize = newSize;
-        this.updateUI();
+        this.pageSizeChange();
       }
     });
     label.appendChild(select);
@@ -113,7 +113,7 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
     this.firstButton.addEventListener("click", (e) => {
       e.preventDefault();
       this.pageNumber = 0;
-      this.displayCurrentRows();
+      this.displayCurrentPage();
     });
 
     this.previousButton = document.createElement("a");
@@ -122,7 +122,7 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
       e.preventDefault();
       if (this.pageNumber > 0) {
         this.pageNumber -= 1;
-        this.displayCurrentRows();
+        this.displayCurrentPage();
       }
     });
     this.pageButtonsContainer = document.createElement("span");
@@ -133,7 +133,7 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
       e.preventDefault();
       if (this.pageNumber + 1 < this.totalPage) {
         this.pageNumber += 1;
-        this.displayCurrentRows();
+        this.displayCurrentPage();
       }
     });
 
@@ -142,7 +142,7 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
     this.lastButton.addEventListener("click", (e) => {
       e.preventDefault();
       this.pageNumber = this.totalPage - 1;
-      this.displayCurrentRows();
+      this.displayCurrentPage();
     });
 
     this.pagingContainer.appendChild(this.firstButton);
@@ -191,5 +191,10 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
           this.pageNumber === pageId ? "true" : "false"
         );
       });
+  }
+
+  protected pageSizeChange(): void {
+    this.updatePaging();
+    this.displayCurrentPage();
   }
 }
