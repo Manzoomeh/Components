@@ -42,6 +42,7 @@ export default class Grid implements IGrid {
         pageNumber: 1,
         direction: "rtl",
         noData: true,
+        firstAndLastBtn: true,
         culture: {
           labels: {
             search: "Search :",

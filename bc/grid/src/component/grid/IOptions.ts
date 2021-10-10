@@ -23,6 +23,7 @@ export type IGridOptions = {
   direction: HtmlDirection;
   process: ProcessType;
   noData?: string | INoDataCallback | boolean;
+  firstAndLastBtn?: boolean;
 };
 
 export type IOffsetOptions = {

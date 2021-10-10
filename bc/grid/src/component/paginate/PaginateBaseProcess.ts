@@ -111,13 +111,6 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
     } else {
       this.pageSize = this.owner.options.paging;
     }
-    this.firstButton = document.createElement("a");
-    this.firstButton.innerHTML = this.owner.options.culture.labels.first;
-    this.firstButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      this.pageNumber = 0;
-      this.displayCurrentPage();
-    });
 
     this.previousButton = document.createElement("a");
     this.previousButton.innerHTML = this.owner.options.culture.labels.previous;
@@ -128,6 +121,25 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
         this.displayCurrentPage();
       }
     });
+
+    if (this.owner.options.firstAndLastBtn) {
+      this.firstButton = document.createElement("a");
+      this.firstButton.innerHTML = this.owner.options.culture.labels.first;
+      this.firstButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.pageNumber = 0;
+        this.displayCurrentPage();
+      });
+
+      this.lastButton = document.createElement("a");
+      this.lastButton.innerHTML = this.owner.options.culture.labels.last;
+      this.lastButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.pageNumber = this.totalPage - 1;
+        this.displayCurrentPage();
+      });
+    }
+
     this.pageButtonsContainer = document.createElement("span");
 
     this.nextButton = document.createElement("a");
@@ -140,19 +152,15 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
       }
     });
 
-    this.lastButton = document.createElement("a");
-    this.lastButton.innerHTML = this.owner.options.culture.labels.last;
-    this.lastButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      this.pageNumber = this.totalPage - 1;
-      this.displayCurrentPage();
-    });
-
-    this.pagingContainer.appendChild(this.firstButton);
+    if (this.firstButton) {
+      this.pagingContainer.appendChild(this.firstButton);
+    }
     this.pagingContainer.appendChild(this.previousButton);
     this.pagingContainer.appendChild(this.pageButtonsContainer);
     this.pagingContainer.appendChild(this.nextButton);
-    this.pagingContainer.appendChild(this.lastButton);
+    if (this.lastButton) {
+      this.pagingContainer.appendChild(this.lastButton);
+    }
     this.updateState();
     this.pageNumber = -1;
   }
@@ -163,8 +171,8 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
       "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
     );
-    this.lastButton.setAttribute("data-bc-end", "");
-    this.lastButton.setAttribute(
+    this.lastButton?.setAttribute("data-bc-end", "");
+    this.lastButton?.setAttribute(
       "data-bc-status",
       this.pageNumber + 1 >= this.totalPage ? "disabled" : ""
     );
@@ -173,8 +181,8 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
       "data-bc-status",
       this.pageNumber == 0 ? "disabled" : ""
     );
-    this.firstButton.setAttribute("data-bc-start", "");
-    this.firstButton.setAttribute(
+    this.firstButton?.setAttribute("data-bc-start", "");
+    this.firstButton?.setAttribute(
       "data-bc-status",
       this.pageNumber == 0 ? "disabled" : ""
     );
