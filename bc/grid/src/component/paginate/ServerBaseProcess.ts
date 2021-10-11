@@ -19,8 +19,8 @@ export default class ServerBaseProcess extends PaginateBaseProcess {
         pageSize: this.pageSize,
         filter: this.filter,
         sortInfo: {
-          col: this.sortInfo.column.name,
-          type: this.sortInfo.sort,
+          col: this.sortInfo?.column.name,
+          type: this.sortInfo?.sort,
         },
       };
       this.owner.showUIProgress();

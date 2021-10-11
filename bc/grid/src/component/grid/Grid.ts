@@ -22,6 +22,7 @@ export default class Grid implements IGrid {
   readonly head: HTMLTableSectionElement;
   readonly body: HTMLTableSectionElement;
   private readonly _tableContainer: HTMLElement;
+  private readonly _loaderContainer: HTMLElement;
   private readonly _informationContainer: HTMLElement;
 
   static _defaults: Partial<IGridOptions>;
@@ -49,6 +50,7 @@ export default class Grid implements IGrid {
         firstAndLastBtn: true,
         information: true,
         rowNumber: "#",
+        loader: true,
         culture: {
           labels: {
             search: "Search :",
@@ -97,6 +99,11 @@ export default class Grid implements IGrid {
 
     this._tableContainer = document.createElement("div");
     this._tableContainer.setAttribute("data-bc-table-container", "");
+    if (typeof this.options.loader === "function") {
+      this._loaderContainer = document.createElement("div");
+      this._loaderContainer.setAttribute("data-bc-loader-container", "");
+      this._tableContainer.appendChild(this._loaderContainer);
+    }
     this._tableContainer.appendChild(this.table);
 
     if (this.options.information) {
@@ -399,12 +406,46 @@ export default class Grid implements IGrid {
   }
 
   public showUIProgress(): void {
-    this._tableContainer.setAttribute("data-process", "");
-    this.table.style["opacity"] = ".5";
+    if (this.options.loader) {
+      switch (typeof this.options.loader) {
+        case "function":
+          {
+            this._loaderContainer.innerHTML = this.options.loader();
+            break;
+          }
+        case "string":
+          {
+            this._tableContainer.style["background-image"] = `url("${this.options.loader}")`;
+          }
+        case "boolean":
+          {
+            this._tableContainer.setAttribute("data-process", "");
+            break;
+          }
+      }
+      this.table.style["opacity"] = ".4";
+    }
   }
 
   public hideUIProgress(): void {
-    this._tableContainer.removeAttribute("data-process");
-    this.table.style["opacity"] = "1";
+    if (this.options.loader) {
+      switch (typeof this.options.loader) {
+        case "function":
+          {
+            this._loaderContainer.innerHTML = "";
+            break;
+          }
+        case "string":
+          {
+            this._tableContainer.style["background-image"] = "";
+          }
+        case "boolean":
+          {
+            this._tableContainer.removeAttribute("data-process");
+            break;
+          }
+      }
+      this.table.style["opacity"] = "1";
+    }
   }
 }

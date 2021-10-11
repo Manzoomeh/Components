@@ -25,6 +25,7 @@ export type IGridOptions = {
   noData?: string | INoDataCallback | boolean;
   firstAndLastBtn?: boolean;
   information?: boolean;
+  loader?: string | ILoaderMaker | boolean;
 };
 
 export type IOffsetOptions = {
@@ -52,7 +53,7 @@ export type ICellMakerCallback = (
   row: any,
   data: any,
   element: HTMLTableCellElement
-) => string;
+) => RawHtml;
 
 export type IRowMakerCallback = (
   row: any,
@@ -62,3 +63,7 @@ export type IRowMakerCallback = (
 export type IFieldMakerCallback = (row: any) => any;
 
 export type INoDataCallback = (td: HTMLTableCellElement) => void;
+
+export type ILoaderMaker = () => RawHtml;
+
+export type RawHtml = string;

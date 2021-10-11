@@ -50,11 +50,11 @@ router.get("/api/server", function (req, res) {
 
   const rootData = filter
     ? apiDataList.filter(
-        (x) =>
-          x.id.toString().indexOf(filter) != -1 ||
-          x.count.toString().indexOf(filter) != -1 ||
-          x.data.indexOf(filter) != -1
-      )
+      (x) =>
+        x.id.toString().indexOf(filter) != -1 ||
+        x.count.toString().indexOf(filter) != -1 ||
+        x.data.indexOf(filter) != -1
+    )
     : apiDataList;
 
   const sortInfo = clientData?.sortInfo;
@@ -86,6 +86,54 @@ router.get("/api/server", function (req, res) {
   });
 });
 
+router.get("/api/server/loader", function (req, res) {
+  console.log(req.query);
+  const name = req.query.name;
+  const clientData = JSON.parse(req.query.data);
+
+  const filter = clientData?.filter;
+
+  const rootData = filter
+    ? apiDataList.filter(
+      (x) =>
+        x.id.toString().indexOf(filter) != -1 ||
+        x.count.toString().indexOf(filter) != -1 ||
+        x.data.indexOf(filter) != -1
+    )
+    : apiDataList;
+
+  const sortInfo = clientData?.sortInfo;
+  if (sortInfo) {
+  }
+
+  const pageSize = Math.max(clientData?.pageSize ?? 10, 0);
+  const pageNumber = Math.max(clientData?.pageNumber ?? 1, 1);
+  let minId = pageSize * (pageNumber - 1);
+  if (minId >= rootData.length) {
+    minId = 0;
+  }
+  const maxId = minId + pageSize;
+  let data = rootData.filter((_, i) => i > minId && i <= maxId);
+
+  for (let i = 0; i < 100000; i++) {
+    for (let j = 0; j < 10000; j++) {
+
+    }
+  }
+  console.log({ pageSize, pageNumber, sortInfo, filter });
+  const source = {};
+  Reflect.set(source, name, {
+    options: {
+      extra: {
+        total: rootData.length,
+        from: minId,
+      },
+    },
+    data: data,
+  });
+  res.send({ sources: source });
+});
+
 router.get("/api/mix", function (req, res) {
   console.log(req.query);
   const clientData = JSON.parse(req.query.data);
@@ -94,11 +142,11 @@ router.get("/api/mix", function (req, res) {
 
   const rootData = filter
     ? apiDataList.filter(
-        (x) =>
-          x.id.toString().indexOf(filter) != -1 ||
-          x.count.toString().indexOf(filter) != -1 ||
-          x.data.indexOf(filter) != -1
-      )
+      (x) =>
+        x.id.toString().indexOf(filter) != -1 ||
+        x.count.toString().indexOf(filter) != -1 ||
+        x.data.indexOf(filter) != -1
+    )
     : apiDataList;
 
   const sortInfo = clientData?.sortInfo;
