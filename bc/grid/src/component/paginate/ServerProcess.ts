@@ -26,7 +26,9 @@ export default class ServerProcess extends ServerBaseProcess {
     this.pageNumber = Math.floor(this.options.from / this.pageSize);
     this.updatePaging();
     this.updateState();
-    this.owner.displayRows(rows);
+    const from = this.options.from + 1;
+    const to = this.options.from + rows.length;
+    this.owner.displayRows(rows, from, to, this.totalRows);
   }
 
   protected displayCurrentPage(): void {

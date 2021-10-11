@@ -32,6 +32,8 @@ export default class Grid implements IGrid {
   pageNumber: number = 1;
   private processManager: IGridProcessManager;
   public readonly columns: IGridColumnInfo[] = new Array<IGridColumnInfo>();
+  private readonly _informationFormatter: (from: number, to: number, total: number) => string;
+
   static getDefaults(): Partial<IGridOptions> {
     if (!Grid._defaults) {
       Grid._defaults = {
@@ -46,6 +48,7 @@ export default class Grid implements IGrid {
         noData: true,
         firstAndLastBtn: true,
         information: true,
+        rowNumber: "#",
         culture: {
           labels: {
             search: "Search :",
@@ -55,6 +58,7 @@ export default class Grid implements IGrid {
             first: "First",
             last: "last",
             noData: "No Data Find",
+            information: "Showing ${from} to ${to} from Total ${total}"
           },
         },
       };
@@ -103,6 +107,8 @@ export default class Grid implements IGrid {
       );
     }
     this.createUI(signalSourceCallback);
+
+    this._informationFormatter = Function("from", "to", "total", `return \`${this.options.culture.labels.information}\``) as any;
   }
 
   private createUI(signalSourceCallback?: SignalSourceCallback): void {
@@ -358,11 +364,8 @@ export default class Grid implements IGrid {
     this.processManager.setSource(this.rows, offsetOptions);
   }
 
-  public displayRows(rows: GridRow[]): void {
+  public displayRows(rows: GridRow[], from: number, to: number, total: number): void {
     this.body.innerHTML = "";
-
-    this._informationContainer.innerText =
-      "Showing ${from} to ${to} from Total ${total}";
     if (rows?.length > 0) {
       rows?.forEach((row) => this.body.appendChild(row.uiElement));
     } else if (
@@ -391,25 +394,17 @@ export default class Grid implements IGrid {
       }
       this.body.appendChild(tr);
     }
+
+    this._informationContainer.innerText = this._informationFormatter(from, to, total);
   }
 
   public showUIProgress(): void {
     this._tableContainer.setAttribute("data-process", "");
     this.table.style["opacity"] = ".5";
   }
+
   public hideUIProgress(): void {
     this._tableContainer.removeAttribute("data-process");
     this.table.style["opacity"] = "1";
   }
 }
-/*
- function(format) {
-    var args = Array.prototype.slice.call(arguments, 1);
-    return format.replace(/{(\d+)}/g, function(match, number) { 
-      return typeof args[number] != 'undefined'
-        ? args[number] 
-        : match
-      ;
-    });
-  };
-   */

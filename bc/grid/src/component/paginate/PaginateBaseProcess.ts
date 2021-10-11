@@ -41,13 +41,16 @@ export default abstract class PaginateBaseProcess extends ProcessManager {
   }
 
   protected displayCurrentPage(): void {
-    const from = this.pageNumber * this.pageSize;
-    const to = from + this.pageSize;
+    const fromId = this.pageNumber * this.pageSize;
+    const toId = fromId + this.pageSize;
     this.updateState();
     const rows = this.filteredData.filter(
-      (row) => row.order > from && row.order <= to
+      (row) => row.order > fromId && row.order <= toId
     );
-    super.displayRows(rows);
+    const from = fromId + 1;
+    const to = fromId + rows.length;
+    const total = this.filteredData.length;
+    super.displayRows(rows, from, to, total);
   }
 
   public updatePaging(): void {

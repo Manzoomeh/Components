@@ -45,10 +45,13 @@ export default abstract class ProcessManager implements IGridProcessManager {
 
   public applyUserAction(): void {
     const rows = this.applyFilterAndSort();
-    this.displayRows(rows);
+    const total = rows?.length ?? 0;
+    const from = rows ? rows[0].order : 0;
+    const to = from + total;
+    this.displayRows(rows, from, to, total);
   }
 
-  protected displayRows(rows: Array<GridRow>): void {
-    this.owner.displayRows(rows);
+  protected displayRows(rows: Array<GridRow>, from: number, to: number, total: number): void {
+    this.owner.displayRows(rows, from, to, total);
   }
 }
