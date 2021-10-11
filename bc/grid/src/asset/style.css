@@ -25,8 +25,8 @@
   font-size: 12px;
   box-sizing: border-box;
   color: #555;
-  background: #F5F8F9;
-  border: 1px solid #C7D6DB;
+  background: #f5f8f9;
+  border: 1px solid #c7d6db;
   border-radius: 3px;
   transition: border 0.3s linear 0s;
 }
@@ -35,7 +35,8 @@
 [data-bc-grid] select:focus {
   background: #fff8ee;
   border-color: #66afe9;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset,
+    0 0 8px rgba(102, 175, 233, 0.6);
   outline: 0 none;
 }
 
@@ -100,17 +101,17 @@
 }
 
 [data-bc-grid] table[data-bc-table] tbody td[data-bc-action] [data-bc-icons] {
-  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
   display: -moz-flex;
-  display: -webkit-flex;     /* NEW - Chrome */
-  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  display: -webkit-flex; /* NEW - Chrome */
+  display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
   -webkit-flex-direction: row;
   flex-direction: row;
   -webkit-align-items: center;
   align-items: center;
-  -webkit-justify-content: center; 
+  -webkit-justify-content: center;
   justify-content: center;
 }
 
@@ -169,4 +170,11 @@
 [data-bc-grid] [data-bc-page][data-bc-current="true"] {
   background-color: #4d576e;
   color: #fff;
+}
+
+[data-bc-grid] [data-bc-table-container][data-process] {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: right 50% bottom 50%;
+  background-image: url("img/progress.gif");
 }

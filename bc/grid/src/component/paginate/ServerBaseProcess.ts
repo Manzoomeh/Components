@@ -23,6 +23,7 @@ export default class ServerBaseProcess extends PaginateBaseProcess {
           type: this.sortInfo.sort,
         },
       };
+      this.owner.showUIProgress();
       this.onSignalSourceCallback({
         ...data,
         ...{ urlencoded: encodeURIComponent(JSON.stringify(data)) },

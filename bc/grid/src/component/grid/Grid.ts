@@ -21,6 +21,7 @@ export default class Grid implements IGrid {
   readonly options: IGridOptions;
   readonly head: HTMLTableSectionElement;
   readonly body: HTMLTableSectionElement;
+  readonly tableContainer: HTMLElement;
 
   static _defaults: Partial<IGridOptions>;
   private rows: GridRow[] = new Array<GridRow>();
@@ -80,12 +81,17 @@ export default class Grid implements IGrid {
     if (this.options.direction) {
       this.container.style["direction"] = this.options.direction;
     }
+
     this.table = document.createElement("table");
     this.table.setAttribute("data-bc-table", "");
     this.head = document.createElement("thead");
     this.table.appendChild(this.head);
     this.body = document.createElement("tbody");
     this.table.appendChild(this.body);
+
+    this.tableContainer = document.createElement("div");
+    this.tableContainer.setAttribute("data-bc-table-container", "");
+    this.tableContainer.appendChild(this.table);
 
     this.createUI(signalSourceCallback);
   }
@@ -111,11 +117,11 @@ export default class Grid implements IGrid {
       });
       filter.appendChild(label);
     }
-    this.container.appendChild(this.table);
+    this.container.appendChild(this.tableContainer);
     if (this.options.paging) {
       const pageSizeContainer = document.createElement("div");
       pageSizeContainer.setAttribute("data-bc-pagesize-container", "");
-      this.container.insertBefore(pageSizeContainer, this.table);
+      this.container.insertBefore(pageSizeContainer, this.tableContainer);
       const pagingContainer = document.createElement("div");
       pagingContainer.setAttribute("data-bc-paging-container", "");
       pagingContainer.setAttribute("data-bc-no-selection", "");
@@ -328,7 +334,7 @@ export default class Grid implements IGrid {
       this.columnsInitialized = true;
       this.addTableRowFilterPart();
     }
-
+    this.hideUIProgress();
     //TODO:add repository for store generated ui element data
     this.rows = [];
     this.source = source;
@@ -370,5 +376,14 @@ export default class Grid implements IGrid {
       }
       this.body.appendChild(tr);
     }
+  }
+
+  public showUIProgress(): void {
+    this.tableContainer.setAttribute("data-process", "");
+    this.table.style["opacity"] = ".5";
+  }
+  public hideUIProgress(): void {
+    this.tableContainer.removeAttribute("data-process");
+    this.table.style["opacity"] = "1";
   }
 }
