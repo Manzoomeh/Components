@@ -21,7 +21,8 @@ export default class Grid implements IGrid {
   readonly options: IGridOptions;
   readonly head: HTMLTableSectionElement;
   readonly body: HTMLTableSectionElement;
-  readonly tableContainer: HTMLElement;
+  private readonly _tableContainer: HTMLElement;
+  private readonly _informationContainer: HTMLElement;
 
   static _defaults: Partial<IGridOptions>;
   private rows: GridRow[] = new Array<GridRow>();
@@ -44,6 +45,7 @@ export default class Grid implements IGrid {
         direction: "rtl",
         noData: true,
         firstAndLastBtn: true,
+        information: true,
         culture: {
           labels: {
             search: "Search :",
@@ -89,10 +91,17 @@ export default class Grid implements IGrid {
     this.body = document.createElement("tbody");
     this.table.appendChild(this.body);
 
-    this.tableContainer = document.createElement("div");
-    this.tableContainer.setAttribute("data-bc-table-container", "");
-    this.tableContainer.appendChild(this.table);
+    this._tableContainer = document.createElement("div");
+    this._tableContainer.setAttribute("data-bc-table-container", "");
+    this._tableContainer.appendChild(this.table);
 
+    if (this.options.information) {
+      this._informationContainer = document.createElement("div");
+      this._informationContainer.setAttribute(
+        "data-bc-information-container",
+        ""
+      );
+    }
     this.createUI(signalSourceCallback);
   }
 
@@ -117,11 +126,11 @@ export default class Grid implements IGrid {
       });
       filter.appendChild(label);
     }
-    this.container.appendChild(this.tableContainer);
+    this.container.appendChild(this._tableContainer);
     if (this.options.paging) {
       const pageSizeContainer = document.createElement("div");
       pageSizeContainer.setAttribute("data-bc-pagesize-container", "");
-      this.container.insertBefore(pageSizeContainer, this.tableContainer);
+      this.container.insertBefore(pageSizeContainer, this._tableContainer);
       const pagingContainer = document.createElement("div");
       pagingContainer.setAttribute("data-bc-paging-container", "");
       pagingContainer.setAttribute("data-bc-no-selection", "");
@@ -160,6 +169,9 @@ export default class Grid implements IGrid {
       }
     } else {
       this.processManager = new NoPaginate(this, signalSourceCallback);
+    }
+    if (this._informationContainer) {
+      this.container.appendChild(this._informationContainer);
     }
     this.createTable();
   }
@@ -348,6 +360,9 @@ export default class Grid implements IGrid {
 
   public displayRows(rows: GridRow[]): void {
     this.body.innerHTML = "";
+
+    this._informationContainer.innerText =
+      "Showing ${from} to ${to} from Total ${total}";
     if (rows?.length > 0) {
       rows?.forEach((row) => this.body.appendChild(row.uiElement));
     } else if (
@@ -379,11 +394,22 @@ export default class Grid implements IGrid {
   }
 
   public showUIProgress(): void {
-    this.tableContainer.setAttribute("data-process", "");
+    this._tableContainer.setAttribute("data-process", "");
     this.table.style["opacity"] = ".5";
   }
   public hideUIProgress(): void {
-    this.tableContainer.removeAttribute("data-process");
+    this._tableContainer.removeAttribute("data-process");
     this.table.style["opacity"] = "1";
   }
 }
+/*
+ function(format) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return format.replace(/{(\d+)}/g, function(match, number) { 
+      return typeof args[number] != 'undefined'
+        ? args[number] 
+        : match
+      ;
+    });
+  };
+   */

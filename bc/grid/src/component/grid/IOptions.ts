@@ -24,6 +24,7 @@ export type IGridOptions = {
   process: ProcessType;
   noData?: string | INoDataCallback | boolean;
   firstAndLastBtn?: boolean;
+  information?: boolean;
 };
 
 export type IOffsetOptions = {
